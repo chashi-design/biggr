@@ -121,7 +121,7 @@ struct WorkoutDetailView: View {
                                 }
                             }
                             Spacer()
-                            Text("\(Int(set.weight))kg × \(set.reps)")
+                            Text("\(set.weight, format: .number.precision(.fractionLength(0...2))) kg × \(set.reps)")
                         }
                     }
                 }
@@ -341,7 +341,7 @@ struct LogView: View {
                             HStack {
                                 Text(set.exerciseName)
                                 Spacer()
-                                Text("\(Int(set.weight))kg × \(set.reps)")
+                                Text("\(set.weight, format: .number.precision(.fractionLength(0...2))) kg × \(set.reps)")
                             }
                         }
                         .onDelete { indexSet in
