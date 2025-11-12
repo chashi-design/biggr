@@ -68,6 +68,12 @@ struct HistoryView: View {
 struct ContentView: View {
     var body: some View {
         TabView {
+            // 保存されたデータを元にボリュームを集計・グラフ表示する画面
+            StatsView()
+                .tabItem {
+                    Label("統計", systemImage: "chart.line.uptrend.xyaxis")
+                }
+
             // 新しいトレーニングを入力する画面
             LogView()
                 .tabItem {
@@ -78,12 +84,6 @@ struct ContentView: View {
             HistoryView()
                 .tabItem {
                     Label("履歴", systemImage: "clock.arrow.circlepath")
-                }
-
-            // 保存されたデータを元にボリュームを集計・グラフ表示する画面
-            StatsView()
-                .tabItem {
-                    Label("統計", systemImage: "chart.line.uptrend.xyaxis")
                 }
         }
     }
