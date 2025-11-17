@@ -498,7 +498,7 @@ struct ExercisePickerView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(exercises, id: \.id) { item in
+                ForEach(exercises) { item in
                     Button {
                         selection = item
                     } label: {
