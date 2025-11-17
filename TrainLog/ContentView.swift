@@ -277,22 +277,15 @@ struct LogView: View {
         NavigationStack {
             Form {
                 Section("日付") {
-                    DatePicker("日付", selection: $selectedDate, displayedComponents: .date)
-                        .datePickerStyle(.graphical)
-                        .labelsHidden()
-                        .onChange(of: selectedDate) { newValue in
-                            selectedDate = LogDateHelper.normalized(newValue)
-                        }
+                    LogCalendarSection(selectedDate: $selectedDate)
 
-                    HStack {
-                        Label(selectedDateLabel, systemImage: "calendar")
-                            .font(.headline)
-                        Spacer()
-                        Button("今日に戻す") {
-                            selectedDate = LogDateHelper.normalized(Date())
-                        }
-                        .font(.caption)
+                    Button {
+                        startNewWorkout()
+                    } label: {
+                        Label("＋ 追加", systemImage: "plus.circle.fill")
+                            .fontWeight(.semibold)
                     }
+                    .buttonStyle(.borderedProminent)
                     .padding(.top, 4)
                 }
 
@@ -430,6 +423,148 @@ struct LogView: View {
         draftSets.removeAll()
         note = ""
     }
+
+    private func startNewWorkout() {
+        selectedDate = LogDateHelper.normalized(selectedDate)
+        exercise = ""
+        weight = ""
+        reps = ""
+        rpe = ""
+        note = ""
+        draftSets.removeAll()
+    }
+}
+
+// MARK: - カレンダー表示
+struct LogCalendarSection: View {
+    @Binding var selectedDate: Date
+    @State private var displayMonth: Date
+    private let calendar = Calendar.current
+    private let weekdaySymbols = ["日", "月", "火", "水", "木", "金", "土"]
+
+    init(selectedDate: Binding<Date>) {
+        _selectedDate = selectedDate
+        _displayMonth = State(initialValue: LogCalendarSection.monthStart(for: selectedDate.wrappedValue))
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Button { changeMonth(-1) } label: {
+                    Image(systemName: "chevron.left")
+                }
+
+                Spacer()
+
+                Text(monthTitle)
+                    .font(.headline)
+
+                Spacer()
+
+                Button { changeMonth(1) } label: {
+                    Image(systemName: "chevron.right")
+                }
+            }
+
+            HStack(alignment: .firstTextBaseline) {
+                Label(LogDateHelper.label(for: selectedDate), systemImage: "calendar")
+                    .font(.subheadline)
+                Spacer()
+                Button("今日に戻す") {
+                    selectToday()
+                }
+                .font(.caption)
+            }
+
+            HStack {
+                ForEach(weekdaySymbols, id: \.self) { symbol in
+                    Text(symbol)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity)
+                }
+            }
+
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 7), spacing: 8) {
+                ForEach(Array(daysForDisplay().enumerated()), id: \.offset) { _, date in
+                    dayCell(for: date)
+                }
+            }
+        }
+        .padding(.vertical, 4)
+        .onChange(of: selectedDate) { newValue in
+            displayMonth = LogCalendarSection.monthStart(for: newValue)
+        }
+    }
+
+    private func changeMonth(_ offset: Int) {
+        guard let target = calendar.date(byAdding: .month, value: offset, to: displayMonth) else { return }
+        displayMonth = LogCalendarSection.monthStart(for: target)
+        let currentDay = calendar.component(.day, from: selectedDate)
+        let range = calendar.range(of: .day, in: .month, for: displayMonth) ?? 1..<2
+        let clampedDay = min(currentDay, range.count)
+        if let newDate = calendar.date(bySetting: .day, value: clampedDay, of: displayMonth) {
+            selectedDate = LogDateHelper.normalized(newDate)
+        }
+    }
+
+    private func selectToday() {
+        selectedDate = LogDateHelper.normalized(Date())
+    }
+
+    @ViewBuilder
+    private func dayCell(for date: Date?) -> some View {
+        if let date {
+            let isSelected = calendar.isDate(date, inSameDayAs: selectedDate)
+            Button {
+                selectedDate = LogDateHelper.normalized(date)
+            } label: {
+                Text("\(calendar.component(.day, from: date))")
+                    .fontWeight(isSelected ? .bold : .regular)
+                    .frame(maxWidth: .infinity, minHeight: 32)
+                    .padding(.vertical, 4)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(isSelected ? Color.accentColor.opacity(0.2) : Color.clear)
+                    )
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(isSelected ? Color.accentColor : Color.primary)
+        } else {
+            Color.clear
+                .frame(maxWidth: .infinity, minHeight: 32)
+        }
+    }
+
+    private func daysForDisplay() -> [Date?] {
+        let startOfMonth = LogCalendarSection.monthStart(for: displayMonth)
+        let range = calendar.range(of: .day, in: .month, for: startOfMonth) ?? 1..<2
+        let firstWeekday = calendar.component(.weekday, from: startOfMonth)
+        let leadingSpace = ((firstWeekday - calendar.firstWeekday) + 7) % 7
+        var days: [Date?] = Array(repeating: nil, count: leadingSpace)
+        for day in range {
+            if let date = calendar.date(byAdding: .day, value: day - 1, to: startOfMonth) {
+                days.append(date)
+            }
+        }
+        while days.count % 7 != 0 {
+            days.append(nil)
+        }
+        return days
+    }
+
+    private var monthTitle: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ja_JP")
+        formatter.dateFormat = "yyyy年 M月"
+        return formatter.string(from: displayMonth)
+    }
+
+    private static func monthStart(for date: Date) -> Date {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month], from: date)
+        return calendar.date(from: components) ?? date
+    }
 }
 
 // まだDBに保存していない「入力中のセット」を表すための一時的な型
@@ -439,12 +574,6 @@ struct DraftSet: Identifiable {
     var weight: Double
     var reps: Int
     var rpe: Double?
-}
-
-extension LogView {
-    private var selectedDateLabel: String {
-        LogDateHelper.label(for: selectedDate)
-    }
 }
 
 // キーボードを閉じるための共通ヘルパー（どのViewからでも呼べるようにextensionにしている）
