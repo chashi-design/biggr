@@ -627,7 +627,7 @@ struct SetEditorSheet: View {
                             } label: {
                                 Image(systemName: "minus.circle.fill")
                                     .foregroundStyle(.red)
-                            }
+                            
                             .buttonStyle(.plain)
                             .disabled(entry.sets.count <= 1)
                         }
