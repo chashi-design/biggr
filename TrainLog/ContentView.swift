@@ -273,17 +273,21 @@ struct LogView: View {
                     LogCalendarSection(selectedDate: $viewModel.selectedDate)
                 }
 
-                Section("種目") {
-                    Button {
-                        preparePickerSelection()
-                        isShowingExercisePicker = true
-                    } label: {
-                        Label("＋ 種目を追加", systemImage: "plus.circle.fill")
-                            .fontWeight(.semibold)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(viewModel.isLoadingExercises || viewModel.exerciseLoadFailed)
+                Button {
+                    preparePickerSelection()
+                    isShowingExercisePicker = true
+                } label: {
+                    Text("種目を追加")
+                        .symbolRenderingMode(.monochrome)
+                        .foregroundStyle(.primary)
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity, alignment: .center)
                 }
+                .frame(maxWidth: .infinity)
+                .buttonStyle(.borderedProminent)
+                .disabled(viewModel.isLoadingExercises || viewModel.exerciseLoadFailed)
+                .listRowInsets(EdgeInsets())
+                .padding(.horizontal, 10)
 
                 Section("今回の種目") {
                     if viewModel.draftExercises.isEmpty {
@@ -672,8 +676,16 @@ struct SetEditorSheet: View {
 struct LogCalendarSection: View {
     @Binding var selectedDate: Date
     @State private var displayMonth: Date
+    @State private var lastSwipeDirection: SwipeDirection = .none
+
     private let calendar = Calendar.current
     private let weekdaySymbols = ["日", "月", "火", "水", "木", "金", "土"]
+
+    private enum SwipeDirection {
+        case none
+        case previous
+        case next
+    }
 
     init(selectedDate: Binding<Date>) {
         _selectedDate = selectedDate
@@ -682,21 +694,12 @@ struct LogCalendarSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
+            // Month title only (no previous/next buttons)
             HStack {
-                Button { changeMonth(-1) } label: {
-                    Image(systemName: "chevron.left")
-                }
-
                 Spacer()
-
                 Text(monthTitle)
                     .font(.headline)
-
                 Spacer()
-
-                Button { changeMonth(1) } label: {
-                    Image(systemName: "chevron.right")
-                }
             }
 
             HStack(alignment: .firstTextBaseline) {
@@ -709,20 +712,25 @@ struct LogCalendarSection: View {
                 .font(.caption)
             }
 
-            HStack {
-                ForEach(weekdaySymbols, id: \.self) { symbol in
-                    Text(symbol)
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity)
-                }
+            ZStack {
+                calendarGrid
+                    .transition(transitionForSwipeDirection())
             }
-
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 7), spacing: 8) {
-                ForEach(Array(daysForDisplay().enumerated()), id: \.offset) { _, date in
-                    dayCell(for: date)
+            .id(displayMonth)
+            .frame(height: 298, alignment: .top) // fixed height, top-aligned
+            .clipped()
+            .gesture(
+                DragGesture().onEnded { value in
+                    let threshold: CGFloat = 40
+                    if value.translation.width < -threshold {
+                        // swipe left → next month
+                        changeMonth(1)
+                    } else if value.translation.width > threshold {
+                        // swipe right → previous month
+                        changeMonth(-1)
+                    }
                 }
-            }
+            )
         }
         .padding(.vertical, 4)
         .onChange(of: selectedDate) {
@@ -733,9 +741,49 @@ struct LogCalendarSection: View {
         }
     }
 
+    private var calendarGrid: some View {
+        VStack(spacing: 4) {
+            HStack {
+                ForEach(weekdaySymbols, id: \.self) { symbol in
+                    Text(symbol)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+            }
+
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 7), spacing: 8) {
+                ForEach(Array(daysForDisplay().enumerated()), id: \.offset) { _, date in
+                    dayCell(for: date)
+                }
+            }
+        }
+        .frame(maxHeight: .infinity, alignment: .top)
+    }
+
+    private func transitionForSwipeDirection() -> AnyTransition {
+        switch lastSwipeDirection {
+        case .previous:
+            return .asymmetric(
+                insertion: .move(edge: .leading),
+                removal: .move(edge: .trailing)
+            )
+        case .next:
+            return .asymmetric(
+                insertion: .move(edge: .trailing),
+                removal: .move(edge: .leading)
+            )
+        case .none:
+            return .identity
+        }
+    }
+
     private func changeMonth(_ offset: Int) {
         guard let target = calendar.date(byAdding: .month, value: offset, to: displayMonth) else { return }
-        displayMonth = LogCalendarSection.monthStart(for: target)
+        lastSwipeDirection = offset > 0 ? .next : .previous
+        withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
+            displayMonth = LogCalendarSection.monthStart(for: target)
+        }
     }
 
     private func selectToday() {
@@ -771,15 +819,19 @@ struct LogCalendarSection: View {
         let range = calendar.range(of: .day, in: .month, for: startOfMonth) ?? 1..<2
         let firstWeekday = calendar.component(.weekday, from: startOfMonth)
         let leadingSpace = ((firstWeekday - calendar.firstWeekday) + 7) % 7
+
         var days: [Date?] = Array(repeating: nil, count: leadingSpace)
+
         for day in range {
             if let date = calendar.date(byAdding: .day, value: day - 1, to: startOfMonth) {
                 days.append(date)
             }
         }
+
         while days.count % 7 != 0 {
             days.append(nil)
         }
+
         return days
     }
 
@@ -819,3 +871,4 @@ extension View {
 #Preview {
     ContentView()
 }
+
