@@ -269,9 +269,8 @@ struct LogView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("日付") {
-                    LogCalendarSection(selectedDate: $viewModel.selectedDate)
-                }
+                LogCalendarSection(selectedDate: $viewModel.selectedDate)
+       
 
                 Button {
                     preparePickerSelection()
@@ -376,6 +375,11 @@ final class LogViewModel: ObservableObject {
     // 新UI用: 種目ごとにセットを管理するドラフト
     @Published var draftExercises: [DraftExerciseEntry] = []
 
+    // 選択日ごとのドラフトを保持するキャッシュ
+    private var draftsCache: [Date: [DraftExerciseEntry]] = [:]
+    // 直近で同期した日付を記録
+    private var lastSyncedDate: Date?
+
     func loadExercises() async {
         isLoadingExercises = true
         exerciseLoadFailed = false
@@ -426,6 +430,7 @@ final class LogViewModel: ObservableObject {
 
         do {
             try context.save()
+            draftsCache[normalizedDate] = draftExercises
         } catch {
             print("Workout save error:", error)
         }
@@ -448,23 +453,42 @@ final class LogViewModel: ObservableObject {
     }
 
     func syncDraftsForSelectedDate(context: ModelContext) {
-        let normalizedDate = LogDateHelper.normalized(selectedDate)
-        guard let workout = findWorkout(on: normalizedDate, context: context) else {
-            draftExercises = []
+        // Normalize the new selected date
+        let normalizedNewDate = LogDateHelper.normalized(selectedDate)
+
+        // Save current drafts for the previous date into the cache
+        if let lastDate = lastSyncedDate {
+            let normalizedLast = LogDateHelper.normalized(lastDate)
+            draftsCache[normalizedLast] = draftExercises
+        }
+
+        // Try to restore drafts for the newly selected date from the in-memory cache first
+        if let cachedDrafts = draftsCache[normalizedNewDate] {
+            draftExercises = cachedDrafts
+            lastSyncedDate = normalizedNewDate
             return
         }
 
-        let grouped = Dictionary(grouping: workout.sets, by: { $0.exerciseName })
-        let mapped = grouped.map { exerciseName, sets -> DraftExerciseEntry in
-            let rows: [DraftSetRow] = sets.map { set in
-                DraftSetRow(weightText: String(set.weight), repsText: String(set.reps))
+        // If there is no cached draft, fall back to loading from persisted Workout
+        if let workout = findWorkout(on: normalizedNewDate, context: context) {
+            let grouped = Dictionary(grouping: workout.sets, by: { $0.exerciseName })
+            let mapped = grouped.map { exerciseName, sets -> DraftExerciseEntry in
+                let rows: [DraftSetRow] = sets.map { set in
+                    DraftSetRow(weightText: String(set.weight), repsText: String(set.reps))
+                }
+                var entry = DraftExerciseEntry(exerciseName: exerciseName, defaultSetCount: 0)
+                entry.sets = rows
+                return entry
             }
-            var entry = DraftExerciseEntry(exerciseName: exerciseName, defaultSetCount: 0)
-            entry.sets = rows
-            return entry
+
+            draftExercises = mapped.sorted { $0.exerciseName < $1.exerciseName }
+        } else {
+            // No workout and no cached drafts → start with empty list
+            draftExercises = []
         }
 
-        draftExercises = mapped.sorted { $0.exerciseName < $1.exerciseName }
+        // Remember the date we just synced
+        lastSyncedDate = normalizedNewDate
     }
 
     func appendExercise(_ name: String, initialSetCount: Int = 5) {
@@ -653,11 +677,14 @@ struct SetEditorSheet: View {
                 }
                 .navigationTitle("セット編集")
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("閉じる") {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button {
                             viewModel.saveWorkout(context: context)
                             dismiss()
+                        } label: {
+                            Image(systemName: "checkmark")
                         }
+                        .buttonStyle(.borderedProminent)
                     }
                 }
             } else {
@@ -675,177 +702,56 @@ struct SetEditorSheet: View {
 // MARK: - カレンダー表示
 struct LogCalendarSection: View {
     @Binding var selectedDate: Date
-    @State private var displayMonth: Date
-    @State private var lastSwipeDirection: SwipeDirection = .none
-
+    @State private var datePickerID = UUID()
     private let calendar = Calendar.current
-    private let weekdaySymbols = ["日", "月", "火", "水", "木", "金", "土"]
-
-    private enum SwipeDirection {
-        case none
-        case previous
-        case next
-    }
 
     init(selectedDate: Binding<Date>) {
         _selectedDate = selectedDate
-        _displayMonth = State(initialValue: LogCalendarSection.monthStart(for: selectedDate.wrappedValue))
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // Month title only (no previous/next buttons)
-            HStack {
-                Spacer()
-                Text(monthTitle)
-                    .font(.headline)
-                Spacer()
-            }
-
+        VStack(alignment: .leading, spacing: 8) {
+            // Current selected date label + "today" button
             HStack(alignment: .firstTextBaseline) {
                 Label(LogDateHelper.label(for: selectedDate), systemImage: "calendar")
                     .font(.subheadline)
+
                 Spacer()
-                Button("今日に戻す") {
+
+                Button {
                     selectToday()
+                } label: {
+                    Text("今日に戻す")
+                        .font(.caption)
                 }
-                .font(.caption)
             }
 
-            ZStack {
-                calendarGrid
-                    .transition(transitionForSwipeDirection())
-            }
-            .id(displayMonth)
-            .frame(height: 298, alignment: .top) // fixed height, top-aligned
-            .clipped()
-            .gesture(
-                DragGesture().onEnded { value in
-                    let threshold: CGFloat = 40
-                    if value.translation.width < -threshold {
-                        // swipe left → next month
-                        changeMonth(1)
-                    } else if value.translation.width > threshold {
-                        // swipe right → previous month
-                        changeMonth(-1)
+            // Graphical calendar DatePicker
+            DatePicker(
+                "",
+                selection: Binding(
+                    get: { selectedDate },
+                    set: { newValue in
+                        selectedDate = LogDateHelper.normalized(newValue)
                     }
-                }
+                ),
+                displayedComponents: [.date]
             )
+            .datePickerStyle(.graphical)
+            .labelsHidden()
+            .id(datePickerID)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.vertical, 4)
-        .onChange(of: selectedDate) {
-            let newMonth = LogCalendarSection.monthStart(for: selectedDate)
-            if !calendar.isDate(displayMonth, equalTo: newMonth, toGranularity: .month) {
-                displayMonth = newMonth
-            }
-        }
-    }
-
-    private var calendarGrid: some View {
-        VStack(spacing: 4) {
-            HStack {
-                ForEach(weekdaySymbols, id: \.self) { symbol in
-                    Text(symbol)
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                }
-            }
-
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 7), spacing: 8) {
-                ForEach(Array(daysForDisplay().enumerated()), id: \.offset) { _, date in
-                    dayCell(for: date)
-                }
-            }
-        }
-        .frame(maxHeight: .infinity, alignment: .top)
-    }
-
-    private func transitionForSwipeDirection() -> AnyTransition {
-        switch lastSwipeDirection {
-        case .previous:
-            return .asymmetric(
-                insertion: .move(edge: .leading),
-                removal: .move(edge: .trailing)
-            )
-        case .next:
-            return .asymmetric(
-                insertion: .move(edge: .trailing),
-                removal: .move(edge: .leading)
-            )
-        case .none:
-            return .identity
-        }
-    }
-
-    private func changeMonth(_ offset: Int) {
-        guard let target = calendar.date(byAdding: .month, value: offset, to: displayMonth) else { return }
-        lastSwipeDirection = offset > 0 ? .next : .previous
-        withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
-            displayMonth = LogCalendarSection.monthStart(for: target)
-        }
     }
 
     private func selectToday() {
-        selectedDate = LogDateHelper.normalized(Date())
-    }
-
-    @ViewBuilder
-    private func dayCell(for date: Date?) -> some View {
-        if let date {
-            let isSelected = calendar.isDate(date, inSameDayAs: selectedDate)
-            Button {
-                selectedDate = LogDateHelper.normalized(date)
-            } label: {
-                Text("\(calendar.component(.day, from: date))")
-                    .fontWeight(isSelected ? .bold : .regular)
-                    .frame(maxWidth: .infinity, minHeight: 32)
-                    .padding(.vertical, 4)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(isSelected ? Color.accentColor.opacity(0.2) : Color.clear)
-                    )
-            }
-            .buttonStyle(.plain)
-            .foregroundStyle(isSelected ? Color.accentColor : Color.primary)
-        } else {
-            Color.clear
-                .frame(maxWidth: .infinity, minHeight: 32)
+        let today = LogDateHelper.normalized(Date())
+        let alreadyToday = calendar.isDate(selectedDate, inSameDayAs: today)
+        selectedDate = today
+        if alreadyToday {
+            datePickerID = UUID()
         }
-    }
-
-    private func daysForDisplay() -> [Date?] {
-        let startOfMonth = LogCalendarSection.monthStart(for: displayMonth)
-        let range = calendar.range(of: .day, in: .month, for: startOfMonth) ?? 1..<2
-        let firstWeekday = calendar.component(.weekday, from: startOfMonth)
-        let leadingSpace = ((firstWeekday - calendar.firstWeekday) + 7) % 7
-
-        var days: [Date?] = Array(repeating: nil, count: leadingSpace)
-
-        for day in range {
-            if let date = calendar.date(byAdding: .day, value: day - 1, to: startOfMonth) {
-                days.append(date)
-            }
-        }
-
-        while days.count % 7 != 0 {
-            days.append(nil)
-        }
-
-        return days
-    }
-
-    private var monthTitle: String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ja_JP")
-        formatter.dateFormat = "yyyy年 M月"
-        return formatter.string(from: displayMonth)
-    }
-
-    private static func monthStart(for date: Date) -> Date {
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.year, .month], from: date)
-        return calendar.date(from: components) ?? date
     }
 }
 
@@ -871,4 +777,3 @@ extension View {
 #Preview {
     ContentView()
 }
-
