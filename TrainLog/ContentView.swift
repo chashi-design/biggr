@@ -70,6 +70,11 @@ struct HistoryView: View {
 struct ContentView: View {
     var body: some View {
         TabView {
+            OverviewTabView()
+                .tabItem {
+                    Label("概要", systemImage: "square.grid.2x2")
+                }
+
             // 保存されたデータを元にボリュームを集計・グラフ表示する画面
             StatsView()
                 .tabItem {
@@ -704,6 +709,7 @@ struct LogCalendarSection: View {
     @Binding var selectedDate: Date
     @State private var datePickerID = UUID()
     private let calendar = Calendar.current
+    private let locale = Locale(identifier: "ja_JP")
 
     init(selectedDate: Binding<Date>) {
         _selectedDate = selectedDate
@@ -739,6 +745,7 @@ struct LogCalendarSection: View {
             )
             .datePickerStyle(.graphical)
             .labelsHidden()
+            .environment(\.locale, locale)
             .id(datePickerID)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
