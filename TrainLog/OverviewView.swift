@@ -90,7 +90,7 @@ struct OverviewVolumeCard: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.secondarySystemBackground))
+        .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
@@ -111,7 +111,7 @@ struct OverviewMuscleGrid: View {
                 .padding(.horizontal, 4)
         } else {
             LazyVGrid(columns: columns, spacing: 12) {
-                ForEach(volumes.prefix(4)) { item in
+                ForEach(volumes) { item in
                     NavigationLink {
                         OverviewPartsView(
                             muscleGroup: item.muscleGroup,
@@ -159,7 +159,7 @@ struct OverviewMuscleCard: View {
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.secondarySystemBackground))
+        .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
@@ -214,9 +214,6 @@ struct OverviewPartsView: View {
                                 Text(VolumeFormatter.string(from: item.volume, locale: locale))
                                     .font(.subheadline.weight(.semibold))
                             }
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .foregroundStyle(.secondary)
                         }
                             .padding(.vertical, 6)
                         }
@@ -478,7 +475,7 @@ enum OverviewMetrics {
     ) -> [MuscleGroupVolume] {
         guard let range = calendar.dateInterval(of: .month, for: Date()) else { return [] }
         let lookup = Dictionary(uniqueKeysWithValues: exercises.map { ($0.name, $0) })
-        let muscleGroups = Array(Set(exercises.map { $0.muscleGroup }))
+        let muscleGroups: [String] = ["chest", "shoulders", "arms", "back", "legs", "abs"]
         var buckets: [String: Double] = [:]
 
         for workout in workouts where workout.date >= range.start && workout.date < range.end {
@@ -496,12 +493,7 @@ enum OverviewMetrics {
                     volume: buckets[key, default: 0]
                 )
             }
-            .sorted {
-                if $0.volume == $1.volume {
-                    return $0.displayName < $1.displayName
-                }
-                return $0.volume > $1.volume
-            }
+            .filter { _ in true }
     }
 
     static func exerciseVolumesForCurrentMonth(
@@ -615,17 +607,9 @@ enum MuscleGroupLabel {
         "chest": "胸",
         "back": "背中",
         "shoulders": "肩",
-        "quads": "大腿四頭筋",
-        "hamstrings": "ハムストリング",
-        "glutes": "臀部",
-        "calves": "ふくらはぎ",
-        "biceps": "上腕二頭筋",
-        "triceps": "上腕三頭筋",
-        "forearms": "前腕",
+        "arms": "腕",
+        "legs": "脚",
         "abs": "腹筋",
-        "core": "体幹",
-        "full_body": "全身",
-        "other": "その他"
     ]
 }
 
