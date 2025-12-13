@@ -19,6 +19,7 @@ struct HistoryView: View {
     // SwiftDataに保存されているWorkoutを自動的に取得する
     // \Workout.date を基準に降順(.reverse)で並べています
     @Query(sort: \Workout.date, order: .reverse) private var workouts: [Workout]
+    @Environment(\.modelContext) private var context
 
     var body: some View {
         NavigationStack {
@@ -49,7 +50,15 @@ struct HistoryView: View {
                                     .foregroundStyle(.secondary)
                             }
                         }
+                        .swipeActions {
+                            Button(role: .destructive) {
+                                delete(workout: workout)
+                            } label: {
+                                Label("削除", systemImage: "trash")
+                            }
+                        }
                     }
+                    .onDelete(perform: deleteWorkouts)
                 }
             }
             .navigationTitle("履歴")
@@ -63,6 +72,18 @@ struct HistoryView: View {
         formatter.dateFormat = "yyyy/MM/dd HH:mm"
         return formatter.string(from: date)
     }
+
+    private func delete(workout: Workout) {
+        context.delete(workout)
+        try? context.save()
+    }
+
+    private func deleteWorkouts(atOffsets offsets: IndexSet) {
+        for index in offsets {
+            guard workouts.indices.contains(index) else { continue }
+            delete(workout: workouts[index])
+        }
+    }
 }
 
 // MARK: - アプリ全体のタブをまとめるビュー
@@ -70,10 +91,9 @@ struct HistoryView: View {
 struct ContentView: View {
     var body: some View {
         TabView {
-            // 保存されたデータを元にボリュームを集計・グラフ表示する画面
-            StatsView()
+            OverviewTabView()
                 .tabItem {
-                    Label("統計", systemImage: "chart.line.uptrend.xyaxis")
+                    Label("概要", systemImage: "square.grid.2x2")
                 }
 
             // 新しいトレーニングを入力する画面
@@ -579,36 +599,15 @@ struct ExercisePickerSheet: View {
     @Binding var selection: String?
     var onCancel: () -> Void
     var onComplete: () -> Void
+    @State private var selectedGroup: String?
+
+    private let muscleGroupOrder = ["chest", "shoulders", "arms", "back", "legs", "abs"]
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(exercises, id: \.id) { (item: ExerciseCatalog) in
-                    Button {
-                        selection = item.id
-                    } label: {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(item.name)
-                                if !item.nameEn.isEmpty {
-                                    Text(item.nameEn)
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
-                            }
-                            Spacer()
-                            if selection == item.id {
-                                Image(systemName: "checkmark")
-                                    .foregroundStyle(.tint)
-                            }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
+            listView
             .navigationTitle("種目を選択")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("キャンセル") { onCancel() }
@@ -618,7 +617,100 @@ struct ExercisePickerSheet: View {
                         .disabled(selection == nil)
                 }
             }
+            .safeAreaInset(edge: .top) {
+                if !muscleGroups.isEmpty {
+                    VStack(spacing: 0) {
+                        Picker("部位", selection: $selectedGroup) {
+                            ForEach(muscleGroups, id: \.self) { group in
+                                Text(muscleGroupLabel(group)).tag(String?.some(group))
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                    }
+                    .background(.ultraThinMaterial)
+                }
+            }
         }
+        .onAppear {
+            if selectedGroup == nil {
+                let initialGroup = muscleGroups.first
+                selectedGroup = initialGroup
+                if let group = initialGroup {
+                    selection = firstExerciseID(for: group)
+                }
+            } else if selection == nil, let group = selectedGroup {
+                selection = firstExerciseID(for: group)
+            }
+        }
+        .onChange(of: selectedGroup) { oldValue, newValue in
+            if let group = newValue {
+                selection = firstExerciseID(for: group)
+            } else {
+                selection = nil
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var listView: some View {
+        List {
+            ForEach(filteredExercises, id: \.id) { (item: ExerciseCatalog) in
+                Button {
+                    selection = item.id
+                } label: {
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(item.name)
+                            if !item.nameEn.isEmpty {
+                                Text(item.nameEn)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        Spacer()
+                        if selection == item.id {
+                            Image(systemName: "checkmark")
+                                .foregroundStyle(.tint)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+
+    private var muscleGroups: [String] {
+        let groups = Set(exercises.map { $0.muscleGroup })
+        let ordered = muscleGroupOrder.filter { groups.contains($0) }
+        let remaining = groups.subtracting(muscleGroupOrder).sorted()
+        return ordered + remaining
+    }
+
+    private var filteredExercises: [ExerciseCatalog] {
+        guard let group = selectedGroup else { return [] }
+        return exercises
+            .filter { $0.muscleGroup == group }
+            .sorted { $0.name < $1.name }
+    }
+
+    private func muscleGroupLabel(_ key: String) -> String {
+        switch key {
+        case "chest": return "胸"
+        case "shoulders": return "肩"
+        case "arms": return "腕"
+        case "back": return "背中"
+        case "legs": return "脚"
+        case "abs": return "腹"
+        default: return key
+        }
+    }
+
+    private func firstExerciseID(for group: String) -> String? {
+        filteredExercises.first(where: { $0.muscleGroup == group })?.id
     }
 }
 
@@ -704,6 +796,7 @@ struct LogCalendarSection: View {
     @Binding var selectedDate: Date
     @State private var datePickerID = UUID()
     private let calendar = Calendar.current
+    private let locale = Locale(identifier: "ja_JP")
 
     init(selectedDate: Binding<Date>) {
         _selectedDate = selectedDate
@@ -739,6 +832,7 @@ struct LogCalendarSection: View {
             )
             .datePickerStyle(.graphical)
             .labelsHidden()
+            .environment(\.locale, locale)
             .id(datePickerID)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
