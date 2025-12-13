@@ -121,14 +121,16 @@ struct OverviewMuscleGrid: View {
     private let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
 
     var body: some View {
-        if volumes.isEmpty || exercises.isEmpty {
+        let visibleVolumes = volumes.filter { $0.muscleGroup != "other" }
+
+        if visibleVolumes.isEmpty || exercises.isEmpty {
             Text("種目データがありません")
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 4)
         } else {
             LazyVGrid(columns: columns, spacing: 12) {
-                ForEach(volumes) { item in
+                ForEach(visibleVolumes) { item in
                     NavigationLink {
                         OverviewPartsView(
                             muscleGroup: item.muscleGroup,
