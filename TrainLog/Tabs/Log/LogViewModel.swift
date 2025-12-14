@@ -36,6 +36,10 @@ final class LogViewModel: ObservableObject {
         draftExercises.remove(atOffsets: indexSet)
     }
 
+    func removeDraftExercise(id: UUID) {
+        draftExercises.removeAll { $0.id == id }
+    }
+
     func exerciseName(forID id: String) -> String? {
         exercisesCatalog.first(where: { $0.id == id })?.name
     }
