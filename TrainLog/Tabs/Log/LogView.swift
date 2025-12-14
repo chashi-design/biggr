@@ -175,11 +175,10 @@ enum WorkoutDotsBuilder {
             var groups = workout.sets.compactMap { set in
                 exerciseLookup[set.exerciseName]
             }
-            if groups.isEmpty && !workout.sets.isEmpty {
-                // カタログに無い種目でもドットが出るようにデフォルトグループを付与
+            // セット数0でもドットを表示するため、空の場合はデフォルトグループを付与
+            if groups.isEmpty {
                 groups = ["other"]
             }
-            guard !groups.isEmpty else { continue }
 
             var current = buckets[day, default: []]
             current.formUnion(groups)
