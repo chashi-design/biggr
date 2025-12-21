@@ -145,15 +145,7 @@ struct LogView: View {
         guard let exercise = viewModel.exercisesCatalog.first(where: { $0.name == name }) else {
             return .gray
         }
-        switch exercise.muscleGroup {
-        case "chest": return .red
-        case "shoulders": return .orange
-        case "arms": return .yellow
-        case "back": return .green
-        case "legs": return .teal
-        case "abs": return .indigo
-        default: return .gray
-        }
+        return MuscleGroupColor.color(for: exercise.muscleGroup)
     }
 
     private var calendarSection: some View {
@@ -277,8 +269,7 @@ enum WorkoutDotsBuilder {
             "arms": .yellow,
             "back": .green,
             "legs": .teal,
-            "abs": .indigo,
-            "other": .gray
+            "abs": .indigo
         ]
     }
 

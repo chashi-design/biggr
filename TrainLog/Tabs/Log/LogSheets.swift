@@ -156,15 +156,7 @@ struct ExercisePickerSheet: View {
     }
 
     private func muscleColor(for key: String) -> Color {
-        switch key {
-        case "chest": return .red
-        case "shoulders": return .orange
-        case "arms": return .yellow
-        case "back": return .green
-        case "legs": return .teal
-        case "abs": return .indigo
-        default: return .gray
-        }
+        MuscleGroupColor.color(for: key)
     }
 
     private func normalizedForSearch(_ text: String) -> String {

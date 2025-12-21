@@ -5,9 +5,11 @@ struct ExerciseTabView: View {
     @State private var exercises: [ExerciseCatalog] = []
     @State private var loadFailed = false
 
+    private let muscleGroupOrder = ["chest", "shoulders", "arms", "back", "legs", "abs", "other"]
+
     private var categories: [ExerciseCategory] {
         let grouped = Dictionary(grouping: exercises, by: { $0.muscleGroup })
-        return grouped.map { key, value in
+        let raw = grouped.map { key, value in
             ExerciseCategory(
                 id: key,
                 title: MuscleGroupLabel.label(for: key),
@@ -15,7 +17,14 @@ struct ExerciseTabView: View {
                 exercises: value.sorted { $0.name < $1.name }
             )
         }
-        .sorted { $0.title < $1.title }
+        return raw.sorted { lhs, rhs in
+            let leftIndex = muscleGroupOrder.firstIndex(of: lhs.id) ?? muscleGroupOrder.count
+            let rightIndex = muscleGroupOrder.firstIndex(of: rhs.id) ?? muscleGroupOrder.count
+            if leftIndex == rightIndex {
+                return lhs.title < rhs.title
+            }
+            return leftIndex < rightIndex
+        }
     }
 
     private var favoriteExercises: [ExerciseCatalog] {
@@ -99,22 +108,6 @@ struct ExerciseCategory: Identifiable {
     let title: String
     let color: Color
     let exercises: [ExerciseCatalog]
-}
-
-enum MuscleGroupColor {
-    static func color(for key: String) -> Color {
-        palette[key, default: .secondary]
-    }
-
-    private static let palette: [String: Color] = [
-        "chest": Color.red,
-        "shoulders": Color.orange,
-        "arms": Color.pink,
-        "back": Color.blue,
-        "legs": Color.green,
-        "abs": Color.yellow,
-        "other": Color.gray
-    ]
 }
 
 struct ExerciseRow: View {
