@@ -4,6 +4,8 @@ struct ExerciseTabView: View {
     @StateObject private var favoritesStore = ExerciseFavoritesStore()
     @State private var exercises: [ExerciseCatalog] = []
     @State private var loadFailed = false
+    @State private var navigationFeedbackTrigger = 0
+    @State private var selectedDestination: ExerciseTabDestination?
 
     private let muscleGroupOrder = ["chest", "shoulders", "arms", "back", "legs", "abs", "other"]
 
@@ -36,7 +38,7 @@ struct ExerciseTabView: View {
         NavigationStack {
             List {
                 Section {
-                    NavigationLink {
+                    NavigationLink(tag: .favorites, selection: $selectedDestination) {
                         ExerciseListView(
                             title: "お気に入り",
                             exercises: favoriteExercises
@@ -53,12 +55,14 @@ struct ExerciseTabView: View {
                                 .foregroundStyle(.secondary)
                         }
                         .padding(.vertical, 4)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
                     }
                 }
 
                 Section("カテゴリ") {
                     ForEach(categories) { category in
-                        NavigationLink {
+                        NavigationLink(tag: .category(category.id), selection: $selectedDestination) {
                             ExerciseListView(
                                 title: category.title,
                                 exercises: category.exercises
@@ -75,6 +79,8 @@ struct ExerciseTabView: View {
                                     .foregroundStyle(.secondary)
                             }
                             .padding(.vertical, 4)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(Rectangle())
                         }
                     }
                     if categories.isEmpty {
@@ -89,6 +95,12 @@ struct ExerciseTabView: View {
                 Button("OK", role: .cancel) {}
             }
             .animation(.default, value: favoriteExercises)
+            .onChange(of: selectedDestination) { _, newValue in
+                if newValue != nil {
+                    navigationFeedbackTrigger += 1
+                }
+            }
+            .sensoryFeedback(.impact(weight: .light), trigger: navigationFeedbackTrigger)
         }
         .environmentObject(favoritesStore)
     }
@@ -108,6 +120,11 @@ struct ExerciseCategory: Identifiable {
     let title: String
     let color: Color
     let exercises: [ExerciseCatalog]
+}
+
+private enum ExerciseTabDestination: Hashable {
+    case favorites
+    case category(String)
 }
 
 struct ExerciseRow: View {

@@ -14,6 +14,8 @@ struct LogView: View {
     @State private var editMode: EditMode = .inactive
     @State private var selectedEntriesForDeletion: Set<UUID> = []
     @State private var isShowingDeleteAlert = false
+    @State private var navigationFeedbackTrigger = 0
+    @State private var selectedDraftExerciseID: UUID?
 
     var body: some View {
         NavigationStack {
@@ -22,6 +24,12 @@ struct LogView: View {
                 exerciseSection
             }
             .scrollDismissesKeyboard(.immediately)
+            .onChange(of: selectedDraftExerciseID) { _, newValue in
+                if newValue != nil {
+                    navigationFeedbackTrigger += 1
+                }
+            }
+            .sensoryFeedback(.impact(weight: .light), trigger: navigationFeedbackTrigger)
             .simultaneousGesture(
                 DragGesture().onChanged { _ in
                     hideKeyboard()
@@ -191,7 +199,7 @@ struct LogView: View {
                                 toggleSelection(for: entry.id)
                             }
                         } else {
-                            NavigationLink {
+                            NavigationLink(tag: entry.id, selection: $selectedDraftExerciseID) {
                                 SetEditorView(viewModel: viewModel, exerciseID: entry.id)
                             } label: {
                                 HStack(spacing: 16) {
@@ -213,6 +221,8 @@ struct LogView: View {
                                     }
                                     Spacer()
                                 }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .contentShape(Rectangle())
                             }
                         }
                     }
