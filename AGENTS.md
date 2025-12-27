@@ -26,6 +26,9 @@
   - `LogDateHelper.swift`
   - `SearchEngine.swift`
   - `Models.swift`
+  - `Components/SafariView.swift`
+  - `Components/WebView.swift`
+  - `Tabs/Settings/SettingsView.swift`
 - `/TrainLogTests/` … テスト
 - `.xcodeproj` / `.xcworkspace` … プロジェクト構成
 
@@ -105,6 +108,11 @@
 - `navigationDestination(item:)` を使う場合、`item` は `Hashable` 準拠が必須
 - `onChange(of:)` で Optional を監視する場合、対象型の `Equatable` 準拠が必須
 - これらの準拠追加後も Xcode が警告を保持する場合は、Index の不整合の可能性があるため再起動や Clean Build を検討
+
+## UI Notes
+- 設定画面は `Tabs/Settings/SettingsView.swift` で管理する
+- Web表示は `SFSafariViewController` を基本利用し、別手段が必要な場合は事前に確認する
+- アクティビティタブ右上の設定導線はモーダル（sheet）で表示し、Xボタンで閉じる
 
 ## Shared State / Weekly UI Rules
 - お気に入り状態はタブ共通ストアで管理し、TabView配下でenvironmentObject注入する

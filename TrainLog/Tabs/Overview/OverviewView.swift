@@ -6,6 +6,8 @@ struct OverviewTabView: View {
     @State private var exercises: [ExerciseCatalog] = []
     @State private var loadFailed = false
     @State private var refreshID = UUID()
+    @State private var showSettings = false
+    @State private var navigationFeedbackTrigger = 0
 
     private let calendar = Calendar.appCurrent
     private let locale = Locale(identifier: "ja_JP")
@@ -31,6 +33,21 @@ struct OverviewTabView: View {
             }
             .navigationTitle("アクティビティ")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gearshape.fill")
+                    }
+                    .accessibilityLabel("設定")
+                }
+            }
+            .sheet(isPresented: $showSettings) {
+                NavigationStack {
+                    SettingsView()
+                }
+            }
             .background(Color(.systemGroupedBackground))
             .task {
                 loadExercises()
@@ -41,6 +58,12 @@ struct OverviewTabView: View {
             .onChange(of: workouts) { oldValue, newValue in
                 refreshID = UUID()
             }
+            .onChange(of: showSettings) { _, newValue in
+                if newValue {
+                    navigationFeedbackTrigger += 1
+                }
+            }
+            .sensoryFeedback(.impact(weight: .light), trigger: navigationFeedbackTrigger)
         }
     }
 
