@@ -1,5 +1,7 @@
 import SwiftUI
 
+// 種目一覧画面
+
 struct ExerciseListView: View {
     let title: String
     let exercises: [ExerciseCatalog]
@@ -35,7 +37,12 @@ struct ExerciseListView: View {
                         .foregroundStyle(.tertiary)
                         .imageScale(.large)
                         .font(.system(size: 32, weight: .semibold))
-                    Text("登録されている種目がありません。\nカテゴリから選んで\nお気に入りに追加しましょう。")
+                    Text("お気に入り種目なし")
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                        .multilineTextAlignment(.center)
+                    Text("お気に入り登録すると、メモ入力のときに種目を簡単に選べます。カテゴリから選んで登録しましょう。")
+                        .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                 }
@@ -48,10 +55,31 @@ struct ExerciseListView: View {
     }
 }
 
+struct ExerciseRow: View {
+    let exercise: ExerciseCatalog
+    let isFavorite: Bool
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(exercise.name)
+                    .font(.body)
+            }
+            Spacer()
+            if isFavorite {
+                Image(systemName: "star.fill")
+                    .foregroundStyle(.yellow)
+            }
+        }
+        .padding(.vertical, 4)
+    }
+}
+
 
 #Preview {
     NavigationStack {
         ExerciseTabView()
             .environmentObject(ExerciseFavoritesStore())
+
     }
 }

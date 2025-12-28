@@ -43,8 +43,8 @@ struct ExerciseTabView: View {
                             Image(systemName: "star.fill")
                                 .foregroundStyle(.yellow)
                             Text("お気に入り")
-                                .font(.headline)
-                                .foregroundStyle(favoriteExercises.isEmpty ? .secondary : .primary)
+                                .font(.body)
+                                .foregroundStyle(.primary)
                             Spacer()
                             Text("\(favoriteExercises.count)種目")
                                 .font(.body)
@@ -60,11 +60,10 @@ struct ExerciseTabView: View {
                     ForEach(categories) { category in
                         NavigationLink(value: ExerciseRoute.category(category.id)) {
                             HStack(spacing: 12) {
-                                Circle()
-                                    .fill(category.color)
-                                    .frame(width: 20, height: 20)
+                                Image(systemName: "circle.fill")
+                                    .foregroundStyle(category.color)
                                 Text(category.title)
-                                    .font(.headline)
+                                    .font(.body)
                                 Spacer()
                                 Text("\(category.exercises.count)種目")
                                     .font(.body)
@@ -131,26 +130,6 @@ enum ExerciseRoute: Hashable {
     case favorites
     case category(String)
     case detail(ExerciseCatalog)
-}
-
-struct ExerciseRow: View {
-    let exercise: ExerciseCatalog
-    let isFavorite: Bool
-
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(exercise.name)
-                    .font(.headline)
-            }
-            Spacer()
-            if isFavorite {
-                Image(systemName: "star.fill")
-                    .foregroundStyle(.yellow)
-            }
-        }
-        .padding(.vertical, 4)
-    }
 }
 
 #Preview {

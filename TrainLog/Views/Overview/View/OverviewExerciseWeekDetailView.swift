@@ -23,37 +23,17 @@ struct OverviewExerciseWeekDetailView: View {
 
     var body: some View {
         List {
-            Section {
-                ForEach(dailySummaries) { summary in
-                    VStack(alignment: .leading, spacing: 16) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(dayLabel(for: summary.date))
-                                .font(.headline)
-                            if summary.sets.isEmpty {
-                                Text("記録なし")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-                            } else {
-                                let parts = VolumeFormatter.volumePartsWithFraction(from: summary.totalVolume, locale: locale, unit: weightUnit)
-                                HStack(spacing: 4) {
-                                    Text("\(summary.sets.count)セット (")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
-                                    ValueWithUnitText(
-                                        value: parts.value,
-                                        unit: " \(parts.unit))",
-                                        valueFont: .subheadline,
-                                        unitFont: .caption,
-                                        valueColor: .secondary,
-                                        unitColor: .secondary
-                                    )
-                                }
-                            }
-                        }
-                        if !summary.sets.isEmpty {
+            ForEach(dailySummaries) { summary in
+                Section {
+                    VStack(alignment: .leading, spacing: 8) {
+                        if summary.sets.isEmpty {
+                            Text("記録がありません")
+                                .font(.body)
+                                .foregroundStyle(.secondary)
+                        } else {
                             ForEach(Array(summary.sets.enumerated()), id: \.element.id) { index, set in
                                 HStack(spacing: 32) {
-                                    Text("\(index + 1)セット")
+                                    Text("\(index + 1)セット目")
                                     Spacer()
                                     if set.weight > 0 {
                                         let parts = VolumeFormatter.weightParts(from: set.weight, locale: locale, unit: weightUnit)
@@ -75,6 +55,9 @@ struct OverviewExerciseWeekDetailView: View {
                     }
                     .padding(.vertical, 4)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                } header: {
+                    Text(dayLabel(for: summary.date))
+                        .font(.headline)
                 }
             }
         }

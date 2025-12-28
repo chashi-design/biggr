@@ -202,7 +202,7 @@ struct OverviewMuscleGroupSummaryView: View {
                         selectedExerciseItem = item
                     } label: {
                         HStack {
-                            VStack(alignment: .leading, spacing: 4) {
+                            VStack(alignment: .leading, spacing: 2) {
                                 Text(item.exercise.name)
                                     .font(.headline)
                                 Text(currentWeekLabel)

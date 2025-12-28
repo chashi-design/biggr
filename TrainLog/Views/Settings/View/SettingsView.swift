@@ -3,34 +3,45 @@ import SwiftUI
 // 設定画面
 struct SettingsView: View {
     @AppStorage(WeightUnit.storageKey) private var weightUnitRaw = WeightUnit.kg.rawValue
-    private let items: [SettingsLinkItem] = [
-        SettingsLinkItem(
-            title: "お問い合わせ",
-            iconName: "questionmark.circle",
-            url: URL(string: "https://forms.gle/zgHhoZLDLA7Y5Dmu6")!
-        ),
-        SettingsLinkItem(
-            title: "利用規約",
-            iconName: "text.document",
-            url: URL(string: "https://chashi-design.github.io/TrainLogApp/docs/termsofservice/japanese")!
-        ),
-        SettingsLinkItem(
-            title: "プライバシーポリシー",
-            iconName: "lock",
-            url: URL(string: "https://chashi-design.github.io/TrainLogApp/docs/privacypolicy/japanese")!
-        ),
-        SettingsLinkItem(
-            title: "ライセンス",
-            iconName: "medal.star",
-            url: URL(string: "https://chashi-design.github.io/TrainLogApp/docs/license/licenseinfo")!
-        )
-    ]
+    private var items: [SettingsLinkItem] {
+        [
+            SettingsLinkItem(
+                title: "お問い合わせ",
+                iconName: "questionmark.circle",
+                url: URL(string: "https://forms.gle/zgHhoZLDLA7Y5Dmu6")!
+            ),
+            SettingsLinkItem(
+                title: "利用規約",
+                iconName: "text.document",
+                url: termsURL
+            ),
+            SettingsLinkItem(
+                title: "プライバシーポリシー",
+                iconName: "lock",
+                url: privacyPolicyURL
+            )
+        ]
+    }
 
     @State private var selectedItem: SettingsLinkItem?
     @State private var navigationFeedbackTrigger = 0
     @State private var closeFeedbackTrigger = 0
     @State private var unitFeedbackTrigger = 0
     @Environment(\.dismiss) private var dismiss
+
+    private var isJapaneseLocale: Bool {
+        Locale.preferredLanguages.first?.hasPrefix("ja") ?? false
+    }
+
+    private var termsURL: URL {
+        let suffix = isJapaneseLocale ? "japanese" : "english"
+        return URL(string: "https://chashi-design.github.io/TrainLogApp/docs/termsofservice/\(suffix)")!
+    }
+
+    private var privacyPolicyURL: URL {
+        let suffix = isJapaneseLocale ? "japanese" : "english"
+        return URL(string: "https://chashi-design.github.io/TrainLogApp/docs/privacypolicy/\(suffix)")!
+    }
 
     var body: some View {
         List {
@@ -77,16 +88,15 @@ struct SettingsView: View {
                 }
             }
             label: {
-                HStack {
+                HStack(spacing: 12) {
                     Image(systemName: "dumbbell")
                         .foregroundStyle(.primary)
-                        .font(.headline.weight(.semibold))
+                        .font(.body)
                     Text("重量の単位")
-                        .font(.headline)
+                        .font(.body)
                 }
             }
             .pickerStyle(.automatic)
-            .fontWeight(.semibold)
             .onChange(of: weightUnitRaw) { _, _ in
                 unitFeedbackTrigger += 1
             }
@@ -115,12 +125,12 @@ struct SettingsRow: View {
     let iconName: String
 
     var body: some View {
-        HStack {
+        HStack(spacing: 12) {
             Image(systemName: iconName)
                 .foregroundStyle(.primary)
-                .font(.headline.weight(.semibold))
+                .font(.body)
             Text(title)
-                .font(.headline)
+                .font(.body)
             Spacer()
             Image(systemName: "chevron.right")
                 .foregroundStyle(.tertiary)
@@ -134,12 +144,12 @@ struct SettingsVersionRow: View {
     let versionText: String
 
     var body: some View {
-        HStack {
+        HStack(spacing: 12) {
             Image(systemName: "clock.arrow.trianglehead.counterclockwise.rotate.90")
                 .foregroundStyle(.primary)
-                .font(.headline.weight(.semibold))
+                .font(.body)
             Text("バージョン")
-                .font(.headline)
+                .font(.body)
             Spacer()
             Text(versionText)
                 .foregroundStyle(.secondary)

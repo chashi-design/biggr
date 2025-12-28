@@ -25,43 +25,21 @@ struct OverviewMuscleGroupWeekDetailView: View {
 
     var body: some View {
         List {
-            Section {
-                ForEach(dailySummaries) { summary in
+            ForEach(dailySummaries) { summary in
+                Section {
                     VStack(alignment: .leading, spacing: 20) {
-                        VStack(alignment: .leading) {
-                            Text(dayLabel(for: summary.date))
-                                .font(.headline)
-                            HStack {
-                                if summary.totalSets > 0 {
-                                    Text("\(summary.totalSets)セット")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
-                                }
-                                if summary.totalVolume > 0 {
-                                    let parts = VolumeFormatter.volumePartsWithFraction(from: summary.totalVolume, locale: locale, unit: weightUnit)
-                                    ValueWithUnitText(
-                                        value: "(\(parts.value)",
-                                        unit: " \(parts.unit))",
-                                        valueFont: .subheadline,
-                                        unitFont: .caption,
-                                        valueColor: .secondary,
-                                        unitColor: .secondary
-                                    )
-                                }
-                            }
-                        }
                         if summary.exercises.isEmpty {
-                            Text("記録なし")
-                                .font(.subheadline)
+                            Text("記録がありません")
+                                .font(.body)
                                 .foregroundStyle(.secondary)
                         } else {
                             ForEach(summary.exercises) { exercise in
                                 VStack(alignment: .leading, spacing: 8) {
                                     Text(exercise.name)
-                                        .font(.subheadline.weight(.semibold))
+                                        .font(.headline.weight(.semibold))
                                     ForEach(Array(exercise.sets.enumerated()), id: \.element.id) { index, set in
                                         HStack(spacing: 32) {
-                                            Text("\(index + 1)セット")
+                                            Text("\(index + 1)セット目")
                                             Spacer()
                                             if set.weight > 0 {
                                                 let parts = VolumeFormatter.weightParts(from: set.weight, locale: locale, unit: weightUnit)
@@ -85,6 +63,9 @@ struct OverviewMuscleGroupWeekDetailView: View {
                     }
                     .padding(.vertical, 4)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                } header: {
+                    Text(dayLabel(for: summary.date))
+                        .font(.headline)
                 }
             }
         }

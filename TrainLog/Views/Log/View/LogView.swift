@@ -22,6 +22,13 @@ struct LogView: View {
         case edit(UUID)
     }
 
+    private var selectedDateTitle: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ja_JP")
+        formatter.dateFormat = "MM月dd日"
+        return "\(formatter.string(from: viewModel.selectedDate))のトレーニング種目"
+    }
+
     var body: some View {
         NavigationStack(path: $path) {
             Form {
@@ -177,9 +184,9 @@ struct LogView: View {
     }
 
     private var exerciseSection: some View {
-        Section("今回の種目") {
+        Section(selectedDateTitle) {
             if viewModel.draftExercises.isEmpty {
-                Text("追加された種目はありません。＋から追加してください。")
+                Text("まだ種目が追加されていません。\n右上の \"＋\" から追加してください。")
                     .foregroundStyle(.secondary)
             } else {
                 ForEach(viewModel.draftExercises) { entry in
@@ -217,7 +224,7 @@ struct LogView: View {
                                 HStack(spacing: 16) {
                                     Image(systemName: "circle.fill")
                                         .foregroundStyle(muscleColor(for: entry.exerciseName))
-                                    VStack(alignment: .leading, spacing: 4) {
+                                    VStack(alignment: .leading, spacing: 2) {
                                         Text(entry.exerciseName)
                                             .font(.headline)
                                         let weight = formattedWeight(totalWeight(for: entry, unit: weightUnit))

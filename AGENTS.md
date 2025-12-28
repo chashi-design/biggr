@@ -28,9 +28,14 @@
   - `Models.swift`
   - `Components/SafariView.swift`
   - `Components/WebView.swift`
-  - `Tabs/Settings/SettingsView.swift`
+  - `Views/Settings/View/SettingsView.swift`
 - `/TrainLogTests/` … テスト
 - `.xcodeproj` / `.xcworkspace` … プロジェクト構成
+
+## Views 配下の構成ルール
+- `TrainLog/Views/` 配下に機能別フォルダを配置する
+- `View/` = 画面ファイル、`Logic/` = ロジック、`Components/` = 共通部品
+- 現状の対象: `Log/`、`Exercises/`、`Overview/`、`Settings/`
 
 ---
 
@@ -110,7 +115,8 @@
 - これらの準拠追加後も Xcode が警告を保持する場合は、Index の不整合の可能性があるため再起動や Clean Build を検討
 
 ## UI Notes
-- 設定画面は `Tabs/Settings/SettingsView.swift` で管理する
+- 設定画面は `Views/Settings/View/SettingsView.swift` で管理する
+- 利用規約/プライバシーポリシーのリンクは端末の優先言語が日本語なら `japanese`、それ以外は `english` を開く
 - Web表示は `SFSafariViewController` を基本利用し、別手段が必要な場合は事前に確認する
 - アクティビティタブ右上の設定導線はモーダル（sheet）で表示し、Xボタンで閉じる
 - セクションラベルがない `List` には `.contentMargins(.top, 4, for: .scrollContent)` を適用する
@@ -129,6 +135,7 @@
 - UI が大きく変わる場合（特にログ入力UI）
 - 関連ファイルを大幅に増やす場合
 - 未使用のViewファイルを削除する場合（参照0件でも必ず確認）
+- iCloud連携やログ集計など、利用規約/プライバシーポリシー/ライセンスの改変・追加が必要な機能を追加する場合は必ず報告
 
 ---
 
