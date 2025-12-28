@@ -19,11 +19,6 @@ struct SettingsView: View {
             iconName: "lock",
             url: URL(string: "https://chashi-design.github.io/TrainLogApp/docs/privacypolicy/japanese")!
         ),
-        SettingsLinkItem(
-            title: "ライセンス",
-            iconName: "medal.star",
-            url: URL(string: "https://chashi-design.github.io/TrainLogApp/docs/license/licenseinfo")!
-        )
     ]
 
     @State private var selectedItem: SettingsLinkItem?
