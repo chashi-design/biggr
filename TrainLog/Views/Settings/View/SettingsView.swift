@@ -3,29 +3,45 @@ import SwiftUI
 // 設定画面
 struct SettingsView: View {
     @AppStorage(WeightUnit.storageKey) private var weightUnitRaw = WeightUnit.kg.rawValue
-    private let items: [SettingsLinkItem] = [
-        SettingsLinkItem(
-            title: "お問い合わせ",
-            iconName: "questionmark.circle",
-            url: URL(string: "https://forms.gle/zgHhoZLDLA7Y5Dmu6")!
-        ),
-        SettingsLinkItem(
-            title: "利用規約",
-            iconName: "text.document",
-            url: URL(string: "https://chashi-design.github.io/TrainLogApp/docs/termsofservice/japanese")!
-        ),
-        SettingsLinkItem(
-            title: "プライバシーポリシー",
-            iconName: "lock",
-            url: URL(string: "https://chashi-design.github.io/TrainLogApp/docs/privacypolicy/japanese")!
-        ),
-    ]
+    private var items: [SettingsLinkItem] {
+        [
+            SettingsLinkItem(
+                title: "お問い合わせ",
+                iconName: "questionmark.circle",
+                url: URL(string: "https://forms.gle/zgHhoZLDLA7Y5Dmu6")!
+            ),
+            SettingsLinkItem(
+                title: "利用規約",
+                iconName: "text.document",
+                url: termsURL
+            ),
+            SettingsLinkItem(
+                title: "プライバシーポリシー",
+                iconName: "lock",
+                url: privacyPolicyURL
+            )
+        ]
+    }
 
     @State private var selectedItem: SettingsLinkItem?
     @State private var navigationFeedbackTrigger = 0
     @State private var closeFeedbackTrigger = 0
     @State private var unitFeedbackTrigger = 0
     @Environment(\.dismiss) private var dismiss
+
+    private var isJapaneseLocale: Bool {
+        Locale.preferredLanguages.first?.hasPrefix("ja") ?? false
+    }
+
+    private var termsURL: URL {
+        let suffix = isJapaneseLocale ? "japanese" : "english"
+        return URL(string: "https://chashi-design.github.io/TrainLogApp/docs/termsofservice/\(suffix)")!
+    }
+
+    private var privacyPolicyURL: URL {
+        let suffix = isJapaneseLocale ? "japanese" : "english"
+        return URL(string: "https://chashi-design.github.io/TrainLogApp/docs/privacypolicy/\(suffix)")!
+    }
 
     var body: some View {
         List {

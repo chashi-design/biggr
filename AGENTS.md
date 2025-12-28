@@ -116,6 +116,7 @@
 
 ## UI Notes
 - 設定画面は `Views/Settings/View/SettingsView.swift` で管理する
+- 利用規約/プライバシーポリシーのリンクは端末の優先言語が日本語なら `japanese`、それ以外は `english` を開く
 - Web表示は `SFSafariViewController` を基本利用し、別手段が必要な場合は事前に確認する
 - アクティビティタブ右上の設定導線はモーダル（sheet）で表示し、Xボタンで閉じる
 - セクションラベルがない `List` には `.contentMargins(.top, 4, for: .scrollContent)` を適用する
