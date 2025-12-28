@@ -1,9 +1,9 @@
 # Documents
 
 ## Privacy Policy
-- [English](./privacypolicy/english.md)
-- [日本語](./privacypolicy/japanese.md)
+- [English](./en/privacypolicy.md)
+- [日本語](./ja/privacypolicy.md)
 
 ## Terms of Service
-- [English](./termsofservice/english.md)
-- [日本語](./termsofservice/japanese.md)
+- [English](./en/terms.md)
+- [日本語](./ja/terms.md)
