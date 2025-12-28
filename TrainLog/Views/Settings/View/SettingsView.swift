@@ -38,7 +38,7 @@ struct SettingsView: View {
     }
 
     private var docsBaseURL: String {
-        "https://chashi-design.github.io/stacker/docs"
+        "https://chashi-design.github.io/stacker"
     }
 
     private var localePath: String {
