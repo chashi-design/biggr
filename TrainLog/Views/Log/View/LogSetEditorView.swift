@@ -1,6 +1,5 @@
 import SwiftData
 import SwiftUI
-import UIKit
 
 // セット編集画面
 struct SetEditorView: View {
@@ -136,7 +135,7 @@ struct SetEditorView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     HapticButton {
-                        openYouTubeSearch(exerciseId: entry.exerciseId)
+                        YouTubeSearch.open(query: displayName(for: entry.exerciseId), openURL: openURL)
                     } label: {
                         Label(strings.youtubeSearchTitle, systemImage: "play.rectangle")
                     }
@@ -230,50 +229,6 @@ private extension SetEditorView {
         viewModel.displayName(for: exerciseId, isJapanese: isJapaneseLocale)
     }
 
-    func openYouTubeSearch(exerciseId: String) {
-        guard let vndURL = youtubeVndSearchURL(exerciseId: exerciseId),
-              let appURL = youtubeAppSearchURL(exerciseId: exerciseId),
-              let webURL = youtubeWebSearchURL(exerciseId: exerciseId) else { return }
-
-        if UIApplication.shared.canOpenURL(appURL) {
-            openURL(appURL)
-        } else if UIApplication.shared.canOpenURL(vndURL) {
-            openURL(vndURL)
-        } else {
-            openURL(webURL)
-        }
-    }
-
-    func youtubeAppSearchURL(exerciseId: String) -> URL? {
-        var components = URLComponents()
-        components.scheme = "youtube"
-        components.host = "search"
-        components.queryItems = [
-            URLQueryItem(name: "query", value: displayName(for: exerciseId))
-        ]
-        return components.url
-    }
-
-    func youtubeVndSearchURL(exerciseId: String) -> URL? {
-        var components = URLComponents()
-        components.scheme = "vnd.youtube"
-        components.host = "search"
-        components.queryItems = [
-            URLQueryItem(name: "query", value: displayName(for: exerciseId))
-        ]
-        return components.url
-    }
-
-    func youtubeWebSearchURL(exerciseId: String) -> URL? {
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "www.youtube.com"
-        components.path = "/results"
-        components.queryItems = [
-            URLQueryItem(name: "search_query", value: displayName(for: exerciseId))
-        ]
-        return components.url
-    }
 }
 
 private struct SetEditorStrings {

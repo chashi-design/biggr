@@ -10,7 +10,9 @@
       "ベンチ"
     ],
     "equipment": "barbell",
-    "pattern": "horizontal_push"
+    "pattern": "horizontal_push",
+    "descJa": "ベンチプレスとは、バーベルを使って「押す」動作で胸（大胸筋）、肩前部（三角筋前部）、腕（上腕三頭筋）を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、ベンチに仰向けになり、胸に下ろして押し上げる動作を繰り返します。厚い胸板づくりや上半身の押す力の向上が期待できます。",
+    "descEn": "Use a barbell to press. Lower to the chest and press up. Targets pecs, front delts, and triceps; lets you use heavier loads. Build chest size and pressing strength.",
   },
   {
     "id": "ex002",
@@ -22,7 +24,9 @@
       "db bench press"
     ],
     "equipment": "dumbbell",
-    "pattern": "horizontal_push"
+    "pattern": "horizontal_push",
+    "descJa": "ダンベルベンチプレスとは、ダンベルを使って「押す」動作で胸（大胸筋）、肩前部（三角筋前部）、腕（上腕三頭筋）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、ベンチに仰向けになり、胸に下ろして押し上げる動作を繰り返します。厚い胸板づくりや上半身の押す力の向上が期待できます。",
+    "descEn": "Use dumbbells to press. Lower to the chest and press up. Targets pecs, front delts, and triceps; easy to fix left–right imbalances. Build chest size and pressing strength.",
   },
   {
     "id": "ex003",
@@ -34,7 +38,9 @@
       "incline bench"
     ],
     "equipment": "barbell",
-    "pattern": "horizontal_push"
+    "pattern": "horizontal_push",
+    "descJa": "インクラインベンチプレスとは、バーベルを使って「押す」動作で胸上部（大胸筋鎖骨部）、肩前部（三角筋前部）、腕（上腕三頭筋）を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、ベンチに仰向けになり、胸に下ろして押し上げる動作を繰り返します。厚い胸板づくりや上半身の押す力の向上が期待できます。",
+    "descEn": "Use a barbell to press. Lower to the chest and press up. Targets upper pecs, front delts, and triceps; lets you use heavier loads. Build chest size and pressing strength.",
   },
   {
     "id": "ex004",
@@ -46,7 +52,9 @@
       "incline db press"
     ],
     "equipment": "dumbbell",
-    "pattern": "horizontal_push"
+    "pattern": "horizontal_push",
+    "descJa": "インクラインダンベルプレスとは、ダンベルを使って「押す」動作で胸上部（大胸筋鎖骨部）、肩前部（三角筋前部）、腕（上腕三頭筋）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、ベンチに仰向けになり、胸に下ろして押し上げる動作を繰り返します。厚い胸板づくりや上半身の押す力の向上が期待できます。",
+    "descEn": "Use dumbbells to press. Lower to the chest and press up. Targets upper pecs, front delts, and triceps; easy to fix left–right imbalances. Build chest size and pressing strength.",
   },
   {
     "id": "ex005",
@@ -58,7 +66,9 @@
       "decline bench"
     ],
     "equipment": "barbell",
-    "pattern": "horizontal_push"
+    "pattern": "horizontal_push",
+    "descJa": "デクラインベンチプレスとは、バーベルを使って「押す」動作で胸下部（大胸筋下部）、肩前部（三角筋前部）、腕（上腕三頭筋）を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、ベンチに仰向けになり、胸に下ろして押し上げる動作を繰り返します。厚い胸板づくりや上半身の押す力の向上が期待できます。",
+    "descEn": "Use a barbell to press. Lower to the chest and press up. Targets lower pecs and triceps; lets you use heavier loads. Build chest size and pressing strength.",
   },
   {
     "id": "ex006",
@@ -70,7 +80,9 @@
       "db fly"
     ],
     "equipment": "dumbbell",
-    "pattern": "horizontal_push"
+    "pattern": "horizontal_push",
+    "descJa": "ダンベルフライとは、ダンベルを使って「腕を開いて閉じる」動作で胸（大胸筋）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、腕を大きく開いて胸で閉じる動作を繰り返します。胸の収縮感を高め、形づくりに役立つ効果が期待できます。",
+    "descEn": "Use dumbbells to arms-together flye motion. Open the arms and bring them together with the pecs. Targets pecs (focus on adduction/feel); easy to fix left–right imbalances. Great for pec contraction and shape.",
   },
   {
     "id": "ex007",
@@ -82,7 +94,9 @@
       "cable crossover"
     ],
     "equipment": "cable",
-    "pattern": "horizontal_push"
+    "pattern": "horizontal_push",
+    "descJa": "ケーブルフライとは、ケーブルを使って「腕を開いて閉じる」動作で胸（大胸筋）を鍛える種目です。可動域全体で張力が抜けにくいのが特徴で、腕を大きく開いて胸で閉じる動作を繰り返します。胸の収縮感を高め、形づくりに役立つ効果が期待できます。",
+    "descEn": "Use a cable machine to arms-together flye motion. Open the arms and bring them together with the pecs. Targets pecs (focus on adduction/feel); constant tension through the range. Great for pec contraction and shape.",
   },
   {
     "id": "ex008",
@@ -94,7 +108,9 @@
       "push up"
     ],
     "equipment": "bodyweight",
-    "pattern": "horizontal_push"
+    "pattern": "horizontal_push",
+    "descJa": "プッシュアップとは、自重を使って「押す」動作で胸（大胸筋）、肩前部（三角筋前部）、腕（上腕三頭筋）を鍛える種目です。器具なしで手軽にでき、フォーム次第で負荷調整しやすいのが特徴で、体を一直線に保ち、胸を床へ近づけて押し上げる動作を繰り返します。厚い胸板づくりや上半身の押す力の向上が期待できます。",
+    "descEn": "Use your bodyweight to press. Keep a straight body, lower the chest, and press up. Targets pecs, front delts, and triceps; no equipment needed. Build chest size and pressing strength.",
   },
   {
     "id": "ex009",
@@ -105,7 +121,9 @@
       "チェストプレス"
     ],
     "equipment": "machine",
-    "pattern": "horizontal_push"
+    "pattern": "horizontal_push",
+    "descJa": "マシンチェストプレスとは、マシンを使って「押す」動作で胸（大胸筋）、肩前部（三角筋前部）、腕（上腕三頭筋）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、ベンチに仰向けになり、胸に下ろして押し上げる動作を繰り返します。厚い胸板づくりや上半身の押す力の向上が期待できます。",
+    "descEn": "Use a machine to press. Lower to the chest and press up. Targets pecs, front delts, and triceps; stable path and easy to load safely. Build chest size and pressing strength.",
   },
   {
     "id": "ex010",
@@ -116,7 +134,9 @@
       "スミスベンチ"
     ],
     "equipment": "smith",
-    "pattern": "horizontal_push"
+    "pattern": "horizontal_push",
+    "descJa": "スミスベンチプレスとは、スミスマシンを使って「押す」動作で胸（大胸筋）、肩前部（三角筋前部）、腕（上腕三頭筋）を鍛える種目です。バー軌道が固定され、補助なしでも追い込みやすいのが特徴で、ベンチに仰向けになり、胸に下ろして押し上げる動作を繰り返します。厚い胸板づくりや上半身の押す力の向上が期待できます。",
+    "descEn": "Use a Smith machine to press. Lower to the chest and press up. Targets pecs, front delts, and triceps; fixed bar path for safe hard sets. Build chest size and pressing strength.",
   },
   {
     "id": "ex011",
@@ -127,7 +147,9 @@
       "ペックデックフライ"
     ],
     "equipment": "machine",
-    "pattern": "horizontal_push"
+    "pattern": "horizontal_push",
+    "descJa": "ペックデックとは、マシンを使って「腕を開いて閉じる」動作で胸（大胸筋）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、腕を大きく開いて胸で閉じる動作を繰り返します。胸の収縮感を高め、形づくりに役立つ効果が期待できます。",
+    "descEn": "Use a machine to arms-together flye motion. Open the arms and bring them together with the pecs. Targets pecs (focus on adduction/feel); stable path and easy to load safely. Great for pec contraction and shape.",
   },
   {
     "id": "ex012",
@@ -139,7 +161,9 @@
       "ohp"
     ],
     "equipment": "barbell",
-    "pattern": "vertical_push"
+    "pattern": "vertical_push",
+    "descJa": "オーバーヘッドプレスとは、バーベルを使って「押す」動作で肩（三角筋）、腕（上腕三頭筋）を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、反動を抑えてコントロールしながら反復します。肩の厚みづくりとオーバーヘッドの押す力の向上が期待できます。",
+    "descEn": "Use a barbell to press overhead. Press from shoulder level to overhead. Targets delts and triceps; lets you use heavier loads. Build round, wider shoulders.",
   },
   {
     "id": "ex013",
@@ -150,7 +174,9 @@
       "DBショルダープレス"
     ],
     "equipment": "dumbbell",
-    "pattern": "vertical_push"
+    "pattern": "vertical_push",
+    "descJa": "ダンベルショルダープレスとは、ダンベルを使って「押す」動作で肩（三角筋）、腕（上腕三頭筋）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、反動を抑えてコントロールしながら反復します。肩の厚みづくりとオーバーヘッドの押す力の向上が期待できます。",
+    "descEn": "Use dumbbells to press overhead. Press from shoulder level to overhead. Targets delts and triceps; easy to fix left–right imbalances. Build round, wider shoulders.",
   },
   {
     "id": "ex014",
@@ -161,7 +187,9 @@
       "アーノルド"
     ],
     "equipment": "dumbbell",
-    "pattern": "vertical_push"
+    "pattern": "vertical_push",
+    "descJa": "アーノルドプレスとは、ダンベルを使って「押す」動作で肩（三角筋）、腕（上腕三頭筋）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、反動を抑えてコントロールしながら反復します。肩の厚みづくりとオーバーヘッドの押す力の向上が期待できます。",
+    "descEn": "Use dumbbells to press overhead. Press from shoulder level to overhead. Targets delts and triceps; easy to fix left–right imbalances. Build round, wider shoulders.",
   },
   {
     "id": "ex015",
@@ -172,7 +200,9 @@
       "ラテラルレイズ"
     ],
     "equipment": "dumbbell",
-    "pattern": "abduction"
+    "pattern": "abduction",
+    "descJa": "サイドレイズとは、ダンベルを使って「腕を横に上げる」動作で肩中部（三角筋中部）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、反動を抑えてコントロールしながら反復します。肩幅を作り、逆三角形のシルエットづくりが期待できます。",
+    "descEn": "Use dumbbells to abduct. Move the legs out and return. Targets lateral delts; easy to fix left–right imbalances. Build round, wider shoulders.",
   },
   {
     "id": "ex016",
@@ -183,7 +213,9 @@
       "フロントレ"
     ],
     "equipment": "dumbbell",
-    "pattern": "flexion"
+    "pattern": "flexion",
+    "descJa": "フロントレイズとは、ダンベルを使って「腕を前に上げる」動作で肩前部（三角筋前部）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、反動を抑えてコントロールしながら反復します。肩の厚みづくりとオーバーヘッドの押す力の向上が期待できます。",
+    "descEn": "Use dumbbells to move. Repeat with solid form. Targets front delts; easy to fix left–right imbalances. Build round, wider shoulders.",
   },
   {
     "id": "ex017",
@@ -195,7 +227,9 @@
       "rear delt"
     ],
     "equipment": "dumbbell",
-    "pattern": "horizontal_pull"
+    "pattern": "horizontal_pull",
+    "descJa": "リアデルトフライとは、ダンベルを使って「腕を開いて閉じる」動作で肩後部（三角筋後部）、上背部を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、反動を抑えてコントロールしながら反復します。姿勢改善や肩の安定性向上が期待できます。",
+    "descEn": "Use dumbbells to arms-together flye motion. Open the arms and bring them together with the pecs. Targets rear delts (plus upper back); easy to fix left–right imbalances. Great for pec contraction and shape.",
   },
   {
     "id": "ex018",
@@ -206,7 +240,9 @@
       "ケーブルサイドレイズ"
     ],
     "equipment": "cable",
-    "pattern": "abduction"
+    "pattern": "abduction",
+    "descJa": "ケーブルラテラルレイズとは、ケーブルを使って「腕を横に上げる」動作で肩中部（三角筋中部）を鍛える種目です。可動域全体で張力が抜けにくいのが特徴で、反動を抑えてコントロールしながら反復します。肩幅を作り、逆三角形のシルエットづくりが期待できます。",
+    "descEn": "Use a cable machine to abduct. Move the legs out and return. Targets lateral delts; constant tension through the range. Build round, wider shoulders.",
   },
   {
     "id": "ex019",
@@ -217,7 +253,9 @@
       "ショルダープレスマシン"
     ],
     "equipment": "machine",
-    "pattern": "vertical_push"
+    "pattern": "vertical_push",
+    "descJa": "マシンショルダープレスとは、マシンを使って「押す」動作で肩（三角筋）、腕（上腕三頭筋）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、反動を抑えてコントロールしながら反復します。肩の厚みづくりとオーバーヘッドの押す力の向上が期待できます。",
+    "descEn": "Use a machine to press overhead. Press from shoulder level to overhead. Targets delts and triceps; stable path and easy to load safely. Build round, wider shoulders.",
   },
   {
     "id": "ex020",
@@ -228,7 +266,9 @@
       "ランマイプレス"
     ],
     "equipment": "landmine",
-    "pattern": "diagonal_push"
+    "pattern": "diagonal_push",
+    "descJa": "ランドマインプレスとは、器具を使って「押す」動作で肩（三角筋）、腕（上腕三頭筋）を鍛える種目です。狙った部位に意識を向けやすいのが特徴で、反動を抑えてコントロールしながら反復します。肩の厚みづくりとオーバーヘッドの押す力の向上が期待できます。",
+    "descEn": "Use a landmine setup to move. Repeat with solid form. Targets delts and triceps; joint-friendly diagonal press path. Build round, wider shoulders.",
   },
   {
     "id": "ex021",
@@ -239,7 +279,9 @@
       "アップライトロー"
     ],
     "equipment": "barbell",
-    "pattern": "abduction"
+    "pattern": "abduction",
+    "descJa": "アップライトロウとは、バーベルを使って「肘を上げて引く」動作で肩（三角筋中部）、僧帽筋を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、体幹を固め、みぞおち付近へ引いて戻す動作を繰り返します。肩の厚みづくりとオーバーヘッドの押す力の向上が期待できます。",
+    "descEn": "Use a barbell to abduct. Move the legs out and return. Targets delts and triceps; lets you use heavier loads. Build round, wider shoulders.",
   },
   {
     "id": "ex022",
@@ -250,7 +292,9 @@
       "PP"
     ],
     "equipment": "barbell",
-    "pattern": "vertical_push"
+    "pattern": "vertical_push",
+    "descJa": "プッシュプレスとは、バーベルを使って「押す」動作で肩（三角筋）、腕（上腕三頭筋）を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、反動を抑えてコントロールしながら反復します。肩の厚みづくりとオーバーヘッドの押す力の向上が期待できます。",
+    "descEn": "Use a barbell to press overhead. Press from shoulder level to overhead. Targets delts and triceps; lets you use heavier loads. Build round, wider shoulders.",
   },
   {
     "id": "ex023",
@@ -261,7 +305,9 @@
       "ショルダーアブダクションマシン"
     ],
     "equipment": "machine",
-    "pattern": "abduction"
+    "pattern": "abduction",
+    "descJa": "ラテラルレイズマシンとは、マシンを使って「腕を横に上げる」動作で肩中部（三角筋中部）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、反動を抑えてコントロールしながら反復します。肩幅を作り、逆三角形のシルエットづくりが期待できます。",
+    "descEn": "Use a machine to abduct. Move the legs out and return. Targets lateral delts; stable path and easy to load safely. Build round, wider shoulders.",
   },
   {
     "id": "ex024",
@@ -272,7 +318,9 @@
       "リアデルトフライマシン"
     ],
     "equipment": "machine",
-    "pattern": "horizontal_pull"
+    "pattern": "horizontal_pull",
+    "descJa": "リアデルトマシンとは、マシンを使って「引く」動作で肩後部（三角筋後部）、上背部を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、反動を抑えてコントロールしながら反復します。姿勢改善や肩の安定性向上が期待できます。",
+    "descEn": "Use a machine to row/pull. Pull toward the torso and return. Targets rear delts (plus upper back); stable path and easy to load safely. Build round, wider shoulders.",
   },
   {
     "id": "ex025",
@@ -284,7 +332,9 @@
       "bb curl"
     ],
     "equipment": "barbell",
-    "pattern": "elbow_flexion"
+    "pattern": "elbow_flexion",
+    "descJa": "バーベルカールとは、バーベルを使って「膝を曲げる」動作で腕（上腕二頭筋）、前腕を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、かかとを引き寄せて収縮し、ゆっくり戻す動作を繰り返します。腕の太さづくりや引く力の補強が期待できます。",
+    "descEn": "Use a barbell to curl. Bend and straighten the elbows. Targets biceps (plus forearms); lets you use heavier loads. Builds biceps thickness and arm shape.",
   },
   {
     "id": "ex026",
@@ -296,7 +346,9 @@
       "オルタネイトカール"
     ],
     "equipment": "dumbbell",
-    "pattern": "elbow_flexion"
+    "pattern": "elbow_flexion",
+    "descJa": "ダンベルカールとは、ダンベルを使って「膝を曲げる」動作で腕（上腕二頭筋）、前腕を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、かかとを引き寄せて収縮し、ゆっくり戻す動作を繰り返します。腕の太さづくりや引く力の補強が期待できます。",
+    "descEn": "Use dumbbells to curl. Bend and straighten the elbows. Targets biceps (plus forearms); easy to fix left–right imbalances. Builds biceps thickness and arm shape.",
   },
   {
     "id": "ex027",
@@ -307,7 +359,9 @@
       "インクラインカール"
     ],
     "equipment": "dumbbell",
-    "pattern": "elbow_flexion"
+    "pattern": "elbow_flexion",
+    "descJa": "インクラインダンベルカールとは、ダンベルを使って「膝を曲げる」動作で腕（上腕二頭筋）、前腕を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、かかとを引き寄せて収縮し、ゆっくり戻す動作を繰り返します。腕の太さづくりや引く力の補強が期待できます。",
+    "descEn": "Use dumbbells to curl. Bend and straighten the elbows. Targets biceps (plus forearms); easy to fix left–right imbalances. Builds biceps thickness and arm shape.",
   },
   {
     "id": "ex028",
@@ -318,7 +372,9 @@
       "ハンマー"
     ],
     "equipment": "dumbbell",
-    "pattern": "elbow_flexion"
+    "pattern": "elbow_flexion",
+    "descJa": "ハンマーカールとは、ダンベルを使って「膝を曲げる」動作で腕（上腕二頭筋）、前腕を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、かかとを引き寄せて収縮し、ゆっくり戻す動作を繰り返します。腕の太さづくりや引く力の補強が期待できます。",
+    "descEn": "Use dumbbells to curl. Bend and straighten the elbows. Targets biceps (plus forearms); easy to fix left–right imbalances. Builds biceps thickness and arm shape.",
   },
   {
     "id": "ex029",
@@ -329,7 +385,9 @@
       "プリチャー"
     ],
     "equipment": "barbell",
-    "pattern": "elbow_flexion"
+    "pattern": "elbow_flexion",
+    "descJa": "プリーチャーカールとは、バーベルを使って「膝を曲げる」動作で腕（上腕二頭筋）、前腕を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、かかとを引き寄せて収縮し、ゆっくり戻す動作を繰り返します。腕の太さづくりや引く力の補強が期待できます。",
+    "descEn": "Use a barbell to curl. Bend and straighten the elbows. Targets biceps (plus forearms); lets you use heavier loads. Builds biceps thickness and arm shape.",
   },
   {
     "id": "ex030",
@@ -340,7 +398,9 @@
       "ロープカール"
     ],
     "equipment": "cable",
-    "pattern": "elbow_flexion"
+    "pattern": "elbow_flexion",
+    "descJa": "ケーブルカールとは、ケーブルを使って「膝を曲げる」動作で腕（上腕二頭筋）、前腕を鍛える種目です。可動域全体で張力が抜けにくいのが特徴で、かかとを引き寄せて収縮し、ゆっくり戻す動作を繰り返します。腕の太さづくりや引く力の補強が期待できます。",
+    "descEn": "Use a cable machine to curl. Bend and straighten the elbows. Targets biceps (plus forearms); constant tension through the range. Builds biceps thickness and arm shape.",
   },
   {
     "id": "ex031",
@@ -351,7 +411,9 @@
       "プレスダウン"
     ],
     "equipment": "cable",
-    "pattern": "elbow_extension"
+    "pattern": "elbow_extension",
+    "descJa": "トライセプスプレスダウンとは、ケーブルを使って「押す」動作で腕（上腕三頭筋）を鍛える種目です。可動域全体で張力が抜けにくいのが特徴で、反動を抑えてコントロールしながら反復します。二の腕の厚みづくりやプレス系の補強が期待できます。",
+    "descEn": "Use a cable machine to extend. Extend the elbows and return. Targets triceps; constant tension through the range. Builds triceps size and improves pressing.",
   },
   {
     "id": "ex032",
@@ -362,7 +424,9 @@
       "OHTE"
     ],
     "equipment": "dumbbell",
-    "pattern": "elbow_extension"
+    "pattern": "elbow_extension",
+    "descJa": "オーバーヘッドトライセプスエクステンションとは、ダンベルを使って「動かす」動作で腕（上腕三頭筋）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、反動を抑えてコントロールしながら反復します。二の腕の厚みづくりやプレス系の補強が期待できます。",
+    "descEn": "Use dumbbells to extend. Extend the elbows and return. Targets triceps; easy to fix left–right imbalances. Builds triceps size and improves pressing.",
   },
   {
     "id": "ex033",
@@ -373,7 +437,9 @@
       "EZトライセプス"
     ],
     "equipment": "barbell",
-    "pattern": "elbow_extension"
+    "pattern": "elbow_extension",
+    "descJa": "スカルクラッシャーとは、バーベルを使って「動かす」動作で腕（上腕三頭筋）を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、反動を抑えてコントロールしながら反復します。二の腕の厚みづくりやプレス系の補強が期待できます。",
+    "descEn": "Use a barbell to extend. Extend the elbows and return. Targets triceps; lets you use heavier loads. Build arm size and definition.",
   },
   {
     "id": "ex034",
@@ -384,7 +450,9 @@
       "ディップス(ベンチ)"
     ],
     "equipment": "bodyweight",
-    "pattern": "elbow_extension"
+    "pattern": "elbow_extension",
+    "descJa": "ベンチディップスとは、自重を使って「動かす」動作で腕（上腕三頭筋）を鍛える種目です。器具なしで手軽にでき、フォーム次第で負荷調整しやすいのが特徴で、反動を抑えてコントロールしながら反復します。二の腕の厚みづくりやプレス系の補強が期待できます。",
+    "descEn": "Use your bodyweight to extend. Extend the elbows and return. Targets triceps; no equipment needed. Builds triceps size and improves pressing.",
   },
   {
     "id": "ex035",
@@ -395,7 +463,9 @@
       "ダイヤモンド腕立て"
     ],
     "equipment": "bodyweight",
-    "pattern": "horizontal_push"
+    "pattern": "horizontal_push",
+    "descJa": "ダイヤモンドプッシュアップとは、自重を使って「押す」動作で腕（上腕三頭筋）を鍛える種目です。器具なしで手軽にでき、フォーム次第で負荷調整しやすいのが特徴で、体を一直線に保ち、胸を床へ近づけて押し上げる動作を繰り返します。二の腕の厚みづくりやプレス系の補強が期待できます。",
+    "descEn": "Use your bodyweight to press. Keep a straight body, lower the chest, and press up. Targets biceps/triceps and forearms; no equipment needed. Builds biceps thickness and arm shape.",
   },
   {
     "id": "ex036",
@@ -406,7 +476,9 @@
       "ケーブルキックバック"
     ],
     "equipment": "cable",
-    "pattern": "elbow_extension"
+    "pattern": "elbow_extension",
+    "descJa": "ケーブルトライセプスキックバックとは、ケーブルを使って「動かす」動作で腕（上腕三頭筋）を鍛える種目です。可動域全体で張力が抜けにくいのが特徴で、反動を抑えてコントロールしながら反復します。二の腕の厚みづくりやプレス系の補強が期待できます。",
+    "descEn": "Use a cable machine to extend. Extend the elbows and return. Targets triceps; constant tension through the range. Builds triceps size and improves pressing.",
   },
   {
     "id": "ex037",
@@ -417,7 +489,9 @@
       "ファーマーズキャリー"
     ],
     "equipment": "dumbbell",
-    "pattern": "carry"
+    "pattern": "carry",
+    "descJa": "ファーマーズウォークとは、ダンベルを使って「重さを持って運ぶ」動作で握力、前腕（＋体幹）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、姿勢を真っ直ぐ保ち、一定距離（または一定時間）歩きます。握力向上や前腕の発達が期待できます。",
+    "descEn": "Use dumbbells to carry. Carry weight while staying tall. Targets grip and core (plus shoulders/upper traps); easy to fix left–right imbalances. Builds grip, core bracing, and posture.",
   },
   {
     "id": "ex038",
@@ -428,7 +502,9 @@
       "片手キャリー"
     ],
     "equipment": "dumbbell",
-    "pattern": "carry"
+    "pattern": "carry",
+    "descJa": "スーツケースキャリーとは、ダンベルを使って「重さを持って運ぶ」動作で握力、前腕（＋体幹）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、姿勢を真っ直ぐ保ち、一定距離（または一定時間）歩きます。握力向上や前腕の発達が期待できます。",
+    "descEn": "Use dumbbells to carry. Carry weight while staying tall. Targets grip and core (plus shoulders/upper traps); easy to fix left–right imbalances. Builds grip, core bracing, and posture.",
   },
   {
     "id": "ex039",
@@ -439,7 +515,9 @@
       "OHキャリー"
     ],
     "equipment": "dumbbell",
-    "pattern": "carry"
+    "pattern": "carry",
+    "descJa": "オーバーヘッドキャリーとは、ダンベルを使って「重さを持って運ぶ」動作で握力、前腕（＋体幹）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、姿勢を真っ直ぐ保ち、一定距離（または一定時間）歩きます。握力向上や前腕の発達が期待できます。",
+    "descEn": "Use dumbbells to carry. Carry weight while staying tall. Targets grip and core (plus shoulders/upper traps); easy to fix left–right imbalances. Builds grip, core bracing, and posture.",
   },
   {
     "id": "ex040",
@@ -450,7 +528,9 @@
       "ラックウォーク"
     ],
     "equipment": "barbell",
-    "pattern": "carry"
+    "pattern": "carry",
+    "descJa": "ラックキャリーとは、バーベルを使って「重さを持って運ぶ」動作で握力、前腕（＋体幹）を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、姿勢を真っ直ぐ保ち、一定距離（または一定時間）歩きます。握力向上や前腕の発達が期待できます。",
+    "descEn": "Use a barbell to carry. Carry weight while staying tall. Targets grip and core (plus shoulders/upper traps); lets you use heavier loads. Builds grip, core bracing, and posture.",
   },
   {
     "id": "ex041",
@@ -461,7 +541,9 @@
       "ピンチグリップ"
     ],
     "equipment": "device",
-    "pattern": "grip"
+    "pattern": "grip",
+    "descJa": "プレートピンチとは、プレートを使って「動かす」動作で握力、前腕（＋体幹）を鍛える種目です。狙った部位に意識を向けやすいのが特徴で、反動を抑えてコントロールしながら反復します。握力向上や前腕の発達が期待できます。",
+    "descEn": "Use weight plates to pinch-hold. Pinch plates and hold for time. Targets forearms and grip; simple, focused loading. Boosts grip strength and forearm size.",
   },
   {
     "id": "ex042",
@@ -472,7 +554,9 @@
       "手首カール"
     ],
     "equipment": "barbell",
-    "pattern": "wrist_flexion"
+    "pattern": "wrist_flexion",
+    "descJa": "リストカールとは、バーベルを使って「膝を曲げる」動作で前腕（前腕筋群）を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、かかとを引き寄せて収縮し、ゆっくり戻す動作を繰り返します。握力向上や前腕の発達が期待できます。",
+    "descEn": "Use a barbell to flex the wrists. Flex and extend the wrists. Targets biceps (plus forearms); lets you use heavier loads. Builds biceps thickness and arm shape.",
   },
   {
     "id": "ex043",
@@ -483,7 +567,9 @@
       "手首リバース"
     ],
     "equipment": "barbell",
-    "pattern": "wrist_extension"
+    "pattern": "wrist_extension",
+    "descJa": "リバースリストカールとは、バーベルを使って「膝を曲げる」動作で前腕（前腕筋群）を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、かかとを引き寄せて収縮し、ゆっくり戻す動作を繰り返します。握力向上や前腕の発達が期待できます。",
+    "descEn": "Use a barbell to extend the wrists. Extend the wrists and return. Targets biceps (plus forearms); lets you use heavier loads. Builds biceps thickness and arm shape.",
   },
   {
     "id": "ex044",
@@ -495,7 +581,9 @@
       "lat pull down"
     ],
     "equipment": "cable",
-    "pattern": "vertical_pull"
+    "pattern": "vertical_pull",
+    "descJa": "ラットプルダウンとは、ケーブルを使って「引く」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。可動域全体で張力が抜けにくいのが特徴で、胸を張り、バーを鎖骨付近へ引き下げて戻す動作を繰り返します。背中の厚み・広がり作りや姿勢改善が期待できます。",
+    "descEn": "Use a cable machine to pull down/up. Pull down to the upper chest (or pull yourself up). Targets lats and upper back (plus arms); constant tension through the range. Build a wider/thicker back and better posture.",
   },
   {
     "id": "ex045",
@@ -508,7 +596,9 @@
       "チンニング(順手)"
     ],
     "equipment": "bodyweight",
-    "pattern": "vertical_pull"
+    "pattern": "vertical_pull",
+    "descJa": "プルアップとは、自重を使って「引く」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。器具なしで手軽にでき、フォーム次第で負荷調整しやすいのが特徴で、バーにぶら下がり、引き上げてゆっくり戻す動作を繰り返します。背中の厚み・広がり作りや姿勢改善が期待できます。",
+    "descEn": "Use your bodyweight to pull down/up. Pull down to the upper chest (or pull yourself up). Targets lats and upper back (plus arms); no equipment needed. Build a wider/thicker back and better posture.",
   },
   {
     "id": "ex046",
@@ -520,7 +610,9 @@
       "chin up"
     ],
     "equipment": "bodyweight",
-    "pattern": "vertical_pull"
+    "pattern": "vertical_pull",
+    "descJa": "チンアップとは、自重を使って「引く」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。器具なしで手軽にでき、フォーム次第で負荷調整しやすいのが特徴で、バーにぶら下がり、引き上げてゆっくり戻す動作を繰り返します。背中の厚み・広がり作りや姿勢改善が期待できます。",
+    "descEn": "Use your bodyweight to pull down/up. Pull down to the upper chest (or pull yourself up). Targets lats and upper back (plus arms); no equipment needed. Build a wider/thicker back and better posture.",
   },
   {
     "id": "ex047",
@@ -532,7 +624,9 @@
       "bor"
     ],
     "equipment": "barbell",
-    "pattern": "horizontal_pull"
+    "pattern": "horizontal_pull",
+    "descJa": "バーベルベントオーバーロウとは、バーベルを使って「引く」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、体幹を固め、みぞおち付近へ引いて戻す動作を繰り返します。背中の厚み・広がり作りや姿勢改善が期待できます。",
+    "descEn": "Use a barbell to row/pull. Pull toward the torso and return. Targets lats and upper back (plus arms); lets you use heavier loads. Build a wider/thicker back and better posture.",
   },
   {
     "id": "ex048",
@@ -544,7 +638,9 @@
       "one arm row"
     ],
     "equipment": "dumbbell",
-    "pattern": "horizontal_pull"
+    "pattern": "horizontal_pull",
+    "descJa": "ダンベルロウ(片手)とは、ダンベルを使って「引く」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、体幹を固め、みぞおち付近へ引いて戻す動作を繰り返します。背中の厚み・広がり作りや姿勢改善が期待できます。",
+    "descEn": "Use dumbbells to row/pull. Pull toward the torso and return. Targets lats and upper back (plus arms); easy to fix left–right imbalances. Build a wider/thicker back and better posture.",
   },
   {
     "id": "ex049",
@@ -556,7 +652,9 @@
       "cable row"
     ],
     "equipment": "cable",
-    "pattern": "horizontal_pull"
+    "pattern": "horizontal_pull",
+    "descJa": "シーテッドロウとは、ケーブルを使って「引く」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。可動域全体で張力が抜けにくいのが特徴で、体幹を固め、みぞおち付近へ引いて戻す動作を繰り返します。背中の厚み・広がり作りや姿勢改善が期待できます。",
+    "descEn": "Use a cable machine to row/pull. Pull toward the torso and return. Targets lats and upper back (plus arms); constant tension through the range. Build a wider/thicker back and better posture.",
   },
   {
     "id": "ex050",
@@ -567,7 +665,9 @@
       "Tバーロー"
     ],
     "equipment": "machine",
-    "pattern": "horizontal_pull"
+    "pattern": "horizontal_pull",
+    "descJa": "Tバーロウとは、マシンを使って「引く」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、体幹を固め、みぞおち付近へ引いて戻す動作を繰り返します。背中の厚み・広がり作りや姿勢改善が期待できます。",
+    "descEn": "Use a machine to row/pull. Pull toward the torso and return. Targets lats and upper back (plus arms); stable path and easy to load safely. Build a wider/thicker back and better posture.",
   },
   {
     "id": "ex051",
@@ -578,7 +678,9 @@
       "ペンドレー"
     ],
     "equipment": "barbell",
-    "pattern": "horizontal_pull"
+    "pattern": "horizontal_pull",
+    "descJa": "ペンドレイロウとは、バーベルを使って「引く」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、体幹を固め、みぞおち付近へ引いて戻す動作を繰り返します。背中の厚み・広がり作りや姿勢改善が期待できます。",
+    "descEn": "Use a barbell to row/pull. Pull toward the torso and return. Targets lats and upper back (plus arms); lets you use heavier loads. Build a wider/thicker back and better posture.",
   },
   {
     "id": "ex052",
@@ -589,7 +691,9 @@
       "フェイスプルダウン"
     ],
     "equipment": "cable",
-    "pattern": "horizontal_pull"
+    "pattern": "horizontal_pull",
+    "descJa": "フェイスプルとは、ケーブルを使って「引く」動作で肩後部（三角筋後部）、僧帽筋、ローテーターカフを鍛える種目です。可動域全体で張力が抜けにくいのが特徴で、反動を抑えてコントロールしながら反復します。背中の厚み・広がり作りや姿勢改善が期待できます。",
+    "descEn": "Use a cable machine to row/pull. Pull toward the torso and return. Targets rear delts, lower traps, and shoulder stabilizers; constant tension through the range. Build a wider/thicker back and better posture.",
   },
   {
     "id": "ex053",
@@ -601,7 +705,9 @@
       "straight arm"
     ],
     "equipment": "cable",
-    "pattern": "horizontal_pull"
+    "pattern": "horizontal_pull",
+    "descJa": "ストレートアームプルダウンとは、ケーブルを使って「引く」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。可動域全体で張力が抜けにくいのが特徴で、反動を抑えてコントロールしながら反復します。背中の厚み・広がり作りや姿勢改善が期待できます。",
+    "descEn": "Use a cable machine to row/pull. Pull toward the torso and return. Targets lats; constant tension through the range. Build a wider/thicker back and better posture.",
   },
   {
     "id": "ex054",
@@ -612,7 +718,9 @@
       "リアフライ"
     ],
     "equipment": "dumbbell",
-    "pattern": "horizontal_pull"
+    "pattern": "horizontal_pull",
+    "descJa": "リバースフライとは、ダンベルを使って「腕を開いて閉じる」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、反動を抑えてコントロールしながら反復します。背中の厚み・広がり作りや姿勢改善が期待できます。",
+    "descEn": "Use dumbbells to arms-together flye motion. Open the arms and bring them together with the pecs. Targets lats and upper back (plus arms); easy to fix left–right imbalances. Great for pec contraction and shape.",
   },
   {
     "id": "ex055",
@@ -623,7 +731,9 @@
       "ぶら下がり"
     ],
     "equipment": "bodyweight",
-    "pattern": "vertical_pull"
+    "pattern": "vertical_pull",
+    "descJa": "デッドハングとは、自重を使って「ぶら下がって保持する」動作で握力、肩甲帯の安定を鍛える種目です。器具なしで手軽にでき、フォーム次第で負荷調整しやすいのが特徴で、肩をすくめすぎずにぶら下がり、一定時間キープします。握力強化や肩周りのリラックスに役立つ効果が期待できます。",
+    "descEn": "Use your bodyweight to hang. Hang from a bar while keeping the shoulders set. Targets grip and shoulder girdle; no equipment needed. Build a wider/thicker back and better posture.",
   },
   {
     "id": "ex056",
@@ -634,7 +744,9 @@
       "クリーン"
     ],
     "equipment": "barbell",
-    "pattern": "explosive"
+    "pattern": "explosive",
+    "descJa": "パワークリーンとは、バーベルを使って「動かす」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。全身の連動と瞬発力が求められるのが特徴で、反動を抑えてコントロールしながら反復します。瞬発力と全身連動の向上が期待できます。",
+    "descEn": "Use a barbell to pull explosively. Pull explosively and catch. Targets lats and upper back (plus arms); lets you use heavier loads. Builds explosive full-body power and coordination.",
   },
   {
     "id": "ex057",
@@ -645,7 +757,9 @@
       "C&J"
     ],
     "equipment": "barbell",
-    "pattern": "explosive"
+    "pattern": "explosive",
+    "descJa": "クリーン&ジャークとは、バーベルを使って「動かす」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。全身の連動と瞬発力が求められるのが特徴で、反動を抑えてコントロールしながら反復します。瞬発力と全身連動の向上が期待できます。",
+    "descEn": "Use a barbell to pull explosively. Pull explosively and catch. Targets lats and upper back (plus arms); lets you use heavier loads. Builds explosive full-body power and coordination.",
   },
   {
     "id": "ex058",
@@ -656,7 +770,9 @@
       "スナッチ"
     ],
     "equipment": "barbell",
-    "pattern": "explosive"
+    "pattern": "explosive",
+    "descJa": "パワースナッチとは、バーベルを使って「動かす」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。全身の連動と瞬発力が求められるのが特徴で、反動を抑えてコントロールしながら反復します。瞬発力と全身連動の向上が期待できます。",
+    "descEn": "Use a barbell to pull explosively. Pull explosively and catch. Targets lats and upper back (plus arms); lets you use heavier loads. Builds explosive full-body power and coordination.",
   },
   {
     "id": "ex059",
@@ -667,7 +783,9 @@
       "マシンプルアップ"
     ],
     "equipment": "machine",
-    "pattern": "vertical_pull"
+    "pattern": "vertical_pull",
+    "descJa": "アシステッドプルアップとは、マシンを使って「引く」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、バーにぶら下がり、引き上げてゆっくり戻す動作を繰り返します。背中の厚み・広がり作りや姿勢改善が期待できます。",
+    "descEn": "Use a machine to pull down/up. Pull down to the upper chest (or pull yourself up). Targets lats and upper back (plus arms); stable path and easy to load safely. Build a wider/thicker back and better posture.",
   },
   {
     "id": "ex060",
@@ -678,7 +796,9 @@
       "ラットプルオーバー"
     ],
     "equipment": "cable",
-    "pattern": "horizontal_pull"
+    "pattern": "horizontal_pull",
+    "descJa": "ケーブルプルオーバーとは、ケーブルを使って「引く」動作で背中（広背筋、僧帽筋、菱形筋）＋腕（上腕二頭筋）を鍛える種目です。可動域全体で張力が抜けにくいのが特徴で、反動を抑えてコントロールしながら反復します。背中の厚み・広がり作りや姿勢改善が期待できます。",
+    "descEn": "Use a cable machine to row/pull. Pull toward the torso and return. Targets lats; constant tension through the range. Build a wider/thicker back and better posture.",
   },
   {
     "id": "ex061",
@@ -689,7 +809,9 @@
       "スクワット"
     ],
     "equipment": "barbell",
-    "pattern": "squat"
+    "pattern": "squat",
+    "descJa": "バックスクワットとは、バーベルを使って「しゃがんで立つ」動作で脚（大腿四頭筋、臀筋）＋体幹を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、背すじを保ってしゃがみ、足で床を押して立ち上がる動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a barbell to squat. Sit down and stand up with a tall torso. Targets quads, hamstrings, and glutes; lets you use heavier loads. Build stronger legs and glutes.",
   },
   {
     "id": "ex062",
@@ -700,7 +822,9 @@
       "フロスク"
     ],
     "equipment": "barbell",
-    "pattern": "squat"
+    "pattern": "squat",
+    "descJa": "フロントスクワットとは、バーベルを使って「しゃがんで立つ」動作で脚（大腿四頭筋、臀筋）＋体幹を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、背すじを保ってしゃがみ、足で床を押して立ち上がる動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a barbell to squat. Sit down and stand up with a tall torso. Targets quads, hamstrings, and glutes; lets you use heavier loads. Build stronger legs and glutes.",
   },
   {
     "id": "ex063",
@@ -711,7 +835,9 @@
       "ゴブレット"
     ],
     "equipment": "dumbbell",
-    "pattern": "squat"
+    "pattern": "squat",
+    "descJa": "ゴブレットスクワットとは、ダンベルを使って「しゃがんで立つ」動作で脚（大腿四頭筋、臀筋）＋体幹を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、背すじを保ってしゃがみ、足で床を押して立ち上がる動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use dumbbells to squat. Sit down and stand up with a tall torso. Targets quads, hamstrings, and glutes; easy to fix left–right imbalances. Build stronger legs and glutes.",
   },
   {
     "id": "ex064",
@@ -722,7 +848,9 @@
       "ハックスクワットマシン"
     ],
     "equipment": "machine",
-    "pattern": "squat"
+    "pattern": "squat",
+    "descJa": "ハックスクワットとは、マシンを使って「しゃがんで立つ」動作で脚（大腿四頭筋、臀筋）＋体幹を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、背すじを保ってしゃがみ、足で床を押して立ち上がる動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a machine to squat. Sit down and stand up with a tall torso. Targets quads, hamstrings, and glutes; stable path and easy to load safely. Build stronger legs and glutes.",
   },
   {
     "id": "ex065",
@@ -733,7 +861,9 @@
       "45度レッグプレス"
     ],
     "equipment": "machine",
-    "pattern": "squat"
+    "pattern": "squat",
+    "descJa": "レッグプレスとは、マシンを使って「押す」動作で脚（大腿四頭筋、臀筋）＋体幹を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、反動を抑えてコントロールしながら反復します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a machine to squat. Sit down and stand up with a tall torso. Targets quads, hamstrings, and glutes; stable path and easy to load safely. Build stronger legs and glutes.",
   },
   {
     "id": "ex066",
@@ -744,7 +874,9 @@
       "BSS"
     ],
     "equipment": "dumbbell",
-    "pattern": "lunge"
+    "pattern": "lunge",
+    "descJa": "ブルガリアンスプリットスクワットとは、ダンベルを使って「しゃがんで立つ」動作でお尻（臀筋）、脚（大腿四頭筋）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、背すじを保ってしゃがみ、足で床を押して立ち上がる動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use dumbbells to lunge. Step out, lower under control, and return. Targets quads, hamstrings, and glutes; easy to fix left–right imbalances. Build stronger legs and glutes.",
   },
   {
     "id": "ex067",
@@ -755,7 +887,9 @@
       "フロントランジ"
     ],
     "equipment": "dumbbell",
-    "pattern": "lunge"
+    "pattern": "lunge",
+    "descJa": "ランジ(前方)とは、ダンベルを使って「踏み出してしゃがむ」動作でお尻（臀筋）、脚（大腿四頭筋）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、踏み出して沈み込み、前脚で押して戻す動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use dumbbells to lunge. Step out, lower under control, and return. Targets quads, hamstrings, and glutes; easy to fix left–right imbalances. Build stronger legs and glutes.",
   },
   {
     "id": "ex068",
@@ -766,7 +900,9 @@
       "歩行ランジ"
     ],
     "equipment": "dumbbell",
-    "pattern": "lunge"
+    "pattern": "lunge",
+    "descJa": "ウォーキングランジとは、ダンベルを使って「踏み出してしゃがむ」動作でお尻（臀筋）、脚（大腿四頭筋）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、踏み出して沈み込み、前脚で押して戻す動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use dumbbells to lunge. Step out, lower under control, and return. Targets quads, hamstrings, and glutes; easy to fix left–right imbalances. Build stronger legs and glutes.",
   },
   {
     "id": "ex069",
@@ -777,7 +913,9 @@
       "台昇り"
     ],
     "equipment": "dumbbell",
-    "pattern": "lunge"
+    "pattern": "lunge",
+    "descJa": "ステップアップとは、ダンベルを使って「動かす」動作でお尻（臀筋）、脚（大腿四頭筋）を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、反動を抑えてコントロールしながら反復します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use dumbbells to lunge. Step out, lower under control, and return. Targets quads, hamstrings, and glutes; easy to fix left–right imbalances. Build stronger legs and glutes.",
   },
   {
     "id": "ex070",
@@ -788,7 +926,9 @@
       "レッグエクステ"
     ],
     "equipment": "machine",
-    "pattern": "knee_extension"
+    "pattern": "knee_extension",
+    "descJa": "レッグエクステンションとは、マシンを使って「膝を伸ばす」動作で前もも（大腿四頭筋）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、膝を伸ばして止め、ゆっくり戻す動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a machine to extend. Extend the knees and control back. Targets quads; stable path and easy to load safely. Build stronger legs and glutes.",
   },
   {
     "id": "ex071",
@@ -800,7 +940,9 @@
       "conventional deadlift"
     ],
     "equipment": "barbell",
-    "pattern": "hinge"
+    "pattern": "hinge",
+    "descJa": "デッドリフトとは、バーベルを使って「股関節で持ち上げる」動作で臀筋、ハムストリング、脊柱起立筋を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、背すじを保ち、股関節で持ち上げてゆっくり下ろす動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a barbell to hinge and pull. Hinge at the hips and stand back up. Targets quads, hamstrings, and glutes; lets you use heavier loads. Strengthens the entire posterior chain.",
   },
   {
     "id": "ex072",
@@ -811,7 +953,9 @@
       "RDL"
     ],
     "equipment": "barbell",
-    "pattern": "hinge"
+    "pattern": "hinge",
+    "descJa": "ルーマニアンデッドリフトとは、バーベルを使って「股関節で持ち上げる」動作で臀筋、ハムストリング、脊柱起立筋を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、背すじを保ち、股関節で持ち上げてゆっくり下ろす動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a barbell to hinge and pull. Hinge at the hips and stand back up. Targets quads, hamstrings, and glutes; lets you use heavier loads. Strengthens the entire posterior chain.",
   },
   {
     "id": "ex073",
@@ -822,7 +966,9 @@
       "sldl"
     ],
     "equipment": "barbell",
-    "pattern": "hinge"
+    "pattern": "hinge",
+    "descJa": "スティフレッグデッドリフトとは、バーベルを使って「股関節で持ち上げる」動作で臀筋、ハムストリング、脊柱起立筋を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、背すじを保ち、股関節で持ち上げてゆっくり下ろす動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a barbell to hinge and pull. Hinge at the hips and stand back up. Targets quads, hamstrings, and glutes; lets you use heavier loads. Strengthens the entire posterior chain.",
   },
   {
     "id": "ex074",
@@ -833,7 +979,9 @@
       "デフィシットデッド"
     ],
     "equipment": "barbell",
-    "pattern": "hinge"
+    "pattern": "hinge",
+    "descJa": "デフィシットデッドリフトとは、バーベルを使って「股関節で持ち上げる」動作で臀筋、ハムストリング、脊柱起立筋を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、背すじを保ち、股関節で持ち上げてゆっくり下ろす動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a barbell to hinge and pull. Hinge at the hips and stand back up. Targets quads, hamstrings, and glutes; lets you use heavier loads. Strengthens the entire posterior chain.",
   },
   {
     "id": "ex075",
@@ -844,7 +992,9 @@
       "レッグカール"
     ],
     "equipment": "machine",
-    "pattern": "knee_flexion"
+    "pattern": "knee_flexion",
+    "descJa": "ハムストリングカール(ライイング)とは、マシンを使って「膝を曲げる」動作で太もも裏（ハムストリング）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、かかとを引き寄せて収縮し、ゆっくり戻す動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a machine to curl. Curl the heels and return. Targets hamstrings; stable path and easy to load safely. Build stronger legs and glutes.",
   },
   {
     "id": "ex076",
@@ -855,7 +1005,9 @@
       "シーテッドカール"
     ],
     "equipment": "machine",
-    "pattern": "knee_flexion"
+    "pattern": "knee_flexion",
+    "descJa": "ハムストリングカール(シーテッド)とは、マシンを使って「膝を曲げる」動作で太もも裏（ハムストリング）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、かかとを引き寄せて収縮し、ゆっくり戻す動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a machine to curl. Curl the heels and return. Targets hamstrings; stable path and easy to load safely. Build stronger legs and glutes.",
   },
   {
     "id": "ex077",
@@ -867,7 +1019,9 @@
       "hip thrust"
     ],
     "equipment": "barbell",
-    "pattern": "hip_extension"
+    "pattern": "hip_extension",
+    "descJa": "ヒップスラストとは、バーベルを使って「股関節を伸ばす」動作でお尻（臀筋）、太もも裏（ハムストリング）を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、骨盤を持ち上げて臀部を締め、ゆっくり戻す動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a barbell to extend the hips. Drive the hips up and squeeze the glutes. Targets glutes (plus hamstrings); lets you use heavier loads. Build stronger legs and glutes.",
   },
   {
     "id": "ex078",
@@ -878,7 +1032,9 @@
       "グルブリ"
     ],
     "equipment": "bodyweight",
-    "pattern": "hip_extension"
+    "pattern": "hip_extension",
+    "descJa": "グルートブリッジとは、自重を使って「股関節を伸ばす」動作でお尻（臀筋）、太もも裏（ハムストリング）を鍛える種目です。器具なしで手軽にでき、フォーム次第で負荷調整しやすいのが特徴で、骨盤を持ち上げて臀部を締め、ゆっくり戻す動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use your bodyweight to extend the hips. Drive the hips up and squeeze the glutes. Targets glutes (plus hamstrings); no equipment needed. Build stronger legs and glutes.",
   },
   {
     "id": "ex079",
@@ -889,7 +1045,9 @@
       "KBスイング"
     ],
     "equipment": "kettlebell",
-    "pattern": "hinge"
+    "pattern": "hinge",
+    "descJa": "ケトルベルスイングとは、ケトルベルを使って「股関節で振る」動作で臀筋、ハムストリング、脊柱起立筋を鍛える種目です。腕ではなく股関節主導で行うのが特徴で、反動を抑えてコントロールしながら反復します。全身の代謝向上や運動能力アップが期待できます。",
+    "descEn": "Use a kettlebell to swing. Hinge and swing the kettlebell forward. Targets quads, hamstrings, and glutes; adds full-body power and conditioning. Build stronger legs and glutes.",
   },
   {
     "id": "ex080",
@@ -900,7 +1058,9 @@
       "GM"
     ],
     "equipment": "barbell",
-    "pattern": "hinge"
+    "pattern": "hinge",
+    "descJa": "グッドモーニングとは、バーベルを使って「股関節で持ち上げる」動作で臀筋、ハムストリング、脊柱起立筋を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、反動を抑えてコントロールしながら反復します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a barbell to hinge and pull. Hinge at the hips and stand back up. Targets quads, hamstrings, and glutes; lets you use heavier loads. Build stronger legs and glutes.",
   },
   {
     "id": "ex081",
@@ -911,7 +1071,9 @@
       "カーフレイズ"
     ],
     "equipment": "machine",
-    "pattern": "ankle_plantarflexion"
+    "pattern": "ankle_plantarflexion",
+    "descJa": "スタンディングカーフレイズとは、マシンを使って「つま先立ちする」動作でふくらはぎ（腓腹筋、ヒラメ筋）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、かかとを下ろしてから高く上げる動作を繰り返します。ふくらはぎのボリュームアップや足首の安定が期待できます。",
+    "descEn": "Use a machine to calf raise. Rise onto the toes and lower. Targets calves (gastrocnemius/soleus); stable path and easy to load safely. Build stronger legs and glutes.",
   },
   {
     "id": "ex082",
@@ -922,7 +1084,9 @@
       "座位カーフ"
     ],
     "equipment": "machine",
-    "pattern": "ankle_plantarflexion"
+    "pattern": "ankle_plantarflexion",
+    "descJa": "シーテッドカーフレイズとは、マシンを使って「つま先立ちする」動作でふくらはぎ（腓腹筋、ヒラメ筋）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、かかとを下ろしてから高く上げる動作を繰り返します。ふくらはぎのボリュームアップや足首の安定が期待できます。",
+    "descEn": "Use a machine to calf raise. Rise onto the toes and lower. Targets calves (gastrocnemius/soleus); stable path and easy to load safely. Build stronger legs and glutes.",
   },
   {
     "id": "ex083",
@@ -933,7 +1097,9 @@
       "プレスカーフ"
     ],
     "equipment": "machine",
-    "pattern": "ankle_plantarflexion"
+    "pattern": "ankle_plantarflexion",
+    "descJa": "レッグプレスカーフレイズとは、マシンを使って「つま先立ちする」動作でふくらはぎ（腓腹筋、ヒラメ筋）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、かかとを下ろしてから高く上げる動作を繰り返します。ふくらはぎのボリュームアップや足首の安定が期待できます。",
+    "descEn": "Use a machine to calf raise. Rise onto the toes and lower. Targets calves (gastrocnemius/soleus); stable path and easy to load safely. Build stronger legs and glutes.",
   },
   {
     "id": "ex084",
@@ -944,7 +1110,9 @@
       "ドンキー"
     ],
     "equipment": "machine",
-    "pattern": "ankle_plantarflexion"
+    "pattern": "ankle_plantarflexion",
+    "descJa": "ドンキーカーフレイズとは、マシンを使って「つま先立ちする」動作でふくらはぎ（腓腹筋、ヒラメ筋）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、かかとを下ろしてから高く上げる動作を繰り返します。ふくらはぎのボリュームアップや足首の安定が期待できます。",
+    "descEn": "Use a machine to calf raise. Rise onto the toes and lower. Targets calves (gastrocnemius/soleus); stable path and easy to load safely. Build stronger legs and glutes.",
   },
   {
     "id": "ex085",
@@ -955,7 +1123,9 @@
       "フロントスクワットプレス"
     ],
     "equipment": "barbell",
-    "pattern": "squat_press"
+    "pattern": "squat_press",
+    "descJa": "スラスターとは、バーベルを使って「動かす」動作で脚（大腿四頭筋、臀筋）＋体幹を鍛える種目です。高重量を扱いやすく、筋力を伸ばしやすいのが特徴で、反動を抑えてコントロールしながら反復します。全身の代謝向上や運動能力アップが期待できます。",
+    "descEn": "Use a barbell to move. Repeat with solid form. Targets quads, hamstrings, and glutes; lets you use heavier loads. Build stronger legs and glutes.",
   },
   {
     "id": "ex086",
@@ -966,7 +1136,9 @@
       "スミスクワット"
     ],
     "equipment": "smith",
-    "pattern": "squat"
+    "pattern": "squat",
+    "descJa": "スミススクワットとは、スミスマシンを使って「しゃがんで立つ」動作で脚（大腿四頭筋、臀筋）＋体幹を鍛える種目です。バー軌道が固定され、補助なしでも追い込みやすいのが特徴で、背すじを保ってしゃがみ、足で床を押して立ち上がる動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a Smith machine to squat. Sit down and stand up with a tall torso. Targets quads, hamstrings, and glutes; fixed bar path for safe hard sets. Build stronger legs and glutes.",
   },
   {
     "id": "ex087",
@@ -977,7 +1149,9 @@
       "外転マシン"
     ],
     "equipment": "machine",
-    "pattern": "hip_abduction"
+    "pattern": "hip_abduction",
+    "descJa": "ヒップアブダクションとは、マシンを使って「股関節を伸ばす」動作で臀部外側（中臀筋など）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、反動を抑えてコントロールしながら反復します。股関節の安定とヒップラインの改善が期待できます。",
+    "descEn": "Use a machine to abduct. Move the legs out and return. Targets glutes (plus hamstrings); stable path and easy to load safely. Build stronger legs and glutes.",
   },
   {
     "id": "ex088",
@@ -988,7 +1162,9 @@
       "内転マシン"
     ],
     "equipment": "machine",
-    "pattern": "hip_adduction"
+    "pattern": "hip_adduction",
+    "descJa": "ヒップアダクションとは、マシンを使って「股関節を伸ばす」動作で内もも（内転筋群）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、反動を抑えてコントロールしながら反復します。股関節の安定とヒップラインの改善が期待できます。",
+    "descEn": "Use a machine to adduct. Bring the legs in and return. Targets glutes (plus hamstrings); stable path and easy to load safely. Build stronger legs and glutes.",
   },
   {
     "id": "ex089",
@@ -999,7 +1175,9 @@
       "ヒップスラストマシン"
     ],
     "equipment": "machine",
-    "pattern": "hip_extension"
+    "pattern": "hip_extension",
+    "descJa": "グルートドライブマシンとは、マシンを使って「動かす」動作でお尻（臀筋）、太もも裏（ハムストリング）を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、骨盤を持ち上げて臀部を締め、ゆっくり戻す動作を繰り返します。下半身の筋力・筋量アップが期待できます。",
+    "descEn": "Use a machine to extend the hips. Drive the hips up and squeeze the glutes. Targets glutes (plus hamstrings); stable path and easy to load safely. Build stronger legs and glutes.",
   },
   {
     "id": "ex090",
@@ -1010,7 +1188,9 @@
       "腹筋クランチ"
     ],
     "equipment": "bodyweight",
-    "pattern": "spine_flexion"
+    "pattern": "spine_flexion",
+    "descJa": "クランチとは、自重を使って「体幹を丸める」動作で腹筋群（腹直筋、腹横筋）を鍛える種目です。器具なしで手軽にでき、フォーム次第で負荷調整しやすいのが特徴で、上体を丸めて起こし、ゆっくり戻す動作を繰り返します。お腹の引き締めと体幹固定力の向上が期待できます。",
+    "descEn": "Use your bodyweight to curl. Curl the torso and return. Targets core muscles; no equipment needed. Improve core stability and definition.",
   },
   {
     "id": "ex091",
@@ -1021,7 +1201,9 @@
       "HLR"
     ],
     "equipment": "bodyweight",
-    "pattern": "hip_flexion"
+    "pattern": "hip_flexion",
+    "descJa": "ハンギングレッグレイズとは、自重を使って「脚を持ち上げる」動作で腹筋群（腹直筋、腹横筋）を鍛える種目です。器具なしで手軽にでき、フォーム次第で負荷調整しやすいのが特徴で、反動を抑えてコントロールしながら反復します。お腹の引き締めと体幹固定力の向上が期待できます。",
+    "descEn": "Use your bodyweight to raise the legs. Hang and raise the legs without swinging. Targets core muscles; no equipment needed. Improve core stability and definition.",
   },
   {
     "id": "ex092",
@@ -1032,7 +1214,9 @@
       "下腹クランチ"
     ],
     "equipment": "bodyweight",
-    "pattern": "spine_flexion"
+    "pattern": "spine_flexion",
+    "descJa": "リバースクランチとは、自重を使って「体幹を丸める」動作で腹筋群（腹直筋、腹横筋）を鍛える種目です。器具なしで手軽にでき、フォーム次第で負荷調整しやすいのが特徴で、上体を丸めて起こし、ゆっくり戻す動作を繰り返します。お腹の引き締めと体幹固定力の向上が期待できます。",
+    "descEn": "Use your bodyweight to curl. Curl the torso and return. Targets core muscles; no equipment needed. Improve core stability and definition.",
   },
   {
     "id": "ex093",
@@ -1043,7 +1227,9 @@
       "フロントプランク"
     ],
     "equipment": "bodyweight",
-    "pattern": "anti_extension"
+    "pattern": "anti_extension",
+    "descJa": "プランクとは、自重を使って「姿勢を保って支える」動作で腹筋群（腹直筋、腹横筋）を鍛える種目です。器具なしで手軽にでき、フォーム次第で負荷調整しやすいのが特徴で、頭から踵まで一直線に保ってキープします。体幹の安定性を高め、姿勢維持に役立つ効果が期待できます。",
+    "descEn": "Use your bodyweight to brace/hold. Brace and hold a straight line. Targets core muscles; no equipment needed. Stabilizes the spine and improves posture.",
   },
   {
     "id": "ex094",
@@ -1054,7 +1240,9 @@
       "横プランク"
     ],
     "equipment": "bodyweight",
-    "pattern": "anti_lateral_flexion"
+    "pattern": "anti_lateral_flexion",
+    "descJa": "サイドプランクとは、自重を使って「姿勢を保って支える」動作で腹斜筋、体幹を鍛える種目です。器具なしで手軽にでき、フォーム次第で負荷調整しやすいのが特徴で、頭から踵まで一直線に保ってキープします。体幹の安定性を高め、姿勢維持に役立つ効果が期待できます。",
+    "descEn": "Use your bodyweight to anti-side-bend. Hold without side-bending. Targets obliques and lateral core; no equipment needed. Stabilizes the spine and improves posture.",
   },
   {
     "id": "ex095",
@@ -1065,7 +1253,9 @@
       "アンチローテーション"
     ],
     "equipment": "cable",
-    "pattern": "anti_rotation"
+    "pattern": "anti_rotation",
+    "descJa": "パロフプレスとは、ケーブルを使って「押す」動作で腹斜筋、体幹を鍛える種目です。可動域全体で張力が抜けにくいのが特徴で、体幹を安定させたまま、ひねる／押し出す動作をコントロールして行います。体幹の安定性を高め、姿勢維持に役立つ効果が期待できます。",
+    "descEn": "Use a cable machine to press while resisting rotation. Press the handle out and resist rotation. Targets core muscles; constant tension through the range. Improve core stability and definition.",
   },
   {
     "id": "ex096",
@@ -1076,7 +1266,9 @@
       "ツイスト"
     ],
     "equipment": "dumbbell",
-    "pattern": "rotation"
+    "pattern": "rotation",
+    "descJa": "ロシアンツイストとは、ダンベルを使って「動かす」動作で腹斜筋、体幹を鍛える種目です。可動域が広く、左右のバランスを整えやすいのが特徴で、体幹を安定させたまま、ひねる／押し出す動作をコントロールして行います。お腹の引き締めと体幹固定力の向上が期待できます。",
+    "descEn": "Use dumbbells to rotate. Rotate through the torso and return. Targets obliques; easy to fix left–right imbalances. Improve core stability and definition.",
   },
   {
     "id": "ex097",
@@ -1087,7 +1279,9 @@
       "ウッドチョップ"
     ],
     "equipment": "cable",
-    "pattern": "rotation"
+    "pattern": "rotation",
+    "descJa": "ケーブルウッドチョップとは、ケーブルを使って「動かす」動作で腹斜筋、体幹を鍛える種目です。可動域全体で張力が抜けにくいのが特徴で、体幹を安定させたまま、ひねる／押し出す動作をコントロールして行います。お腹の引き締めと体幹固定力の向上が期待できます。",
+    "descEn": "Use a cable machine to chop diagonally. Pull diagonally while rotating the torso. Targets obliques; constant tension through the range. Improve core stability and definition.",
   },
   {
     "id": "ex098",
@@ -1098,7 +1292,9 @@
       "ハイパーエクステンション"
     ],
     "equipment": "machine",
-    "pattern": "spine_extension"
+    "pattern": "spine_extension",
+    "descJa": "バックエクステンションとは、マシンを使って「動かす」動作で背面（脊柱起立筋）、臀筋を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、反動を抑えてコントロールしながら反復します。腰背部の強化と姿勢改善が期待できます。",
+    "descEn": "Use a machine to extend. Extend the back and return. Targets spinal erectors (plus glutes/hamstrings); stable path and easy to load safely. Improve core stability and definition.",
   },
   {
     "id": "ex099",
@@ -1109,7 +1305,9 @@
       "アブローラー"
     ],
     "equipment": "device",
-    "pattern": "anti_extension"
+    "pattern": "anti_extension",
+    "descJa": "アブホイールロールアウトとは、アブローラーを使って「動かす」動作で腹筋群（腹直筋、腹横筋）を鍛える種目です。伸長位で強い負荷がかかるのが特徴で、反動を抑えてコントロールしながら反復します。お腹の引き締めと体幹固定力の向上が期待できます。",
+    "descEn": "Use an ab wheel to brace/hold. Brace and hold a straight line. Targets core muscles; high tension in the extended position. Builds serious core bracing strength.",
   },
   {
     "id": "ex100",
@@ -1120,6 +1318,8 @@
       "ローテーションマシン"
     ],
     "equipment": "machine",
-    "pattern": "rotation"
+    "pattern": "rotation",
+    "descJa": "ケーブルロータリートルソーとは、マシンを使って「動かす」動作で腹斜筋、体幹を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、体幹を安定させたまま、ひねる／押し出す動作をコントロールして行います。お腹の引き締めと体幹固定力の向上が期待できます。",
+    "descEn": "Use a machine to rotate. Rotate through the torso and return. Targets obliques; stable path and easy to load safely. Improve core stability and definition.",
   }
 ]

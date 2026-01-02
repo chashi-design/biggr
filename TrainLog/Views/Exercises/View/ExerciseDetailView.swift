@@ -4,6 +4,7 @@ import SwiftUI
 struct ExerciseDetailView: View {
     let exercise: ExerciseCatalog
 
+    @Environment(\.openURL) private var openURL
     @EnvironmentObject private var favoritesStore: ExerciseFavoritesStore
     private var isJapaneseLocale: Bool {
         Locale.preferredLanguages.first?.hasPrefix("ja") ?? false
@@ -41,15 +42,6 @@ struct ExerciseDetailView: View {
                 }
             }
 
-            Section(strings.patternSectionTitle) {
-                if let patternTag {
-                    WrapTagView(tags: [patternTag])
-                } else {
-                    Text(strings.noInfoText)
-                        .foregroundStyle(.secondary)
-                }
-            }
-
             if !exercise.aliases.isEmpty {
                 Section(strings.aliasSectionTitle) {
                     WrapTagView(tags: exercise.aliases)
@@ -60,26 +52,41 @@ struct ExerciseDetailView: View {
         .navigationTitle(displayName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            HapticButton {
-                favoritesStore.toggle(id: exercise.id)
-            } label: {
-                Label(
-                    isFavorite ? strings.removeFavoriteLabel : strings.addFavoriteLabel,
-                    systemImage: isFavorite ? "star.fill" : "star"
-                )
-                    .labelStyle(.iconOnly)
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                HapticButton {
+                    YouTubeSearch.open(query: displayName, openURL: openURL)
+                } label: {
+                    Label(strings.youtubeSearchTitle, systemImage: "play.rectangle")
+                        .labelStyle(.iconOnly)
+                }
+
+                HapticButton {
+                    favoritesStore.toggle(id: exercise.id)
+                } label: {
+                    Label(
+                        isFavorite ? strings.removeFavoriteLabel : strings.addFavoriteLabel,
+                        systemImage: isFavorite ? "star.fill" : "star"
+                    )
+                        .labelStyle(.iconOnly)
+                }
+                .tint(isFavorite ? .yellow : .primary)
             }
-            .tint(isFavorite ? .yellow : .primary)
         }
     }
 
     private var descriptionText: String {
         var parts: [String] = []
         let muscle = MuscleGroupLabel.label(for: exercise.muscleGroup)
-        parts.append(strings.descriptionLead(name: displayName, muscle: muscle))
-        if let pattern = MovementPatternLabel.detail(for: exercise.pattern) {
+        // descJa/descEn を優先し、空なら先頭文とパターン説明(PatternInfo)をフォールバックで使用する
+        let detail = isJapaneseLocale ? exercise.descJa : exercise.descEn
+        let trimmed = detail.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmed.isEmpty {
+            parts.append(trimmed)
+        } else if let pattern = MovementPatternLabel.detail(for: exercise.pattern) {
+            parts.append(strings.descriptionLead(name: displayName, muscle: muscle))
             parts.append(pattern)
         } else {
+            parts.append(strings.descriptionLead(name: displayName, muscle: muscle))
             parts.append(strings.descriptionFallback)
         }
         return parts.joined(separator: "\n")
@@ -93,9 +100,6 @@ struct ExerciseDetailView: View {
         EquipmentLabel.label(for: exercise.equipment).map { "\($0)" }
     }
 
-    private var patternTag: String? {
-        MovementPatternLabel.label(for: exercise.pattern).map { "\($0)" }
-    }
 }
 
 struct WrapTagView: View {
@@ -234,9 +238,9 @@ private struct ExerciseDetailStrings {
     var descriptionSectionTitle: String { isJapanese ? "説明" : "Description" }
     var muscleSectionTitle: String { isJapanese ? "部位" : "Muscle" }
     var equipmentSectionTitle: String { isJapanese ? "器具" : "Equipment" }
-    var patternSectionTitle: String { isJapanese ? "動作" : "Pattern" }
     var aliasSectionTitle: String { isJapanese ? "別名" : "Aliases" }
     var noInfoText: String { isJapanese ? "情報なし" : "No info" }
+    var youtubeSearchTitle: String { isJapanese ? "YouTubeで検索" : "Search YouTube" }
     var addFavoriteLabel: String { isJapanese ? "お気に入り" : "Add Favorite" }
     var removeFavoriteLabel: String { isJapanese ? "お気に入り解除" : "Remove Favorite" }
     var descriptionFallback: String {
@@ -244,22 +248,5 @@ private struct ExerciseDetailStrings {
     }
     func descriptionLead(name: String, muscle: String) -> String {
         isJapanese ? "\(name)は\(muscle)を主に鍛える種目です。" : "\(name) primarily targets \(muscle)."
-    }
-}
-
-#Preview {
-    NavigationStack {
-        ExerciseDetailView(
-            exercise: ExerciseCatalog(
-                id: "ex001",
-                name: "ベンチプレス",
-                nameEn: "Barbell Bench Press",
-                muscleGroup: "chest",
-                aliases: ["ベンチ", "BBベンチ"],
-                equipment: "barbell",
-                pattern: "horizontal_push"
-            )
-        )
-        .environmentObject(ExerciseFavoritesStore())
     }
 }
