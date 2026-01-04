@@ -268,7 +268,13 @@ struct OverviewMuscleGroupSummaryView: View {
             }
         }
         .navigationTitle(displayName)
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text(displayName)
+                    .font(.headline)
+            }
+        }
         .listSectionSpacing(10)
         .navigationDestination(item: $selectedWeekItem) { item in
             OverviewMuscleGroupWeekDetailView(

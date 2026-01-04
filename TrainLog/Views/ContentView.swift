@@ -4,8 +4,10 @@ import SwiftUI
 struct ContentView: View {
     @State private var selectedTab: Tab = .summary
     @State private var tabHapticTrigger = 0
+    @State private var isTutorialPresented = false
     @StateObject private var favoritesStore = ExerciseFavoritesStore()
     @AppStorage(WeightUnit.storageKey) private var weightUnitRaw = WeightUnit.kg.rawValue
+    @AppStorage("hasSeenTutorial") private var hasSeenTutorial = false
 
     private var isJapaneseLocale: Bool {
         Locale.preferredLanguages.first?.hasPrefix("ja") ?? false
@@ -38,9 +40,19 @@ struct ContentView: View {
         .onChange(of: selectedTab) { _, _ in
             tabHapticTrigger += 1
         }
+        .onAppear {
+            if !hasSeenTutorial && !isTutorialPresented {
+                isTutorialPresented = true
+            }
+        }
         .sensoryFeedback(.impact(weight: .light), trigger: tabHapticTrigger)
         .environmentObject(favoritesStore)
         .environment(\.weightUnit, WeightUnit(rawValue: weightUnitRaw) ?? .kg)
+        .sheet(isPresented: $isTutorialPresented, onDismiss: {
+            hasSeenTutorial = true
+        }) {
+            TutorialView(isPresented: $isTutorialPresented)
+        }
     }
 }
 

@@ -131,7 +131,13 @@ struct OverviewExerciseSummaryView: View {
         }
         .listStyle(.insetGrouped)
         .navigationTitle(displayName)
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text(displayName)
+                    .font(.headline)
+            }
+        }
         .navigationDestination(item: $selectedWeekItem) { item in
             OverviewExerciseWeekDetailView(
                 weekStart: item.start,

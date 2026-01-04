@@ -386,11 +386,11 @@ enum OverviewMetrics {
         case .bodyweight:
             suffix = isJapanese ? "自重" : "Bodyweight"
         case .standard:
-            suffix = isJapanese ? "フリーウェイト・マシン" : "Freeweight/Machine"
+            suffix = isJapanese ? "ウエイト" : "Freeweight/Machine"
         case .all:
             return base
         }
-        return "\(base)(\(suffix))"
+        return "\(base): \(suffix)"
     }
 
     static func metricValue(for set: ExerciseSet, trackingType: ExerciseTrackingType) -> Double {
