@@ -29,22 +29,12 @@ struct ExerciseDetailView: View {
                     .padding(.vertical, 4)
             }
 
-            Section(strings.muscleSectionTitle) {
-                WrapTagView(tags: [muscleTag])
-            }
-
             Section(strings.equipmentSectionTitle) {
                 if let equipmentTag {
                     WrapTagView(tags: [equipmentTag])
                 } else {
                     Text(strings.noInfoText)
                         .foregroundStyle(.secondary)
-                }
-            }
-
-            if !exercise.aliases.isEmpty {
-                Section(strings.aliasSectionTitle) {
-                    WrapTagView(tags: exercise.aliases)
                 }
             }
         }
@@ -92,10 +82,6 @@ struct ExerciseDetailView: View {
         return parts.joined(separator: "\n")
     }
 
-    private var muscleTag: String {
-        "\(MuscleGroupLabel.label(for: exercise.muscleGroup))"
-    }
-
     private var equipmentTag: String? {
         EquipmentLabel.label(for: exercise.equipment).map { "\($0)" }
     }
@@ -117,36 +103,6 @@ struct WrapTagView: View {
     }
 }
 
-enum EquipmentLabel {
-    static func label(for key: String) -> String? {
-        if isJapaneseLocale {
-            return equipmentJa[key]
-        }
-        return equipmentEn[key]
-    }
-
-    private static var isJapaneseLocale: Bool {
-        Locale.preferredLanguages.first?.hasPrefix("ja") ?? false
-    }
-
-    private static let equipmentJa: [String: String] = [
-        "barbell": "バーベル",
-        "dumbbell": "ダンベル",
-        "machine": "マシン",
-        "cable": "ケーブル",
-        "bodyweight": "自重",
-        "band": "チューブ/バンド"
-    ]
-
-    private static let equipmentEn: [String: String] = [
-        "barbell": "Barbell",
-        "dumbbell": "Dumbbell",
-        "machine": "Machine",
-        "cable": "Cable",
-        "bodyweight": "Bodyweight",
-        "band": "Band"
-    ]
-}
 
 enum MovementPatternLabel {
     static func label(for key: String) -> String? {
@@ -270,9 +226,7 @@ private struct ExerciseDetailStrings {
     let isJapanese: Bool
 
     var descriptionSectionTitle: String { isJapanese ? "説明" : "Description" }
-    var muscleSectionTitle: String { isJapanese ? "部位" : "Muscle" }
     var equipmentSectionTitle: String { isJapanese ? "器具" : "Equipment" }
-    var aliasSectionTitle: String { isJapanese ? "別名" : "Aliases" }
     var noInfoText: String { isJapanese ? "情報なし" : "No info" }
     var youtubeSearchTitle: String { isJapanese ? "YouTubeで検索" : "Search YouTube" }
     var addFavoriteLabel: String { isJapanese ? "お気に入り" : "Add Favorite" }

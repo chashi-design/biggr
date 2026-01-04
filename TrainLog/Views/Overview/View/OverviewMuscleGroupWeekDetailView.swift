@@ -5,6 +5,7 @@ struct OverviewMuscleGroupWeekDetailView: View {
     let weekStart: Date
     let muscleGroup: String
     let displayName: String
+    let trackingType: ExerciseTrackingType
     let workouts: [Workout]
     let exercises: [ExerciseCatalog]
 
@@ -17,10 +18,6 @@ struct OverviewMuscleGroupWeekDetailView: View {
         OverviewMuscleGroupWeekDetailStrings(isJapanese: isJapaneseLocale)
     }
     private var locale: Locale { strings.locale }
-    private var trackingType: ExerciseTrackingType {
-        OverviewMetrics.trackingType(for: muscleGroup)
-    }
-
     private var normalizedWeekStart: Date {
         calendar.startOfWeek(for: weekStart) ?? weekStart
     }

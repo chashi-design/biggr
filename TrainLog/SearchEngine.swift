@@ -8,30 +8,16 @@ public struct ExerciseCatalog: Codable, Hashable {
     public let muscleGroup: String // "chest" など
     public let aliases: [String]
     public let equipment: String   // "barbell" 等
+    public let trackingType: ExerciseTrackingType // "weightReps" 等
     public let pattern: String     // 動作パターン
     public let descJa: String      // 日本語説明
     public let descEn: String      // 英語説明
 }
 
-public enum ExerciseTrackingType: String, Hashable {
+public enum ExerciseTrackingType: String, Hashable, Codable {
     case weightReps
     case repsOnly
     case durationOnly
-}
-
-public extension ExerciseCatalog {
-    var trackingType: ExerciseTrackingType {
-        if muscleGroup == "cardio" {
-            return .durationOnly
-        }
-        if muscleGroup == "abs" {
-            return .repsOnly
-        }
-        if equipment == "bodyweight" {
-            return .repsOnly
-        }
-        return .weightReps
-    }
 }
 
 public enum ExerciseIdentifier {

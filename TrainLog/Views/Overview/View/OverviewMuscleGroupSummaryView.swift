@@ -3,6 +3,7 @@ import SwiftUI
 // 部位別の集計画面を表示する画面
 struct OverviewMuscleGroupSummaryView: View {
     let muscleGroup: String
+    let segment: MuscleGroupSegment
     let displayName: String
     let exercises: [ExerciseCatalog]
     let workouts: [Workout]
@@ -28,7 +29,7 @@ struct OverviewMuscleGroupSummaryView: View {
     }
     private var locale: Locale { strings.locale }
     private var trackingType: ExerciseTrackingType {
-        OverviewMetrics.trackingType(for: muscleGroup)
+        OverviewMetrics.trackingType(for: muscleGroup, segment: segment)
     }
 
     private var exerciseVolumes: [ExerciseVolume] {
@@ -46,7 +47,8 @@ struct OverviewMuscleGroupSummaryView: View {
             workouts: workouts,
             exercises: exercises,
             calendar: calendar,
-            weeks: 8
+            weeks: 8,
+            trackingType: trackingType
         )
     }
 
@@ -58,7 +60,8 @@ struct OverviewMuscleGroupSummaryView: View {
                 workouts: workouts,
                 exercises: exercises,
                 calendar: calendar,
-                days: 7
+                days: 7,
+                trackingType: trackingType
             )
         case .week:
             return OverviewMetrics.weeklyMuscleGroupVolumes(
@@ -66,7 +69,8 @@ struct OverviewMuscleGroupSummaryView: View {
                 workouts: workouts,
                 exercises: exercises,
                 calendar: calendar,
-                weeks: 5
+                weeks: 5,
+                trackingType: trackingType
             )
         case .month:
             return OverviewMetrics.monthlyMuscleGroupVolumes(
@@ -74,7 +78,8 @@ struct OverviewMuscleGroupSummaryView: View {
                 workouts: workouts,
                 exercises: exercises,
                 calendar: calendar,
-                months: 6
+                months: 6,
+                trackingType: trackingType
             )
         }
     }
@@ -90,7 +95,8 @@ struct OverviewMuscleGroupSummaryView: View {
             muscleGroup: muscleGroup,
             workouts: workouts,
             exercises: exercises,
-            calendar: calendar
+            calendar: calendar,
+            trackingType: trackingType
         )
         .sorted { $0.date > $1.date }
         .prefix(3)
@@ -111,7 +117,8 @@ struct OverviewMuscleGroupSummaryView: View {
             muscleGroup: muscleGroup,
             workouts: workouts,
             exercises: exercises,
-            calendar: calendar
+            calendar: calendar,
+            trackingType: trackingType
         )
             .map {
                 let start = calendar.startOfWeek(for: $0.date) ?? $0.date
@@ -268,6 +275,7 @@ struct OverviewMuscleGroupSummaryView: View {
                 weekStart: item.start,
                 muscleGroup: item.muscleGroup,
                 displayName: item.displayName,
+                trackingType: trackingType,
                 workouts: workouts,
                 exercises: exercises
             )
@@ -276,6 +284,7 @@ struct OverviewMuscleGroupSummaryView: View {
             OverviewMuscleGroupWeeklyListView(
                 title: strings.weeklyRecordsTitle,
                 items: weeklyListData,
+                trackingType: trackingType,
                 workouts: workouts,
                 exercises: exercises
             )

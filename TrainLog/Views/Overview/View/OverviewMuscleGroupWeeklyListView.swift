@@ -13,6 +13,7 @@ struct WeekListItem: Identifiable, Hashable {
 struct OverviewMuscleGroupWeeklyListView: View {
     let title: String
     let items: [WeekListItem]
+    let trackingType: ExerciseTrackingType
     let workouts: [Workout]
     let exercises: [ExerciseCatalog]
 
@@ -34,7 +35,6 @@ struct OverviewMuscleGroupWeeklyListView: View {
                         Text(item.label)
                             .font(.headline)
                         Spacer()
-                        let trackingType = OverviewMetrics.trackingType(for: item.muscleGroup)
                         let parts = VolumeFormatter.metricParts(
                             from: item.volume,
                             trackingType: trackingType,
@@ -69,6 +69,7 @@ struct OverviewMuscleGroupWeeklyListView: View {
                 weekStart: item.start,
                 muscleGroup: item.muscleGroup,
                 displayName: item.displayName,
+                trackingType: trackingType,
                 workouts: workouts,
                 exercises: exercises
             )
