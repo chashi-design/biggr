@@ -11,7 +11,8 @@ enum MuscleGroupColor {
         "arms": .green,
         "back": .teal,
         "legs": .purple,
-        "abs": .brown,
+        "abs": .pink,
+        "cardio": .brown,
         "other": .gray
     ]
 }

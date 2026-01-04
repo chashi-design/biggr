@@ -32,13 +32,15 @@ enum WeightUnit: String, CaseIterable, Identifiable {
         fromKg value: Double,
         locale: Locale,
         maximumFractionDigits: Int,
-        minimumFractionDigits: Int = 0
+        minimumFractionDigits: Int = 0,
+        usesGroupingSeparator: Bool = true
     ) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.locale = locale
         formatter.maximumFractionDigits = maximumFractionDigits
         formatter.minimumFractionDigits = minimumFractionDigits
+        formatter.usesGroupingSeparator = usesGroupingSeparator
         let displayValue = displayValue(fromKg: value)
         return formatter.string(from: NSNumber(value: displayValue)) ?? String(displayValue)
     }

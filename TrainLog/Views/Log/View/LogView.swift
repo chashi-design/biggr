@@ -213,16 +213,9 @@ struct LogView: View {
                                 VStack(alignment: .leading, spacing: 8) {
                                     Text(displayName(for: entry.exerciseId))
                                         .font(.headline)
-                                    let weight = formattedWeight(totalWeight(for: entry, unit: weightUnit))
-                                    Group {
-                                        if entry.completedSetCount == 0 {
-                                            Text(strings.setCountText(entry.completedSetCount))
-                                        } else {
-                                            Text(strings.setCountWithWeightText(entry.completedSetCount, weight: weight, unit: weightUnit.unitLabel))
-                                        }
-                                    }
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
+                                    Text(summaryText(for: entry))
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
                                 }
                                 Spacer()
                             }
@@ -238,16 +231,9 @@ struct LogView: View {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(displayName(for: entry.exerciseId))
                                             .font(.headline)
-                                        let weight = formattedWeight(totalWeight(for: entry, unit: weightUnit))
-                                        Group {
-                                            if entry.completedSetCount == 0 {
-                                                Text(strings.setCountText(entry.completedSetCount))
-                                            } else {
-                                                Text(strings.setCountWithWeightText(entry.completedSetCount, weight: weight, unit: weightUnit.unitLabel))
-                                            }
-                                        }
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
+                                        Text(summaryText(for: entry))
+                                            .font(.subheadline)
+                                            .foregroundStyle(.secondary)
                                     }
                                     Spacer()
                                 }
@@ -282,7 +268,40 @@ struct LogView: View {
     }
 
     private func formattedWeight(_ weight: Double) -> String {
-        DraftSetRow.formattedWeightText(weight, unit: weightUnit, locale: Locale.current)
+        weightUnit.formattedValue(
+            fromKg: weight,
+            locale: Locale.current,
+            maximumFractionDigits: 3
+        )
+    }
+
+    private func formattedDuration(_ seconds: Double) -> String {
+        VolumeFormatter.durationString(from: seconds)
+    }
+
+    private func totalReps(for entry: DraftExerciseEntry) -> Int {
+        entry.sets.compactMap { Int($0.repsText) }.reduce(0, +)
+    }
+
+    private func totalDurationSeconds(for entry: DraftExerciseEntry) -> Double {
+        entry.sets.compactMap { DraftSetRow.durationSeconds(from: $0.durationText) }.reduce(0, +)
+    }
+
+    private func summaryText(for entry: DraftExerciseEntry) -> String {
+        let trackingType = viewModel.trackingType(for: entry.exerciseId)
+        let completed = entry.completedSetCount(trackingType: trackingType)
+        guard completed > 0 else { return strings.setCountText(completed) }
+        switch trackingType {
+        case .weightReps:
+            let weight = formattedWeight(totalWeight(for: entry, unit: weightUnit))
+            return strings.setCountWithWeightText(completed, weight: weight, unit: weightUnit.unitLabel)
+        case .repsOnly:
+            let reps = totalReps(for: entry)
+            return strings.setCountWithRepsText(completed, reps: reps)
+        case .durationOnly:
+            let duration = formattedDuration(totalDurationSeconds(for: entry))
+            return strings.setCountWithDurationText(completed, duration: duration)
+        }
     }
 
     private func displayName(for exerciseId: String) -> String {
@@ -316,6 +335,12 @@ private struct LogStrings {
     }
     func setCountWithWeightText(_ count: Int, weight: String, unit: String) -> String {
         isJapanese ? "\(count)セット (\(weight)\(unit))" : "\(count) sets (\(weight)\(unit))"
+    }
+    func setCountWithRepsText(_ count: Int, reps: Int) -> String {
+        isJapanese ? "\(count)セット (\(reps)回)" : "\(count) sets (\(reps) reps)"
+    }
+    func setCountWithDurationText(_ count: Int, duration: String) -> String {
+        isJapanese ? "\(count)セット (\(duration))" : "\(count) sets (\(duration))"
     }
 }
 
@@ -368,6 +393,6 @@ enum WorkoutDotsBuilder {
     }
 
     private static var muscleOrder: [String] {
-        ["chest", "shoulders", "arms", "back", "legs", "abs"]
+        ["chest", "shoulders", "arms", "back", "legs", "abs", "cardio"]
     }
 }

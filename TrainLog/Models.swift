@@ -41,6 +41,7 @@ final class Workout {
 // exerciseId: 種目ID（exercises.json の id）
 // weight: 使用した重量(kg)
 // reps: 挙上回数
+// durationSeconds: 有酸素などの継続時間（秒、任意）
 // rpe: 主観的なきつさ（RPEスケール、任意）
 // createdAt: セットを記録した日時
 @Model
@@ -49,6 +50,7 @@ final class ExerciseSet {
     var exerciseId: String
     var weight: Double
     var reps: Int
+    var durationSeconds: Double?
     var rpe: Double?
     var createdAt: Date
 
@@ -59,6 +61,7 @@ final class ExerciseSet {
         exerciseId: String,
         weight: Double,
         reps: Int,
+        durationSeconds: Double? = nil,
         rpe: Double? = nil,
         createdAt: Date = .now
     ) {
@@ -66,6 +69,7 @@ final class ExerciseSet {
         self.exerciseId = exerciseId
         self.weight = weight
         self.reps = reps
+        self.durationSeconds = durationSeconds
         self.rpe = rpe
         self.createdAt = createdAt
     }

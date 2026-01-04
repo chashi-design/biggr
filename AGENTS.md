@@ -105,6 +105,7 @@
 - Project 設定の大規模変更
 - 名前変更やファイル移動を突然行うこと
 - MVVM を壊す実装
+- exercises の追加で EquipmentLabel に無い equipment を使う場合は必ず報告すること
 
 ---
 

@@ -20,6 +20,7 @@ enum MuscleGroupLabel {
         "arms": "腕",
         "legs": "脚",
         "abs": "体幹",
+        "cardio": "有酸素",
         "other": "その他"
     ]
 
@@ -31,6 +32,7 @@ enum MuscleGroupLabel {
         "arms": "Arms",
         "legs": "Legs",
         "abs": "Core",
+        "cardio": "Cardio",
         "other": "Other"
     ]
 }

@@ -20,16 +20,20 @@ struct OverviewExerciseSummaryView: View {
     private var displayName: String {
         exercise.displayName(isJapanese: isJapaneseLocale)
     }
+    private var trackingType: ExerciseTrackingType {
+        exercise.trackingType
+    }
 
     private var chartData: [(label: String, value: Double)] {
         let series = OverviewMetrics.exerciseChartSeries(
             for: exercise.id,
             workouts: workouts,
             period: chartPeriod,
-            calendar: calendar
+            calendar: calendar,
+            trackingType: trackingType
         )
         return series.map { point in
-            (axisLabel(for: point.date, period: chartPeriod), weightUnit.displayValue(fromKg: point.volume))
+            (axisLabel(for: point.date, period: chartPeriod), chartMetricValue(from: point.volume))
         }
     }
 
@@ -43,7 +47,8 @@ struct OverviewExerciseSummaryView: View {
         OverviewMetrics.weeklyExerciseVolumesAll(
             for: exercise.id,
             workouts: workouts,
-            calendar: calendar
+            calendar: calendar,
+            trackingType: trackingType
         )
         .map { point in
             let start = calendar.startOfWeek(for: point.date) ?? point.date
@@ -58,7 +63,7 @@ struct OverviewExerciseSummaryView: View {
     var body: some View {
         List {
             if hasAnyHistory {
-                Section(strings.totalVolumeSectionTitle) {
+                Section(strings.totalMetricSectionTitle(trackingType: trackingType)) {
                     Picker(strings.periodPickerTitle, selection: $chartPeriod) {
                         ForEach(ExerciseChartPeriod.allCases, id: \.self) { option in
                             Text(option.title).tag(option)
@@ -74,8 +79,8 @@ struct OverviewExerciseSummaryView: View {
                         animateOnAppear: true,
                         animateOnTrigger: true,
                         animationTrigger: chartPeriod.hashValue,
-                        yValueLabel: strings.volumeLabel(unit: weightUnit.unitLabel),
-                        yAxisLabel: weightUnit.unitLabel
+                        yValueLabel: strings.metricValueLabel(trackingType: trackingType, unit: weightUnit.unitLabel),
+                        yAxisLabel: strings.metricAxisLabel(trackingType: trackingType, unit: weightUnit.unitLabel)
                     )
                         .listRowInsets(EdgeInsets())
                         .listRowSeparator(.hidden)
@@ -92,10 +97,16 @@ struct OverviewExerciseSummaryView: View {
                             Text(item.label)
                                 .font(.headline)
                             Spacer()
-                            let parts = VolumeFormatter.volumePartsWithFraction(from: item.volume, locale: locale, unit: weightUnit)
+                            let parts = VolumeFormatter.metricParts(
+                                from: item.volume,
+                                trackingType: trackingType,
+                                locale: locale,
+                                unit: weightUnit
+                            )
+                            let unitText = parts.unit.isEmpty ? "" : " \(parts.unit)"
                             ValueWithUnitText(
                                 value: parts.value,
-                                unit: " \(parts.unit)",
+                                unit: unitText,
                                 valueFont: .body,
                                 unitFont: .subheadline,
                                 valueColor: .secondary,
@@ -126,6 +137,7 @@ struct OverviewExerciseSummaryView: View {
                 weekStart: item.start,
                 exerciseId: exercise.id,
                 displayName: displayName,
+                trackingType: trackingType,
                 workouts: workouts
             )
         }
@@ -159,6 +171,17 @@ struct OverviewExerciseSummaryView: View {
         let base = formatter.string(from: date)
         return period == .week ? strings.weekAxisLabel(base: base) : base
     }
+
+    private func chartMetricValue(from value: Double) -> Double {
+        switch trackingType {
+        case .weightReps:
+            return weightUnit.displayValue(fromKg: value)
+        case .repsOnly:
+            return value
+        case .durationOnly:
+            return value / 60
+        }
+    }
 }
 
 struct ExerciseWeekListItem: Identifiable, Hashable {
@@ -172,7 +195,16 @@ private struct OverviewExerciseStrings {
     let isJapanese: Bool
 
     var locale: Locale { isJapanese ? Locale(identifier: "ja_JP") : Locale(identifier: "en_US") }
-    var totalVolumeSectionTitle: String { isJapanese ? "総ボリューム" : "Total Volume" }
+    func totalMetricSectionTitle(trackingType: ExerciseTrackingType) -> String {
+        switch trackingType {
+        case .weightReps:
+            return isJapanese ? "総ボリューム" : "Total Volume"
+        case .repsOnly:
+            return isJapanese ? "合計回数" : "Total Reps"
+        case .durationOnly:
+            return isJapanese ? "合計時間" : "Total Time"
+        }
+    }
     var periodPickerTitle: String { isJapanese ? "期間" : "Period" }
     var weeklyRecordsTitle: String { isJapanese ? "週ごとの記録" : "Weekly Records" }
     var noHistoryText: String { isJapanese ? "期間内の記録がありません" : "No records in this period." }
@@ -186,7 +218,24 @@ private struct OverviewExerciseStrings {
     func weekAxisLabel(base: String) -> String {
         isJapanese ? "\(base)週" : "\(base) W"
     }
-    func volumeLabel(unit: String) -> String {
-        isJapanese ? "ボリューム(\(unit))" : "Volume (\(unit))"
+    func metricValueLabel(trackingType: ExerciseTrackingType, unit: String) -> String {
+        switch trackingType {
+        case .weightReps:
+            return isJapanese ? "ボリューム(\(unit))" : "Volume (\(unit))"
+        case .repsOnly:
+            return isJapanese ? "回数(回)" : "Reps"
+        case .durationOnly:
+            return isJapanese ? "時間(分)" : "Time (min)"
+        }
+    }
+    func metricAxisLabel(trackingType: ExerciseTrackingType, unit: String) -> String {
+        switch trackingType {
+        case .weightReps:
+            return unit
+        case .repsOnly:
+            return isJapanese ? "回" : "reps"
+        case .durationOnly:
+            return isJapanese ? "分" : "min"
+        }
     }
 }

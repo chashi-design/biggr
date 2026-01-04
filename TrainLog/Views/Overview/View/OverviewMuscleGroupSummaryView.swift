@@ -3,6 +3,7 @@ import SwiftUI
 // 部位別の集計画面を表示する画面
 struct OverviewMuscleGroupSummaryView: View {
     let muscleGroup: String
+    let segment: MuscleGroupSegment
     let displayName: String
     let exercises: [ExerciseCatalog]
     let workouts: [Workout]
@@ -27,6 +28,9 @@ struct OverviewMuscleGroupSummaryView: View {
         OverviewMuscleGroupStrings(isJapanese: isJapaneseLocale)
     }
     private var locale: Locale { strings.locale }
+    private var trackingType: ExerciseTrackingType {
+        OverviewMetrics.trackingType(for: muscleGroup, segment: segment)
+    }
 
     private var exerciseVolumes: [ExerciseVolume] {
         OverviewMetrics.exerciseVolumesForCurrentWeek(
@@ -43,7 +47,8 @@ struct OverviewMuscleGroupSummaryView: View {
             workouts: workouts,
             exercises: exercises,
             calendar: calendar,
-            weeks: 8
+            weeks: 8,
+            trackingType: trackingType
         )
     }
 
@@ -55,7 +60,8 @@ struct OverviewMuscleGroupSummaryView: View {
                 workouts: workouts,
                 exercises: exercises,
                 calendar: calendar,
-                days: 7
+                days: 7,
+                trackingType: trackingType
             )
         case .week:
             return OverviewMetrics.weeklyMuscleGroupVolumes(
@@ -63,7 +69,8 @@ struct OverviewMuscleGroupSummaryView: View {
                 workouts: workouts,
                 exercises: exercises,
                 calendar: calendar,
-                weeks: 5
+                weeks: 5,
+                trackingType: trackingType
             )
         case .month:
             return OverviewMetrics.monthlyMuscleGroupVolumes(
@@ -71,7 +78,8 @@ struct OverviewMuscleGroupSummaryView: View {
                 workouts: workouts,
                 exercises: exercises,
                 calendar: calendar,
-                months: 6
+                months: 6,
+                trackingType: trackingType
             )
         }
     }
@@ -79,7 +87,7 @@ struct OverviewMuscleGroupSummaryView: View {
     private var chartData: [(label: String, value: Double)] {
         chartSeries
             .sorted { $0.date < $1.date }
-            .map { (chartLabel(for: $0.date, period: chartPeriod), weightUnit.displayValue(fromKg: $0.volume)) }
+            .map { (chartLabel(for: $0.date, period: chartPeriod), chartMetricValue(from: $0.volume)) }
     }
 
     private var recentWeeklyListData: [WeekListItem] {
@@ -87,7 +95,8 @@ struct OverviewMuscleGroupSummaryView: View {
             muscleGroup: muscleGroup,
             workouts: workouts,
             exercises: exercises,
-            calendar: calendar
+            calendar: calendar,
+            trackingType: trackingType
         )
         .sorted { $0.date > $1.date }
         .prefix(3)
@@ -108,7 +117,8 @@ struct OverviewMuscleGroupSummaryView: View {
             muscleGroup: muscleGroup,
             workouts: workouts,
             exercises: exercises,
-            calendar: calendar
+            calendar: calendar,
+            trackingType: trackingType
         )
             .map {
                 let start = calendar.startOfWeek(for: $0.date) ?? $0.date
@@ -124,7 +134,7 @@ struct OverviewMuscleGroupSummaryView: View {
 
     var body: some View {
         List {
-            Section(strings.totalVolumeSectionTitle) {
+            Section(strings.totalMetricSectionTitle(trackingType: trackingType)) {
                 Picker(strings.periodPickerTitle, selection: $chartPeriod) {
                     ForEach(PartsChartPeriod.allCases, id: \.self) { option in
                         Text(option.title).tag(option)
@@ -139,8 +149,8 @@ struct OverviewMuscleGroupSummaryView: View {
                     animateOnAppear: true,
                     animateOnTrigger: true,
                     animationTrigger: chartPeriod.hashValue,
-                    yValueLabel: strings.volumeLabel(unit: weightUnit.unitLabel),
-                    yAxisLabel: weightUnit.unitLabel
+                    yValueLabel: strings.metricValueLabel(trackingType: trackingType, unit: weightUnit.unitLabel),
+                    yAxisLabel: strings.metricAxisLabel(trackingType: trackingType, unit: weightUnit.unitLabel)
                 )
                     .listRowInsets(EdgeInsets())
                     .listRowSeparator(.hidden)
@@ -157,10 +167,16 @@ struct OverviewMuscleGroupSummaryView: View {
                                 Text(item.label)
                                     .font(.headline)
                                 Spacer()
-                                let parts = VolumeFormatter.volumePartsWithFraction(from: item.volume, locale: locale, unit: weightUnit)
+                                let parts = VolumeFormatter.metricParts(
+                                    from: item.volume,
+                                    trackingType: trackingType,
+                                    locale: locale,
+                                    unit: weightUnit
+                                )
+                                let unitText = parts.unit.isEmpty ? "" : " \(parts.unit)"
                                 ValueWithUnitText(
                                     value: parts.value,
-                                    unit: " \(parts.unit)",
+                                    unit: unitText,
                                     valueFont: .body,
                                     unitFont: .subheadline,
                                     valueColor: .secondary,
@@ -217,10 +233,17 @@ struct OverviewMuscleGroupSummaryView: View {
                                 
                             }
                             Spacer()
-                            let parts = VolumeFormatter.volumePartsWithFraction(from: item.volume, locale: locale, unit: weightUnit)
+                            let itemTrackingType = item.exercise.trackingType
+                            let parts = VolumeFormatter.metricParts(
+                                from: item.volume,
+                                trackingType: itemTrackingType,
+                                locale: locale,
+                                unit: weightUnit
+                            )
+                            let unitText = parts.unit.isEmpty ? "" : " \(parts.unit)"
                             ValueWithUnitText(
                                 value: parts.value,
-                                unit: " \(parts.unit)",
+                                unit: unitText,
                                 valueFont: .body,
                                 unitFont: .subheadline,
                                 valueColor: .secondary,
@@ -252,6 +275,7 @@ struct OverviewMuscleGroupSummaryView: View {
                 weekStart: item.start,
                 muscleGroup: item.muscleGroup,
                 displayName: item.displayName,
+                trackingType: trackingType,
                 workouts: workouts,
                 exercises: exercises
             )
@@ -260,6 +284,7 @@ struct OverviewMuscleGroupSummaryView: View {
             OverviewMuscleGroupWeeklyListView(
                 title: strings.weeklyRecordsTitle,
                 items: weeklyListData,
+                trackingType: trackingType,
                 workouts: workouts,
                 exercises: exercises
             )
@@ -331,6 +356,17 @@ struct OverviewMuscleGroupSummaryView: View {
         }
     }
 
+    private func chartMetricValue(from value: Double) -> Double {
+        switch trackingType {
+        case .weightReps:
+            return weightUnit.displayValue(fromKg: value)
+        case .repsOnly:
+            return value
+        case .durationOnly:
+            return value / 60
+        }
+    }
+
     private func displayName(for exercise: ExerciseCatalog) -> String {
         exercise.displayName(isJapanese: isJapaneseLocale)
     }
@@ -368,7 +404,16 @@ private struct OverviewMuscleGroupStrings {
     let isJapanese: Bool
 
     var locale: Locale { isJapanese ? Locale(identifier: "ja_JP") : Locale(identifier: "en_US") }
-    var totalVolumeSectionTitle: String { isJapanese ? "総ボリューム" : "Total Volume" }
+    func totalMetricSectionTitle(trackingType: ExerciseTrackingType) -> String {
+        switch trackingType {
+        case .weightReps:
+            return isJapanese ? "総ボリューム" : "Total Volume"
+        case .repsOnly:
+            return isJapanese ? "合計回数" : "Total Reps"
+        case .durationOnly:
+            return isJapanese ? "合計時間" : "Total Time"
+        }
+    }
     var periodPickerTitle: String { isJapanese ? "期間" : "Period" }
     var weeklyRecordsTitle: String { isJapanese ? "週ごとの記録" : "Weekly Records" }
     var viewAllTitle: String { isJapanese ? "すべて表示" : "View All" }
@@ -383,7 +428,24 @@ private struct OverviewMuscleGroupStrings {
     func weekRangeLabel(base: String) -> String {
         isJapanese ? "\(base)週" : "\(base) W"
     }
-    func volumeLabel(unit: String) -> String {
-        isJapanese ? "ボリューム(\(unit))" : "Volume (\(unit))"
+    func metricValueLabel(trackingType: ExerciseTrackingType, unit: String) -> String {
+        switch trackingType {
+        case .weightReps:
+            return isJapanese ? "ボリューム(\(unit))" : "Volume (\(unit))"
+        case .repsOnly:
+            return isJapanese ? "回数(回)" : "Reps"
+        case .durationOnly:
+            return isJapanese ? "時間(分)" : "Time (min)"
+        }
+    }
+    func metricAxisLabel(trackingType: ExerciseTrackingType, unit: String) -> String {
+        switch trackingType {
+        case .weightReps:
+            return unit
+        case .repsOnly:
+            return isJapanese ? "回" : "reps"
+        case .durationOnly:
+            return isJapanese ? "分" : "min"
+        }
     }
 }
