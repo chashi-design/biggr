@@ -20,8 +20,8 @@ struct ExercisePickerSheet: View {
         ExercisePickerStrings(isJapanese: isJapaneseLocale)
     }
 
-    private let muscleGroupOrder = ["chest", "shoulders", "arms", "back", "legs", "abs"]
-    private let searchGroupOrder = ["chest", "shoulders", "arms", "back", "legs", "abs"]
+    private let muscleGroupOrder = ["chest", "shoulders", "arms", "back", "legs", "abs", "cardio"]
+    private let searchGroupOrder = ["chest", "shoulders", "arms", "back", "legs", "abs", "cardio"]
 
     var body: some View {
         NavigationStack {

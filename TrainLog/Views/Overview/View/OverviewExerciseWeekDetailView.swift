@@ -5,6 +5,7 @@ struct OverviewExerciseWeekDetailView: View {
     let weekStart: Date
     let exerciseId: String
     let displayName: String
+    let trackingType: ExerciseTrackingType
     let workouts: [Workout]
 
     @Environment(\.weightUnit) private var weightUnit
@@ -42,18 +43,26 @@ struct OverviewExerciseWeekDetailView: View {
                                 HStack(spacing: 32) {
                                     Text(strings.setNumberText(index + 1))
                                     Spacer()
-                                    if set.weight > 0 {
-                                        let parts = VolumeFormatter.weightParts(from: set.weight, locale: locale, unit: weightUnit)
-                                        ValueWithUnitText(
-                                            value: parts.value,
-                                            unit: parts.unit,
-                                            valueFont: .subheadline,
-                                            unitFont: .caption,
-                                            valueColor: .secondary,
-                                            unitColor: .secondary
-                                        )
+                                    switch trackingType {
+                                    case .weightReps:
+                                        if set.weight > 0 {
+                                            let parts = VolumeFormatter.weightParts(from: set.weight, locale: locale, unit: weightUnit)
+                                            ValueWithUnitText(
+                                                value: parts.value,
+                                                unit: parts.unit,
+                                                valueFont: .subheadline,
+                                                unitFont: .caption,
+                                                valueColor: .secondary,
+                                                unitColor: .secondary
+                                            )
+                                        }
+                                        Text(strings.repsText(set.reps))
+                                    case .repsOnly:
+                                        Text(strings.repsText(set.reps))
+                                    case .durationOnly:
+                                        let duration = VolumeFormatter.durationString(from: set.durationSeconds ?? 0)
+                                        Text(strings.durationText(duration))
                                     }
-                                    Text(strings.repsText(set.reps))
                                 }
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
@@ -122,5 +131,8 @@ private struct OverviewExerciseWeekDetailStrings {
     }
     func repsText(_ reps: Int) -> String {
         isJapanese ? "\(reps)回" : "\(reps) reps"
+    }
+    func durationText(_ duration: String) -> String {
+        duration
     }
 }

@@ -34,10 +34,17 @@ struct OverviewMuscleGroupWeeklyListView: View {
                         Text(item.label)
                             .font(.headline)
                         Spacer()
-                        let parts = VolumeFormatter.volumeParts(from: item.volume, locale: locale, unit: weightUnit)
+                        let trackingType = OverviewMetrics.trackingType(for: item.muscleGroup)
+                        let parts = VolumeFormatter.metricParts(
+                            from: item.volume,
+                            trackingType: trackingType,
+                            locale: locale,
+                            unit: weightUnit
+                        )
+                        let unitText = parts.unit.isEmpty ? "" : " \(parts.unit)"
                         ValueWithUnitText(
                             value: parts.value,
-                            unit: " \(parts.unit)",
+                            unit: unitText,
                             valueFont: .body,
                             unitFont: .subheadline,
                             valueColor: .secondary,

@@ -135,6 +135,7 @@ struct OverviewMuscleGrid: View {
                                 title: item.displayName,
                                 monthLabel: weekRangeLabel(for: Date()),
                                 volume: item.volume,
+                                trackingType: OverviewMetrics.trackingType(for: item.muscleGroup),
                                 locale: locale,
                                 titleColor: MuscleGroupColor.color(for: item.muscleGroup)
                             )
@@ -175,6 +176,7 @@ struct OverviewMuscleCard: View {
     let title: String
     let monthLabel: String
     let volume: Double
+    let trackingType: ExerciseTrackingType
     let locale: Locale
     let titleColor: Color
     var chevronColor: Color = .secondary
@@ -189,13 +191,23 @@ struct OverviewMuscleCard: View {
                 Text(monthLabel)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                let parts = VolumeFormatter.volumePartsWithFraction(from: volume, locale: locale, unit: weightUnit)
-                ValueWithUnitText(
-                    value: parts.value,
-                    unit: " \(parts.unit)",
-                    valueFont: .system(.title, design: .rounded).weight(.bold),
-                    unitFont: .system(.subheadline, design: .rounded).weight(.semibold),
+                let parts = VolumeFormatter.metricParts(
+                    from: volume,
+                    trackingType: trackingType,
+                    locale: locale,
+                    unit: weightUnit
                 )
+                if trackingType == .durationOnly {
+                    durationValueText(seconds: volume)
+                } else {
+                    let unitText = parts.unit.isEmpty ? "" : " \(parts.unit)"
+                    ValueWithUnitText(
+                        value: parts.value,
+                        unit: unitText,
+                        valueFont: .system(.title, design: .rounded).weight(.bold),
+                        unitFont: .system(.subheadline, design: .rounded).weight(.semibold),
+                    )
+                }
             }
             Spacer()
             Image(systemName: "chevron.right")
@@ -207,6 +219,39 @@ struct OverviewMuscleCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color(.secondarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: 26))
+    }
+
+    private func durationValueText(seconds: Double) -> some View {
+        let totalMinutes = max(0, Int((seconds / 60).rounded()))
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+        let isJapanese = locale.identifier.hasPrefix("ja")
+        let valueFont = Font.system(.title, design: .rounded).weight(.bold)
+        let unitFont = Font.system(.subheadline, design: .rounded).weight(.semibold)
+
+        let hourUnit = isJapanese ? "時間" : "h "
+        let minuteUnit = isJapanese ? "分" : "m"
+        let valueText = "\(hours)\(hourUnit)\(minutes)\(minuteUnit)"
+        var attributed = AttributedString(valueText)
+
+        if let range = attributed.range(of: "\(hours)") {
+            attributed[range].font = valueFont
+            attributed[range].foregroundColor = .primary
+        }
+        if let range = attributed.range(of: hourUnit) {
+            attributed[range].font = unitFont
+            attributed[range].foregroundColor = .secondary
+        }
+        if let range = attributed.range(of: "\(minutes)") {
+            attributed[range].font = valueFont
+            attributed[range].foregroundColor = .primary
+        }
+        if let range = attributed.range(of: minuteUnit) {
+            attributed[range].font = unitFont
+            attributed[range].foregroundColor = .secondary
+        }
+
+        return Text(attributed)
     }
 }
 
@@ -276,6 +321,28 @@ enum OverviewMetrics {
         set.exerciseId == exerciseId
     }
 
+    static func trackingType(for muscleGroup: String) -> ExerciseTrackingType {
+        switch muscleGroup {
+        case "abs":
+            return .repsOnly
+        case "cardio":
+            return .durationOnly
+        default:
+            return .weightReps
+        }
+    }
+
+    static func metricValue(for set: ExerciseSet, trackingType: ExerciseTrackingType) -> Double {
+        switch trackingType {
+        case .weightReps:
+            return set.volume
+        case .repsOnly:
+            return Double(set.reps)
+        case .durationOnly:
+            return set.durationSeconds ?? 0
+        }
+    }
+
     static func volumeByDayForCurrentMonth(workouts: [Workout], calendar: Calendar) -> [VolumePoint] {
         guard let range = calendar.dateInterval(of: .month, for: Date()) else { return [] }
         var buckets: [Date: Double] = [:]
@@ -297,13 +364,14 @@ enum OverviewMetrics {
         calendar: Calendar
     ) -> [MuscleGroupVolume] {
         guard let range = calendar.dateInterval(of: .weekOfYear, for: Date()) else { return [] }
-        var muscleGroups: [String] = ["chest", "shoulders", "arms", "back", "legs", "abs", "other"]
+        var muscleGroups: [String] = ["chest", "shoulders", "arms", "back", "legs", "abs", "cardio", "other"]
         var buckets: [String: Double] = [:]
 
         for workout in workouts where workout.date >= range.start && workout.date < range.end {
             for set in workout.sets {
                 let muscleGroup = lookupMuscleGroup(for: set, exercises: exercises)
-                buckets[muscleGroup, default: 0] += set.volume
+                let metric = metricValue(for: set, trackingType: trackingType(for: muscleGroup))
+                buckets[muscleGroup, default: 0] += metric
             }
         }
 
@@ -330,6 +398,7 @@ enum OverviewMetrics {
         calendar: Calendar
     ) -> [ExerciseVolume] {
         let exerciseList = exercises.filter { $0.muscleGroup == muscleGroup }
+        let trackingLookup = Dictionary(uniqueKeysWithValues: exerciseList.map { ($0.id, $0.trackingType) })
         var buckets: [String: Double] = [:]
 
         for workout in workouts {
@@ -339,7 +408,9 @@ enum OverviewMetrics {
             }
             for set in relevantSets {
                 let key = exerciseKey(for: set)
-                buckets[key, default: 0] += set.volume
+                let trackingType = trackingLookup[key] ?? trackingType(for: muscleGroup)
+                let metric = metricValue(for: set, trackingType: trackingType)
+                buckets[key, default: 0] += metric
             }
         }
 
@@ -361,6 +432,7 @@ enum OverviewMetrics {
     ) -> [ExerciseVolume] {
         guard let range = calendar.dateInterval(of: .weekOfYear, for: Date()) else { return [] }
         let exerciseList = exercises.filter { $0.muscleGroup == muscleGroup }
+        let trackingLookup = Dictionary(uniqueKeysWithValues: exerciseList.map { ($0.id, $0.trackingType) })
         var buckets: [String: Double] = [:]
 
         for workout in workouts where workout.date >= range.start && workout.date < range.end {
@@ -370,7 +442,9 @@ enum OverviewMetrics {
             }
             for set in relevantSets {
                 let key = exerciseKey(for: set)
-                buckets[key, default: 0] += set.volume
+                let trackingType = trackingLookup[key] ?? trackingType(for: muscleGroup)
+                let metric = metricValue(for: set, trackingType: trackingType)
+                buckets[key, default: 0] += metric
             }
         }
 
@@ -394,6 +468,7 @@ enum OverviewMetrics {
         let today = calendar.startOfDay(for: Date())
         guard let start = calendar.date(byAdding: .day, value: -(days - 1), to: today) else { return [] }
 
+        let trackingType = trackingType(for: muscleGroup)
         var buckets: [Date: Double] = [:]
 
         for workout in workouts where workout.date >= start {
@@ -405,7 +480,7 @@ enum OverviewMetrics {
                 } else {
                     guard group == muscleGroup else { continue }
                 }
-                buckets[day, default: 0] += set.volume
+                buckets[day, default: 0] += metricValue(for: set, trackingType: trackingType)
             }
         }
 
@@ -430,6 +505,7 @@ enum OverviewMetrics {
         let currentWeekStart = calendar.startOfWeek(for: today) ?? today
         guard let start = calendar.date(byAdding: .weekOfYear, value: -(weeks - 1), to: currentWeekStart),
               let end = calendar.date(byAdding: .weekOfYear, value: 1, to: currentWeekStart) else { return [] }
+        let trackingType = trackingType(for: muscleGroup)
 
         var buckets: [Date: Double] = [:]
 
@@ -443,7 +519,7 @@ enum OverviewMetrics {
                 } else {
                     guard group == muscleGroup else { continue }
                 }
-                buckets[weekStart, default: 0] += set.volume
+                buckets[weekStart, default: 0] += metricValue(for: set, trackingType: trackingType)
             }
         }
 
@@ -467,6 +543,7 @@ enum OverviewMetrics {
         let baseMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: Date())) ?? Date()
         guard let start = calendar.date(byAdding: .month, value: -(months - 1), to: baseMonth),
               let end = calendar.date(byAdding: .month, value: 1, to: baseMonth) else { return [] }
+        let trackingType = trackingType(for: muscleGroup)
 
         var buckets: [Date: Double] = [:]
 
@@ -480,7 +557,7 @@ enum OverviewMetrics {
                 } else {
                     guard group == muscleGroup else { continue }
                 }
-                buckets[monthStart, default: 0] += set.volume
+                buckets[monthStart, default: 0] += metricValue(for: set, trackingType: trackingType)
             }
         }
 
@@ -500,6 +577,7 @@ enum OverviewMetrics {
         exercises: [ExerciseCatalog],
         calendar: Calendar
     ) -> [VolumePoint] {
+        let trackingType = trackingType(for: muscleGroup)
         var buckets: [Date: Double] = [:]
 
         for workout in workouts {
@@ -511,7 +589,7 @@ enum OverviewMetrics {
                 } else {
                     guard group == muscleGroup else { continue }
                 }
-                buckets[weekStart, default: 0] += set.volume
+                buckets[weekStart, default: 0] += metricValue(for: set, trackingType: trackingType)
             }
         }
 
@@ -523,17 +601,18 @@ enum OverviewMetrics {
     static func weeklyExerciseVolumesAll(
         for exerciseId: String,
         workouts: [Workout],
-        calendar: Calendar
+        calendar: Calendar,
+        trackingType: ExerciseTrackingType = .weightReps
     ) -> [VolumePoint] {
         var buckets: [Date: Double] = [:]
 
         for workout in workouts {
             guard let weekStart = calendar.startOfWeek(for: workout.date) else { continue }
-            let volume = workout.sets
+            let total = workout.sets
                 .filter { matches(set: $0, exerciseId: exerciseId) }
-                .reduce(0.0) { $0 + $1.volume }
-            guard volume > 0 else { continue }
-            buckets[weekStart, default: 0] += volume
+                .reduce(0.0) { $0 + metricValue(for: $1, trackingType: trackingType) }
+            guard total > 0 else { continue }
+            buckets[weekStart, default: 0] += total
         }
 
         return buckets
@@ -545,7 +624,8 @@ enum OverviewMetrics {
         for exerciseId: String,
         workouts: [Workout],
         period: ExerciseChartPeriod,
-        calendar: Calendar
+        calendar: Calendar,
+        trackingType: ExerciseTrackingType = .weightReps
     ) -> [VolumePoint] {
         switch period {
         case .day:
@@ -556,10 +636,10 @@ enum OverviewMetrics {
 
             for workout in workouts where workout.date >= start && workout.date < end {
                 let day = calendar.startOfDay(for: workout.date)
-                let volume = workout.sets
+                let total = workout.sets
                     .filter { matches(set: $0, exerciseId: exerciseId) }
-                    .reduce(0.0) { $0 + $1.volume }
-                buckets[day, default: 0] += volume
+                    .reduce(0.0) { $0 + metricValue(for: $1, trackingType: trackingType) }
+                buckets[day, default: 0] += total
             }
 
             let days = (0..<7).compactMap { offset in
@@ -580,10 +660,10 @@ enum OverviewMetrics {
 
             for workout in workouts where workout.date >= start && workout.date < end {
                 guard let weekStart = calendar.startOfWeek(for: workout.date) else { continue }
-                let volume = workout.sets
+                let total = workout.sets
                     .filter { matches(set: $0, exerciseId: exerciseId) }
-                    .reduce(0.0) { $0 + $1.volume }
-                buckets[weekStart, default: 0] += volume
+                    .reduce(0.0) { $0 + metricValue(for: $1, trackingType: trackingType) }
+                buckets[weekStart, default: 0] += total
             }
 
             let weeks = (0..<5).compactMap { offset in
@@ -604,10 +684,10 @@ enum OverviewMetrics {
             for workout in workouts where workout.date >= start && workout.date < end {
                 let comps = calendar.dateComponents([.year, .month], from: workout.date)
                 guard let monthStart = calendar.date(from: comps) else { continue }
-                let volume = workout.sets
+                let total = workout.sets
                     .filter { matches(set: $0, exerciseId: exerciseId) }
-                    .reduce(0.0) { $0 + $1.volume }
-                buckets[monthStart, default: 0] += volume
+                    .reduce(0.0) { $0 + metricValue(for: $1, trackingType: trackingType) }
+                buckets[monthStart, default: 0] += total
             }
 
             let months = (0..<6).compactMap { offset in
@@ -769,6 +849,47 @@ enum VolumeFormatter {
     static func weightParts(from weight: Double, locale: Locale, unit: WeightUnit = .kg) -> (value: String, unit: String) {
         let text = unit.formattedValue(fromKg: weight, locale: locale, maximumFractionDigits: 3)
         return (text, unit.unitLabel)
+    }
+
+    static func repsParts(from reps: Double, locale: Locale) -> (value: String, unit: String) {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.locale = locale
+        formatter.maximumFractionDigits = 0
+        let text = formatter.string(from: NSNumber(value: reps)) ?? String(Int(reps))
+        let unit = Locale.preferredLanguages.first?.hasPrefix("ja") ?? false ? "回" : "reps"
+        return (text, unit)
+    }
+
+    static func durationString(from seconds: Double) -> String {
+        let totalMinutes = max(0, Int((seconds / 60).rounded()))
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+        let isJapanese = Locale.preferredLanguages.first?.hasPrefix("ja") ?? false
+        if isJapanese {
+            return "\(hours)時間\(minutes)分"
+        }
+        return String(format: "%dh %dm", hours, minutes)
+    }
+
+    static func durationParts(from seconds: Double) -> (value: String, unit: String) {
+        (durationString(from: seconds), "")
+    }
+
+    static func metricParts(
+        from value: Double,
+        trackingType: ExerciseTrackingType,
+        locale: Locale,
+        unit: WeightUnit = .kg
+    ) -> (value: String, unit: String) {
+        switch trackingType {
+        case .weightReps:
+            return volumePartsWithFraction(from: value, locale: locale, unit: unit)
+        case .repsOnly:
+            return repsParts(from: value, locale: locale)
+        case .durationOnly:
+            return durationParts(from: value)
+        }
     }
 }
 

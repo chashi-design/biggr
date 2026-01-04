@@ -14,7 +14,7 @@ struct ExerciseTabView: View {
         ExerciseTabStrings(isJapanese: isJapaneseLocale)
     }
 
-    private let muscleGroupOrder = ["chest", "shoulders", "arms", "back", "legs", "abs", "other"]
+    private let muscleGroupOrder = ["chest", "shoulders", "arms", "back", "legs", "abs", "cardio", "other"]
 
     private var categories: [ExerciseCategory] {
         let isJapanese = isJapaneseLocale

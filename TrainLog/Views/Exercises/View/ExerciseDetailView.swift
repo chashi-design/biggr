@@ -228,7 +228,41 @@ enum MovementPatternLabel {
             titleEn: "Rotation",
             descriptionJa: "体幹を主導にツイストを行い、腰を反らせすぎないように注意します。",
             descriptionEn: "Rotate through the core and avoid excessive lumbar extension."
-        )
+        ),
+        "cardio_run": PatternInfo(
+                titleJa: "ラン / ウォーク",
+                titleEn: "Run / Walk",
+                descriptionJa: "姿勢を安定させ、一定のリズムで地面（またはベルト）を捉えながら前進します。",
+                descriptionEn: "Maintain posture and move forward with a steady rhythm, contacting the ground or belt consistently."
+            ),
+
+            "cardio_cycle": PatternInfo(
+                titleJa: "サイクリング",
+                titleEn: "Cycling",
+                descriptionJa: "股関節と膝を連動させ、一定のケイデンスでペダルを回し続けます。",
+                descriptionEn: "Coordinate hips and knees and maintain a steady cadence while pedaling."
+            ),
+
+            "cardio_elliptical": PatternInfo(
+                titleJa: "エリプティカル",
+                titleEn: "Elliptical",
+                descriptionJa: "手足を連動させ、衝撃を抑えながら滑らかな楕円軌道で動作します。",
+                descriptionEn: "Coordinate arms and legs while moving through a smooth, low-impact elliptical path."
+            ),
+
+            "cardio_climb": PatternInfo(
+                titleJa: "クライム",
+                titleEn: "Climb",
+                descriptionJa: "体幹を安定させ、下半身主導で一段ずつ踏み上がります。",
+                descriptionEn: "Stabilize the core and drive upward step by step using the lower body."
+            ),
+
+            "cardio_step": PatternInfo(
+                titleJa: "ステップ",
+                titleEn: "Step",
+                descriptionJa: "リズムを保ち、左右交互に踏み込みながら連続的に動作します。",
+                descriptionEn: "Maintain rhythm and perform continuous alternating step movements."
+            )
     ]
 }
 

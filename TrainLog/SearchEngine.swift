@@ -13,6 +13,27 @@ public struct ExerciseCatalog: Codable, Hashable {
     public let descEn: String      // 英語説明
 }
 
+public enum ExerciseTrackingType: String, Hashable {
+    case weightReps
+    case repsOnly
+    case durationOnly
+}
+
+public extension ExerciseCatalog {
+    var trackingType: ExerciseTrackingType {
+        if muscleGroup == "cardio" {
+            return .durationOnly
+        }
+        if muscleGroup == "abs" {
+            return .repsOnly
+        }
+        if equipment == "bodyweight" {
+            return .repsOnly
+        }
+        return .weightReps
+    }
+}
+
 public enum ExerciseIdentifier {
     public static let unknown = "unknown"
 }

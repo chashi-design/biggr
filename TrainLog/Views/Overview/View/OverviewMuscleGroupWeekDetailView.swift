@@ -17,6 +17,9 @@ struct OverviewMuscleGroupWeekDetailView: View {
         OverviewMuscleGroupWeekDetailStrings(isJapanese: isJapaneseLocale)
     }
     private var locale: Locale { strings.locale }
+    private var trackingType: ExerciseTrackingType {
+        OverviewMetrics.trackingType(for: muscleGroup)
+    }
 
     private var normalizedWeekStart: Date {
         calendar.startOfWeek(for: weekStart) ?? weekStart
@@ -79,18 +82,26 @@ struct OverviewMuscleGroupWeekDetailView: View {
         HStack(spacing: 32) {
             Text(strings.setNumberText(index + 1))
             Spacer()
-            if set.weight > 0 {
-                let parts = VolumeFormatter.weightParts(from: set.weight, locale: locale, unit: weightUnit)
-                ValueWithUnitText(
-                    value: parts.value,
-                    unit: parts.unit,
-                    valueFont: .subheadline,
-                    unitFont: .caption,
-                    valueColor: .secondary,
-                    unitColor: .secondary
-                )
+            switch trackingType {
+            case .weightReps:
+                if set.weight > 0 {
+                    let parts = VolumeFormatter.weightParts(from: set.weight, locale: locale, unit: weightUnit)
+                    ValueWithUnitText(
+                        value: parts.value,
+                        unit: parts.unit,
+                        valueFont: .subheadline,
+                        unitFont: .caption,
+                        valueColor: .secondary,
+                        unitColor: .secondary
+                    )
+                }
+                Text(strings.repsText(set.reps))
+            case .repsOnly:
+                Text(strings.repsText(set.reps))
+            case .durationOnly:
+                let duration = VolumeFormatter.durationString(from: set.durationSeconds ?? 0)
+                Text(strings.durationText(duration))
             }
-            Text(strings.repsText(set.reps))
         }
         .font(.subheadline)
         .foregroundStyle(.secondary)
@@ -120,16 +131,17 @@ struct OverviewMuscleGroupWeekDetailView: View {
                     exercisesSummary[key] = ExerciseSummaryBucket(displayName: displayName, sets: [])
                 }
                 exercisesSummary[key]?.sets.append(set)
+                let metric = OverviewMetrics.metricValue(for: set, trackingType: trackingType)
                 totals.sets += 1
                 totals.reps += set.reps
-                totals.volume += set.volume
+                totals.volume += metric
             }
         }
 
         let exerciseBreakdowns = exercisesSummary
             .map { key, bucket in
                 let orderedSets = bucket.sets.sorted { $0.createdAt < $1.createdAt }
-                let totalVolume = orderedSets.reduce(0.0) { $0 + $1.volume }
+                let totalVolume = orderedSets.reduce(0.0) { $0 + OverviewMetrics.metricValue(for: $1, trackingType: trackingType) }
                 return ExerciseBreakdown(
                     id: key,
                     name: bucket.displayName,
@@ -201,5 +213,8 @@ private struct OverviewMuscleGroupWeekDetailStrings {
     }
     func repsText(_ reps: Int) -> String {
         isJapanese ? "\(reps)回" : "\(reps) reps"
+    }
+    func durationText(_ duration: String) -> String {
+        duration
     }
 }

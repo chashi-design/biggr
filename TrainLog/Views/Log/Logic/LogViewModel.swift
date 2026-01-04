@@ -49,6 +49,10 @@ final class LogViewModel: ObservableObject {
         exercisesCatalog.displayName(forId: exerciseId, isJapanese: isJapanese)
     }
 
+    func trackingType(for exerciseId: String) -> ExerciseTrackingType {
+        exercisesCatalog.first(where: { $0.id == exerciseId })?.trackingType ?? .weightReps
+    }
+
     func draftEntry(with id: UUID) -> DraftExerciseEntry? {
         draftExercises.first(where: { $0.id == id })
     }
@@ -129,9 +133,9 @@ final class LogViewModel: ObservableObject {
             let locale = Locale.current
             let grouped = Dictionary(grouping: workout.sets, by: { $0.exerciseId })
             let mapped = grouped.map { exerciseId, sets -> DraftExerciseEntry in
-                let rows: [DraftSetRow] = sets.map { set -> DraftSetRow in
-                    let weightText = DraftSetRow.formattedWeightText(set.weight, unit: unit, locale: locale)
-                    return DraftSetRow(weightText: weightText, repsText: String(set.reps))
+                let trackingType = trackingType(for: exerciseId)
+                let rows: [DraftSetRow] = sets.map { set in
+                    DraftSetRow.fromSet(set, unit: unit, locale: locale, trackingType: trackingType)
                 }
                 var entry = DraftExerciseEntry(exerciseId: exerciseId, defaultSetCount: 0)
                 entry.sets = rows
@@ -149,7 +153,7 @@ final class LogViewModel: ObservableObject {
         lastSyncedDate = normalizedNewDate
     }
 
-    func appendExercise(_ id: String, initialSetCount: Int = 2) {
+    func appendExercise(_ id: String, initialSetCount: Int = 1) {
         let entry = DraftExerciseEntry(exerciseId: id, defaultSetCount: initialSetCount)
         draftExercises.append(entry)
         draftRevision += 1
@@ -172,11 +176,18 @@ final class LogViewModel: ObservableObject {
         draftRevision += 1
     }
 
-    func updateSetRow(exerciseID: UUID, setID: UUID, weightText: String, repsText: String) {
+    func updateSetRow(
+        exerciseID: UUID,
+        setID: UUID,
+        weightText: String,
+        repsText: String,
+        durationText: String
+    ) {
         guard let exerciseIndex = draftExercises.firstIndex(where: { $0.id == exerciseID }) else { return }
         guard let setIndex = draftExercises[exerciseIndex].sets.firstIndex(where: { $0.id == setID }) else { return }
         draftExercises[exerciseIndex].sets[setIndex].weightText = weightText
         draftExercises[exerciseIndex].sets[setIndex].repsText = repsText
+        draftExercises[exerciseIndex].sets[setIndex].durationText = durationText
         draftRevision += 1
     }
 
@@ -192,15 +203,23 @@ final class LogViewModel: ObservableObject {
         return draftExercises[exerciseIndex].sets[setIndex].repsText
     }
 
+    func durationText(exerciseID: UUID, setID: UUID) -> String {
+        guard let exerciseIndex = draftExercises.firstIndex(where: { $0.id == exerciseID }) else { return "" }
+        guard let setIndex = draftExercises[exerciseIndex].sets.firstIndex(where: { $0.id == setID }) else { return "" }
+        return draftExercises[exerciseIndex].sets[setIndex].durationText
+    }
+
     var hasValidSets: Bool {
         draftExercises.contains { entry in
-            entry.sets.contains { $0.isValid }
+            let trackingType = trackingType(for: entry.exerciseId)
+            return entry.sets.contains { $0.isValid(trackingType: trackingType) }
         }
     }
 
     private func buildExerciseSets(unit: WeightUnit) -> [ExerciseSet] {
         let structured = draftExercises.flatMap { entry in
-            return entry.exerciseSets(unit: unit, exerciseId: entry.exerciseId)
+            let trackingType = trackingType(for: entry.exerciseId)
+            return entry.exerciseSets(unit: unit, exerciseId: entry.exerciseId, trackingType: trackingType)
         }
 
         return structured
@@ -212,17 +231,17 @@ struct DraftExerciseEntry: Identifiable {
     var exerciseId: String
     var sets: [DraftSetRow]
 
-    init(exerciseId: String, defaultSetCount: Int = 2) {
+    init(exerciseId: String, defaultSetCount: Int = 1) {
         self.exerciseId = exerciseId
         self.sets = (0..<defaultSetCount).map { _ in DraftSetRow() }
     }
 
-    func exerciseSets(unit: WeightUnit, exerciseId: String) -> [ExerciseSet] {
-        return sets.compactMap { $0.toExerciseSet(exerciseId: exerciseId, unit: unit) }
+    func exerciseSets(unit: WeightUnit, exerciseId: String, trackingType: ExerciseTrackingType) -> [ExerciseSet] {
+        return sets.compactMap { $0.toExerciseSet(exerciseId: exerciseId, unit: unit, trackingType: trackingType) }
     }
 
-    var completedSetCount: Int {
-        sets.filter { $0.isValid }.count
+    func completedSetCount(trackingType: ExerciseTrackingType) -> Int {
+        sets.filter { $0.isValid(trackingType: trackingType) }.count
     }
 }
 
@@ -230,18 +249,96 @@ struct DraftSetRow: Identifiable {
     let id = UUID()
     var weightText: String = ""
     var repsText: String = ""
+    var durationText: String = ""
 
-    func toExerciseSet(exerciseId: String, unit: WeightUnit) -> ExerciseSet? {
-        guard let weightInput = Double(weightText), let reps = Int(repsText) else { return nil }
-        let weightKg = unit.kgValue(fromDisplay: weightInput)
-        return ExerciseSet(exerciseId: exerciseId, weight: weightKg, reps: reps)
+    func toExerciseSet(exerciseId: String, unit: WeightUnit, trackingType: ExerciseTrackingType) -> ExerciseSet? {
+        switch trackingType {
+        case .weightReps:
+            guard let weightInput = Double(weightText), let reps = Int(repsText) else { return nil }
+            let weightKg = unit.kgValue(fromDisplay: weightInput)
+            return ExerciseSet(exerciseId: exerciseId, weight: weightKg, reps: reps)
+        case .repsOnly:
+            guard let reps = Int(repsText) else { return nil }
+            return ExerciseSet(exerciseId: exerciseId, weight: 0, reps: reps)
+        case .durationOnly:
+            guard let seconds = Self.durationSeconds(from: durationText) else { return nil }
+            return ExerciseSet(exerciseId: exerciseId, weight: 0, reps: 0, durationSeconds: seconds)
+        }
     }
 
-    var isValid: Bool {
-        Double(weightText) != nil && Int(repsText) != nil
+    func isValid(trackingType: ExerciseTrackingType) -> Bool {
+        switch trackingType {
+        case .weightReps:
+            return Double(weightText) != nil && Int(repsText) != nil
+        case .repsOnly:
+            return Int(repsText) != nil
+        case .durationOnly:
+            return Self.durationSeconds(from: durationText) != nil
+        }
     }
 
     static func formattedWeightText(_ weight: Double, unit: WeightUnit, locale: Locale) -> String {
-        unit.formattedValue(fromKg: weight, locale: locale, maximumFractionDigits: 3)
+        unit.formattedValue(
+            fromKg: weight,
+            locale: locale,
+            maximumFractionDigits: 3,
+            usesGroupingSeparator: false
+        )
+    }
+
+    static func formattedDurationText(_ seconds: Double) -> String {
+        let totalMinutes = max(0, Int((seconds / 60).rounded()))
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+        return String(format: "%02d:%02d", hours, minutes)
+    }
+
+    static func formattedDurationText(hours: Int, minutes: Int) -> String {
+        let safeHours = max(0, hours)
+        let safeMinutes = max(0, min(59, minutes))
+        return String(format: "%02d:%02d", safeHours, safeMinutes)
+    }
+
+    static func durationComponents(from text: String) -> (hours: Int, minutes: Int)? {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+        let parts = trimmed.split(separator: ":")
+        if parts.count == 1 {
+            guard let totalMinutes = Int(parts[0]), totalMinutes >= 0 else { return nil }
+            return (totalMinutes / 60, totalMinutes % 60)
+        }
+        guard parts.count == 2,
+              let hours = Int(parts[0]),
+              let minutes = Int(parts[1]),
+              hours >= 0,
+              minutes >= 0,
+              minutes < 60 else { return nil }
+        return (hours, minutes)
+    }
+
+    static func durationSeconds(from text: String) -> Double? {
+        guard let components = durationComponents(from: text) else { return nil }
+        let totalMinutes = components.hours * 60 + components.minutes
+        guard totalMinutes > 0 else { return nil }
+        return Double(totalMinutes * 60)
+    }
+
+    static func fromSet(
+        _ set: ExerciseSet,
+        unit: WeightUnit,
+        locale: Locale,
+        trackingType: ExerciseTrackingType
+    ) -> DraftSetRow {
+        switch trackingType {
+        case .weightReps:
+            let weightText = formattedWeightText(set.weight, unit: unit, locale: locale)
+            return DraftSetRow(weightText: weightText, repsText: String(set.reps))
+        case .repsOnly:
+            return DraftSetRow(weightText: "", repsText: String(set.reps))
+        case .durationOnly:
+            let seconds = set.durationSeconds ?? 0
+            let text = seconds > 0 ? formattedDurationText(seconds) : ""
+            return DraftSetRow(weightText: "", repsText: "", durationText: text)
+        }
     }
 }

@@ -1321,5 +1321,139 @@
     "pattern": "rotation",
     "descJa": "ケーブルロータリートルソーとは、マシンを使って「動かす」動作で腹斜筋、体幹を鍛える種目です。軌道が安定して狙った部位に効かせやすいのが特徴で、体幹を安定させたまま、ひねる／押し出す動作をコントロールして行います。お腹の引き締めと体幹固定力の向上が期待できます。",
     "descEn": "Use a machine to rotate. Rotate through the torso and return. Targets obliques; stable path and easy to load safely. Improve core stability and definition.",
+  },
+  {
+      "id": "ex101",
+      "name": "トレッドミル",
+      "nameEn": "Treadmill",
+      "muscleGroup": "cardio",
+      "aliases": [
+          "トレッドミル",
+          "ランニングマシン",
+          "ルームランナー",
+          "treadmill",
+          "running machine",
+          "cardio treadmill",
+          "ウォーキングマシン"
+      ],
+      "equipment": "machine",
+      "pattern": "cardio_run",
+      "descJa": "トレッドミルとは、マシンを使って「走る／歩く」動作を行い、主に下半身（大腿四頭筋・ハムストリング・臀筋・ふくらはぎ）や心肺機能を鍛える有酸素トレーニングです。速度や傾斜を調整して強度管理しやすいのが特徴で、ベルト上を姿勢を保って歩行／ランニングする動作を繰り返します。これにより、持久力向上や脂肪燃焼、心肺機能の強化が期待できます。",
+      "descEn": "Treadmill is an aerobic exercise that uses a machine to perform a run or walk motion, mainly training the lower body and cardiovascular fitness. Intensity is easy to control with speed and incline, improving endurance, fat loss, and cardio capacity."
+  },
+  {
+      "id": "ex102",
+      "name": "自走式トレッドミル",
+      "nameEn": "Self-Propelled Treadmill",
+      "muscleGroup": "cardio",
+      "aliases": [
+          "自走式トレッドミル",
+          "カーブトレッドミル",
+          "エアランナー",
+          "non-motorized treadmill",
+          "manual treadmill",
+          "self propelled treadmill",
+          "curved treadmill",
+          "air runner"
+      ],
+      "equipment": "machine",
+      "pattern": "cardio_run",
+      "descJa": "自走式トレッドミルとは、マシンを使って「自分の力でベルトを動かして走る／歩く」動作を行い、主に下半身や心肺機能を鍛える有酸素トレーニングです。出力がそのまま速度に反映され高強度になりやすいのが特徴で、脚でベルトを押し出しながら走行動作を繰り返します。これにより、心肺機能の強化や高いカロリー消費が期待できます。",
+      "descEn": "Self-Propelled Treadmill is an aerobic exercise where you drive the belt yourself, strongly engaging the lower body and cardiovascular system. Effort directly affects speed, enabling high-intensity cardio and high calorie burn."
+  },
+  {
+      "id": "ex103",
+      "name": "エアロバイク",
+      "nameEn": "Stationary Bike",
+      "muscleGroup": "cardio",
+      "aliases": [
+          "エアロバイク",
+          "フィットネスバイク",
+          "スピンバイク",
+          "stationary bike",
+          "exercise bike",
+          "fitness bike",
+          "spin bike",
+          "bike cardio"
+      ],
+      "equipment": "machine",
+      "pattern": "cardio_cycle",
+      "descJa": "エアロバイクとは、マシンを使って「ペダルをこぐ」動作を行い、主に下半身と心肺機能を鍛える有酸素トレーニングです。関節への衝撃が少なく負荷調整しやすいのが特徴で、一定リズムでペダリングを繰り返します。これにより、持久力向上や脂肪燃焼が期待できます。",
+      "descEn": "Stationary Bike is an aerobic exercise using a machine to pedal, training the lower body and cardiovascular fitness. It is low impact, easy to scale, and effective for endurance and fat loss."
+  },
+  {
+      "id": "ex104",
+      "name": "リカンベントバイク",
+      "nameEn": "Recumbent Bike",
+      "muscleGroup": "cardio",
+      "aliases": [
+          "リカンベント",
+          "リカンベントバイク",
+          "背もたれバイク",
+          "recumbent bike",
+          "seated bike",
+          "low impact bike"
+      ],
+      "equipment": "machine",
+      "pattern": "cardio_cycle",
+      "descJa": "リカンベントバイクとは、マシンを使って「ペダルをこぐ」動作を行い、主に下半身や心肺機能を鍛える有酸素トレーニングです。背もたれにより姿勢が安定し腰への負担が少ないのが特徴で、一定リズムでペダリングを繰り返します。これにより、膝や腰に優しい心肺機能向上が期待できます。",
+      "descEn": "Recumbent Bike is an aerobic exercise with back support that pedals to train the lower body and cardiovascular fitness. It reduces joint and lower-back stress while improving endurance."
+  },
+  {
+      "id": "ex105",
+      "name": "エリプティカル",
+      "nameEn": "Elliptical Trainer",
+      "muscleGroup": "cardio",
+      "aliases": [
+          "クロストレーナー",
+          "エリプティカル",
+          "エリプティカルマシン",
+          "elliptical",
+          "elliptical trainer",
+          "cross trainer",
+          "orbitrek"
+      ],
+      "equipment": "machine",
+      "pattern": "cardio_elliptical",
+      "descJa": "エリプティカルとは、マシンを使って「手足を連動させて楕円軌道で動かす」動作を行い、全身と心肺機能を鍛える有酸素トレーニングです。衝撃が少なく全身を使いやすいのが特徴で、リズミカルに動作を繰り返します。これにより、持久力向上や脂肪燃焼が期待できます。",
+      "descEn": "Elliptical Trainer is an aerobic exercise that moves arms and legs in an elliptical motion, engaging the whole body with low impact. It improves endurance and supports fat loss."
+  },
+  {
+      "id": "ex106",
+      "name": "クライムミル",
+      "nameEn": "ClimbMill",
+      "muscleGroup": "cardio",
+      "aliases": [
+          "ステアクライマー",
+          "クライムミル",
+          "階段マシン",
+          "stair climber",
+          "climbmill",
+          "stair machine",
+          "stairmaster"
+      ],
+      "equipment": "machine",
+      "pattern": "cardio_climb",
+      "descJa": "クライムミルとは、マシンを使って「階段を登る」動作を行い、主に下半身と心肺機能を鍛える有酸素トレーニングです。高い運動強度になりやすいのが特徴で、一定テンポで踏み上がる動作を繰り返します。これにより、脂肪燃焼や心肺機能向上が期待できます。",
+      "descEn": "ClimbMill is an aerobic exercise simulating stair climbing, heavily engaging the lower body and cardiovascular system. It offers high intensity and strong fat-burning effects."
+  },
+  {
+      "id": "ex107",
+      "name": "ステップマシン",
+      "nameEn": "Step Machine",
+      "muscleGroup": "cardio",
+      "aliases": [
+          "ステップマシン",
+          "ステッパー",
+          "エアロステッパー",
+          "step machine",
+          "stepper",
+          "stepper machine",
+          "aerobic stepper"
+      ],
+      "equipment": "machine",
+      "pattern": "cardio_step",
+      "descJa": "ステップマシンとは、マシンを使って「踏み台昇降のように踏み込む」動作を行い、主に下半身と心肺機能を鍛える有酸素トレーニングです。リズムよく続けやすいのが特徴で、左右交互に踏み込む動作を繰り返します。これにより、持久力向上や脂肪燃焼が期待できます。",
+      "descEn": "Step Machine is an aerobic exercise performing step-like movements to train the lower body and cardiovascular fitness. It is easy to maintain rhythm and effective for endurance and fat loss."
   }
 ]
