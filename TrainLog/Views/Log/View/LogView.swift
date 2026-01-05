@@ -108,14 +108,18 @@ struct LogView: View {
                             isShowingDeleteAlert = true
                         } label: {
                             Image(systemName: "trash")
+                                .foregroundStyle(.primary)
                         }
                         .disabled(selectedEntriesForDeletion.isEmpty)
+                        .tint(.primary)
                     } else {
                         HapticButton {
                             viewModel.selectedDate = LogDateHelper.normalized(Date())
                         } label: {
                             Text(strings.todayLabel)
+                                .foregroundStyle(.primary)
                         }
+                        .tint(.primary)
                     }
                 }
 
@@ -126,7 +130,9 @@ struct LogView: View {
                             isShowingExercisePicker = true
                         } label: {
                             Image(systemName: "plus")
+                                .foregroundStyle(.primary)
                         }
+                        .tint(.primary)
                     }
                 }
             }

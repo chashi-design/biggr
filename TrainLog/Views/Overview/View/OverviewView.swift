@@ -8,6 +8,7 @@ struct OverviewTabView: View {
     @State private var isLoadingExercises = true
     @State private var refreshID = UUID()
     @State private var showSettings = false
+    @State private var showShareView = false
     @State private var navigationFeedbackTrigger = 0
 
     private let calendar = Calendar.appCurrent
@@ -23,6 +24,20 @@ struct OverviewTabView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
+                    Button {
+                        showShareView = true
+                    } label: {
+                        OverviewMuscleGroupShareCard(
+                            workouts: workouts,
+                            exercises: exercises,
+                            isLoadingExercises: isLoadingExercises,
+                            calendar: calendar
+                        )
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+
                     OverviewMuscleGrid(
                         volumes: OverviewMetrics.muscleGroupVolumesForCurrentWeek(
                             workouts: workouts,
@@ -48,14 +63,24 @@ struct OverviewTabView: View {
                         showSettings = true
                     } label: {
                         Image(systemName: "gearshape")
+                            .foregroundStyle(.primary)
                     }
                     .accessibilityLabel(strings.settingsLabel)
+                    .tint(.primary)
                 }
             }
             .sheet(isPresented: $showSettings) {
                 NavigationStack {
                     SettingsView()
                 }
+            }
+            .navigationDestination(isPresented: $showShareView) {
+                OverviewMuscleGroupShareView(
+                    workouts: workouts,
+                    exercises: exercises,
+                    isLoadingExercises: isLoadingExercises,
+                    calendar: calendar
+                )
             }
             .background(Color(.systemGroupedBackground))
             .task {
@@ -68,6 +93,11 @@ struct OverviewTabView: View {
                 refreshID = UUID()
             }
             .onChange(of: showSettings) { _, newValue in
+                if newValue {
+                    navigationFeedbackTrigger += 1
+                }
+            }
+            .onChange(of: showShareView) { _, newValue in
                 if newValue {
                     navigationFeedbackTrigger += 1
                 }
@@ -130,35 +160,7 @@ struct OverviewMuscleGrid: View {
             } else {
                 LazyVGrid(columns: columns, spacing: 12) {
                     ForEach(visibleVolumes) { item in
-                        let trackingType = OverviewMetrics.trackingType(
-                            for: item.muscleGroup,
-                            segment: item.segment
-                        )
-                        let weeklyPoints = OverviewMetrics.weeklyMuscleGroupVolumesForSegment(
-                            muscleGroup: item.muscleGroup,
-                            segment: item.segment,
-                            workouts: workouts,
-                            exercises: exercises,
-                            calendar: calendar,
-                            weeks: 5,
-                            trackingType: trackingType
-                        )
-                        Button {
-                            selectedMuscleGroup = item
-                        } label: {
-                            OverviewMuscleCard(
-                                title: item.displayName,
-                                monthLabel: weekRangeLabel(for: Date()),
-                                volume: item.volume,
-                                trackingType: trackingType,
-                                locale: locale,
-                                titleColor: MuscleGroupColor.color(for: item.muscleGroup),
-                                weeklyPoints: weeklyPoints
-                            )
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
+                        muscleCardButton(for: item)
                     }
                 }
             }
@@ -189,6 +191,40 @@ struct OverviewMuscleGrid: View {
         return strings.weekRangeLabel(base: formatter.string(from: start))
     }
 
+    @ViewBuilder
+    private func muscleCardButton(for item: MuscleGroupVolume) -> some View {
+        let trackingType = OverviewMetrics.trackingType(
+            for: item.muscleGroup,
+            segment: item.segment
+        )
+        let weeklyPoints = OverviewMetrics.weeklyMuscleGroupVolumesForSegment(
+            muscleGroup: item.muscleGroup,
+            segment: item.segment,
+            workouts: workouts,
+            exercises: exercises,
+            calendar: calendar,
+            weeks: 5,
+            trackingType: trackingType
+        )
+
+        Button {
+            selectedMuscleGroup = item
+        } label: {
+            OverviewMuscleCard(
+                title: item.displayName,
+                monthLabel: weekRangeLabel(for: Date()),
+                volume: item.volume,
+                trackingType: trackingType,
+                locale: locale,
+                titleColor: MuscleGroupColor.color(for: item.muscleGroup),
+                weeklyPoints: weeklyPoints
+            )
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
     private func filteredExercises(for item: MuscleGroupVolume) -> [ExerciseCatalog] {
         let base = exercises.filter { $0.muscleGroup == item.muscleGroup }
         switch item.segment {
@@ -214,43 +250,46 @@ struct OverviewMuscleCard: View {
     @Environment(\.weightUnit) private var weightUnit
 
     var body: some View {
-        HStack(alignment: .center, spacing: 12) {
-            VStack(alignment: .leading, spacing: 6) {
-                Text(title)
-                    .font(.callout.weight(.semibold))
-                    .foregroundStyle(titleColor)
-                Text(monthLabel)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                let parts = VolumeFormatter.metricParts(
-                    from: volume,
-                    trackingType: trackingType,
-                    locale: locale,
-                    unit: weightUnit
-                )
-                if trackingType == .durationOnly {
-                    durationValueText(seconds: volume)
-                } else {
-                    let unitText = parts.unit.isEmpty ? "" : " \(parts.unit)"
-                    ValueWithUnitText(
-                        value: parts.value,
-                        unit: unitText,
-                        valueFont: .system(.title, design: .rounded).weight(.bold),
-                        unitFont: .system(.subheadline, design: .rounded).weight(.semibold),
+        VStack(alignment: .leading, spacing: 32) {
+                HStack(spacing: 4) {
+                    Text(title)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(titleColor)
+                    Spacer()
+                    Text(monthLabel)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(.tertiary)
+                        .imageScale(.small)
+                        .font(.system(size: 17, weight: .semibold))
+                }
+            HStack(alignment: .bottom, spacing: 12) {
+                    let parts = VolumeFormatter.metricParts(
+                        from: volume,
+                        trackingType: trackingType,
+                        locale: locale,
+                        unit: weightUnit
+                    )
+                    if trackingType == .durationOnly {
+                        durationValueText(seconds: volume)
+                    } else {
+                        let unitText = parts.unit.isEmpty ? "" : " \(parts.unit)"
+                        ValueWithUnitText(
+                            value: parts.value,
+                            unit: unitText,
+                            valueFont: .system(.title, design: .rounded).weight(.bold),
+                            unitFont: .system(.subheadline, design: .rounded).weight(.semibold),
+                        )
+                    }
+                    Spacer()
+                    WeeklyMiniChartView(
+                        points: weeklyPoints,
+                        barColor: titleColor
                     )
                 }
             }
-            Spacer()
-            WeeklyMiniChartView(
-                points: weeklyPoints,
-                barColor: titleColor
-            )
-            Image(systemName: "chevron.right")
-                .foregroundStyle(.tertiary)
-                .imageScale(.small)
-                .font(.system(size: 17, weight: .semibold))
-        }
-        .padding(14)
+        .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color(.secondarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: 26))

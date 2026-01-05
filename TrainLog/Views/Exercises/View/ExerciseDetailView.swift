@@ -48,7 +48,9 @@ struct ExerciseDetailView: View {
                 } label: {
                     Label(strings.youtubeSearchTitle, systemImage: "play.rectangle")
                         .labelStyle(.iconOnly)
+                        .foregroundStyle(.primary)
                 }
+                .tint(.primary)
 
                 HapticButton {
                     favoritesStore.toggle(id: exercise.id)

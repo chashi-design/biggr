@@ -123,7 +123,9 @@ struct SetEditorView: View {
                         YouTubeSearch.open(query: displayName(for: entry.exerciseId), openURL: openURL)
                     } label: {
                         Label(strings.youtubeSearchTitle, systemImage: "play.rectangle")
+                            .foregroundStyle(.primary)
                     }
+                    .tint(.primary)
                 }
             }
             .sheet(isPresented: $isShowingDurationPicker) {
@@ -164,7 +166,9 @@ struct SetEditorView: View {
                                 isShowingDurationPicker = false
                             } label: {
                                 Text(strings.cancelTitle)
+                                    .foregroundStyle(.primary)
                             }
+                            .tint(.primary)
                         }
                         ToolbarItem(placement: .confirmationAction) {
                             HapticButton {

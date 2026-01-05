@@ -70,9 +70,11 @@ struct SettingsView: View {
                     dismiss()
                 } label: {
                     Image(systemName: "xmark")
+                        .foregroundStyle(.primary)
                 }
                 .accessibilityLabel(strings.closeLabel)
                 .sensoryFeedback(.impact(weight: .light), trigger: closeFeedbackTrigger)
+                .tint(.primary)
             }
         }
         .sheet(item: $selectedItem) { item in

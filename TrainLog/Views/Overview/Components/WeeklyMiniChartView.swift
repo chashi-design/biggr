@@ -42,7 +42,7 @@ struct WeeklyMiniChartView: View {
             }
             .frame(width: size.width, height: size.height, alignment: .bottom)
         }
-        .frame(width: 60, height: 60)
+        .frame(width: 80, height: 80)
         .accessibilityHidden(true)
     }
 }
