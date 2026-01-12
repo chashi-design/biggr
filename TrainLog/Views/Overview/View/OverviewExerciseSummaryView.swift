@@ -6,7 +6,7 @@ struct OverviewExerciseSummaryView: View {
     let workouts: [Workout]
 
     @Environment(\.weightUnit) private var weightUnit
-    @State private var chartPeriod: ExerciseChartPeriod = .day
+    @State private var chartPeriod: ExerciseChartPeriod = .week
     @State private var navigationFeedbackTrigger = 0
     @State private var selectedWeekItem: ExerciseWeekListItem?
     private let calendar = Calendar.appCurrent
@@ -131,7 +131,13 @@ struct OverviewExerciseSummaryView: View {
         }
         .listStyle(.insetGrouped)
         .navigationTitle(displayName)
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text(displayName)
+                    .font(.headline)
+            }
+        }
         .navigationDestination(item: $selectedWeekItem) { item in
             OverviewExerciseWeekDetailView(
                 weekStart: item.start,

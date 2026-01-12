@@ -257,7 +257,7 @@
 				DEVELOPMENT_TEAM = 2YM2CB2H2M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Stacker;
+				INFOPLIST_KEY_CFBundleDisplayName = Biggr;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_LSApplicationQueriesSchemes = "youtube vnd.youtube";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -273,7 +273,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = TrainLogApp;
+				PRODUCT_BUNDLE_IDENTIFIER = Biggr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -296,7 +296,7 @@
 				DEVELOPMENT_TEAM = 2YM2CB2H2M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Stacker;
+				INFOPLIST_KEY_CFBundleDisplayName = Biggr;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_LSApplicationQueriesSchemes = "youtube vnd.youtube";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -312,7 +312,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = TrainLogApp;
+				PRODUCT_BUNDLE_IDENTIFIER = Biggr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;

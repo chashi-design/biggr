@@ -31,7 +31,11 @@ struct ExercisePickerSheet: View {
                 .applyScrollEdgeEffectStyleIfAvailable()
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
-                        HapticButton(action: onCancel) { Text(strings.cancelTitle) }
+                        HapticButton(action: onCancel) {
+                            Text(strings.cancelTitle)
+                                .foregroundStyle(.primary)
+                        }
+                        .tint(.primary)
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         HapticButton {

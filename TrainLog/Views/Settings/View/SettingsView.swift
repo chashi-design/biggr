@@ -24,6 +24,7 @@ struct SettingsView: View {
     }
 
     @State private var selectedItem: SettingsLinkItem?
+    @State private var isTutorialPresented = false
     @State private var navigationFeedbackTrigger = 0
     @State private var closeFeedbackTrigger = 0
     @State private var unitFeedbackTrigger = 0
@@ -69,16 +70,26 @@ struct SettingsView: View {
                     dismiss()
                 } label: {
                     Image(systemName: "xmark")
+                        .foregroundStyle(.primary)
                 }
                 .accessibilityLabel(strings.closeLabel)
                 .sensoryFeedback(.impact(weight: .light), trigger: closeFeedbackTrigger)
+                .tint(.primary)
             }
         }
         .sheet(item: $selectedItem) { item in
             SafariView(url: item.url)
         }
+        .fullScreenCover(isPresented: $isTutorialPresented) {
+            TutorialView(isPresented: $isTutorialPresented)
+        }
         .onChange(of: selectedItem) { _, newValue in
             if newValue != nil {
+                navigationFeedbackTrigger += 1
+            }
+        }
+        .onChange(of: isTutorialPresented) { _, newValue in
+            if newValue {
                 navigationFeedbackTrigger += 1
             }
         }
@@ -116,6 +127,13 @@ struct SettingsView: View {
 
     private var linksSection: some View {
         Section(strings.otherSectionTitle) {
+            Button {
+                isTutorialPresented = true
+            } label: {
+                SettingsRow(title: strings.tutorialTitle, iconName: "sparkles")
+            }
+            .buttonStyle(.plain)
+
             ForEach(items) { item in
                 Button {
                     selectedItem = item
@@ -186,6 +204,7 @@ private struct SettingsStrings {
     var weightUnitTitle: String { isJapanese ? "重量の単位" : "Weight Unit" }
     var otherSectionTitle: String { isJapanese ? "その他" : "Other" }
     var versionTitle: String { isJapanese ? "バージョン" : "Version" }
+    var tutorialTitle: String { isJapanese ? "チュートリアル" : "Tutorial" }
     var contactTitle: String { isJapanese ? "お問い合わせ" : "Contact" }
     var termsTitle: String { isJapanese ? "利用規約" : "Terms of Service" }
     var privacyTitle: String { isJapanese ? "プライバシーポリシー" : "Privacy Policy" }
