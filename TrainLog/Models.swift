@@ -79,3 +79,37 @@ final class ExerciseSet {
         weight * Double(reps)
     }
 }
+
+// MARK: - UserSettings モデル
+// アプリ設定を1件にまとめて同期するモデル。
+@Model
+final class UserSettings {
+    static let singletonId = "singleton"
+
+    @Attribute(.unique) var id: String
+    var weightUnitRaw: String
+    var updatedAt: Date
+
+    init(
+        id: String = UserSettings.singletonId,
+        weightUnitRaw: String,
+        updatedAt: Date = .now
+    ) {
+        self.id = id
+        self.weightUnitRaw = weightUnitRaw
+        self.updatedAt = updatedAt
+    }
+}
+
+// MARK: - FavoriteExercise モデル
+// お気に入り種目を同期するモデル。
+@Model
+final class FavoriteExercise {
+    @Attribute(.unique) var exerciseId: String
+    var createdAt: Date
+
+    init(exerciseId: String, createdAt: Date = .now) {
+        self.exerciseId = exerciseId
+        self.createdAt = createdAt
+    }
+}

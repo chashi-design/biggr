@@ -1,8 +1,10 @@
 import SwiftUI
+import UIKit
 
 // 設定画面
 struct SettingsView: View {
-    @AppStorage(WeightUnit.storageKey) private var weightUnitRaw = WeightUnit.kg.rawValue
+    @StateObject private var iCloudStatusStore = ICloudSyncStatusStore()
+    @EnvironmentObject private var settingsStore: UserSettingsStore
     private var items: [SettingsLinkItem] {
         [
             SettingsLinkItem(
@@ -29,6 +31,7 @@ struct SettingsView: View {
     @State private var closeFeedbackTrigger = 0
     @State private var unitFeedbackTrigger = 0
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
 
     private var isJapaneseLocale: Bool {
         Locale.preferredLanguages.first?.hasPrefix("ja") ?? false
@@ -56,6 +59,7 @@ struct SettingsView: View {
 
     var body: some View {
         List {
+            iCloudSection
             unitSection
             linksSection
         }
@@ -94,6 +98,12 @@ struct SettingsView: View {
             }
         }
         .sensoryFeedback(.impact(weight: .light), trigger: navigationFeedbackTrigger)
+        .onAppear {
+            iCloudStatusStore.startObserving()
+        }
+        .task {
+            await iCloudStatusStore.refresh()
+        }
     }
 
     private var appVersionText: String {
@@ -101,11 +111,18 @@ struct SettingsView: View {
         return version
     }
 
+    private var weightUnitBinding: Binding<WeightUnit> {
+        Binding(
+            get: { settingsStore.weightUnit },
+            set: { settingsStore.updateWeightUnit($0) }
+        )
+    }
+
     private var unitSection: some View {
         Section(strings.appSettingsSectionTitle) {
-            Picker(selection: $weightUnitRaw) {
+            Picker(selection: weightUnitBinding) {
                 ForEach(WeightUnit.allCases) { unit in
-                    Text(unit.unitLabel).tag(unit.rawValue)
+                    Text(unit.unitLabel).tag(unit)
                 }
             }
             label: {
@@ -118,11 +135,88 @@ struct SettingsView: View {
                 }
             }
             .pickerStyle(.automatic)
-            .onChange(of: weightUnitRaw) { _, _ in
+            .onChange(of: settingsStore.weightUnit) { _, _ in
                 unitFeedbackTrigger += 1
             }
             .sensoryFeedback(.impact(weight: .light), trigger: unitFeedbackTrigger)
         }
+    }
+
+    private var iCloudSection: some View {
+        Section {
+            SettingsValueRow(
+                title: strings.iCloudSectionTitle,
+                value: iCloudStatusText,
+                iconName: iCloudStatusIconName
+            )
+
+            if let detail = iCloudDetailText {
+                SettingsDetailRow(text: detail)
+            }
+
+            if let lastSync = iCloudLastSyncText {
+                SettingsValueRow(
+                    title: strings.iCloudLastSyncTitle,
+                    value: lastSync,
+                    iconName: "clock"
+                )
+            }
+
+            HapticButton {
+                openAppSettings()
+            } label: {
+                SettingsRow(title: strings.iCloudOpenSettingsTitle, iconName: "gearshape")
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    private var iCloudStatusText: String {
+        switch iCloudStatusStore.status {
+        case .synced:
+            return strings.iCloudStatusSynced
+        case .checking:
+            return strings.iCloudStatusSyncing
+        case .localOnly:
+            return strings.iCloudStatusLocalOnly
+        case .error:
+            return strings.iCloudStatusError
+        }
+    }
+
+    private var iCloudDetailText: String? {
+        switch iCloudStatusStore.status {
+        case .synced:
+            return nil
+        case .checking:
+            return strings.iCloudDetailSyncing
+        case .localOnly:
+            return strings.iCloudDetailLocalOnly
+        case .error:
+            return strings.iCloudDetailError
+        }
+    }
+
+    private var iCloudStatusIconName: String {
+        switch iCloudStatusStore.status {
+        case .synced, .checking:
+            return "icloud"
+        case .localOnly, .error:
+            return "icloud.slash"
+        }
+    }
+
+    private var iCloudLastSyncText: String? {
+        guard let date = iCloudStatusStore.lastUpdatedAt else { return nil }
+        let formatter = DateFormatter()
+        formatter.locale = strings.locale
+        formatter.dateFormat = strings.iCloudLastSyncFormat
+        return formatter.string(from: date)
+    }
+
+    private func openAppSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        openURL(url)
     }
 
     private var linksSection: some View {
@@ -148,46 +242,6 @@ struct SettingsView: View {
     }
 }
 
-struct SettingsRow: View {
-    let title: String
-    let iconName: String
-
-    var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: iconName)
-                .foregroundStyle(.primary)
-                .font(.body)
-            Text(title)
-                .font(.body)
-            Spacer()
-            Image(systemName: "chevron.right")
-                .foregroundStyle(.tertiary)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .contentShape(Rectangle())
-    }
-}
-
-struct SettingsVersionRow: View {
-    let title: String
-    let versionText: String
-
-    var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: "clock.arrow.trianglehead.counterclockwise.rotate.90")
-                .foregroundStyle(.primary)
-                .font(.body)
-            Text(title)
-                .font(.body)
-            Spacer()
-            Text(versionText)
-                .foregroundStyle(.secondary)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
-
-
 struct SettingsLinkItem: Identifiable, Hashable {
     let title: String
     let iconName: String
@@ -197,6 +251,10 @@ struct SettingsLinkItem: Identifiable, Hashable {
 
 private struct SettingsStrings {
     let isJapanese: Bool
+
+    var locale: Locale {
+        isJapanese ? Locale(identifier: "ja_JP") : Locale(identifier: "en_US")
+    }
 
     var navigationTitle: String { isJapanese ? "設定" : "Settings" }
     var closeLabel: String { isJapanese ? "閉じる" : "Close" }
@@ -208,9 +266,33 @@ private struct SettingsStrings {
     var contactTitle: String { isJapanese ? "お問い合わせ" : "Contact" }
     var termsTitle: String { isJapanese ? "利用規約" : "Terms of Service" }
     var privacyTitle: String { isJapanese ? "プライバシーポリシー" : "Privacy Policy" }
+    var iCloudSectionTitle: String { isJapanese ? "iCloud同期" : "iCloud Sync" }
+    var iCloudStatusSynced: String { isJapanese ? "同期済み" : "Synced" }
+    var iCloudStatusSyncing: String { isJapanese ? "同期中..." : "Syncing..." }
+    var iCloudStatusLocalOnly: String { isJapanese ? "iCloud未設定" : "iCloud not available" }
+    var iCloudStatusError: String { isJapanese ? "同期エラー" : "Sync error" }
+    var iCloudDetailSyncing: String {
+        isJapanese
+            ? "最新になるまで少し時間がかかる場合があります。"
+            : "It may take a moment to finish."
+    }
+    var iCloudDetailLocalOnly: String {
+        isJapanese
+            ? "この端末内にのみ保存されています。アプリ削除や機種変更でデータが消えます。iCloud設定を確認してください。"
+            : "Data is stored only on this device. Uninstalling or switching devices will lose data. Check iCloud settings."
+    }
+    var iCloudDetailError: String {
+        isJapanese
+            ? "iCloudの状態を確認できませんでした。通信状態や設定を確認してください。"
+            : "Couldn't check iCloud status. Please check your connection and settings."
+    }
+    var iCloudLastSyncTitle: String { isJapanese ? "最終同期" : "Last Sync" }
+    var iCloudLastSyncFormat: String { isJapanese ? "yyyy/MM/dd HH:mm" : "MMM d, HH:mm" }
+    var iCloudOpenSettingsTitle: String { isJapanese ? "設定を開く" : "Open Settings" }
 }
 #Preview {
     NavigationStack {
         SettingsView()
     }
+    .environmentObject(UserSettingsStore())
 }

@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 // アプリ全体のタブをまとめるエントリーポイント
@@ -5,8 +6,9 @@ struct ContentView: View {
     @State private var selectedTab: Tab = .summary
     @State private var tabHapticTrigger = 0
     @State private var isTutorialPresented = false
+    @Environment(\.modelContext) private var modelContext
     @StateObject private var favoritesStore = ExerciseFavoritesStore()
-    @AppStorage(WeightUnit.storageKey) private var weightUnitRaw = WeightUnit.kg.rawValue
+    @StateObject private var settingsStore = UserSettingsStore()
     @AppStorage("hasSeenTutorial") private var hasSeenTutorial = false
 
     private var isJapaneseLocale: Bool {
@@ -45,8 +47,11 @@ struct ContentView: View {
             .allowsHitTesting(hasSeenTutorial)
         }
         .environmentObject(favoritesStore)
-        .environment(\.weightUnit, WeightUnit(rawValue: weightUnitRaw) ?? .kg)
+        .environmentObject(settingsStore)
+        .environment(\.weightUnit, settingsStore.weightUnit)
         .onAppear {
+            favoritesStore.bind(context: modelContext)
+            settingsStore.bind(context: modelContext)
             if !hasSeenTutorial && !isTutorialPresented {
                 var transaction = Transaction()
                 transaction.disablesAnimations = true
@@ -79,4 +84,5 @@ private struct ContentStrings {
 
 #Preview {
     ContentView()
+        .modelContainer(for: [Workout.self, ExerciseSet.self, UserSettings.self, FavoriteExercise.self], inMemory: true)
 }
